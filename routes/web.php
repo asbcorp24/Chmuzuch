@@ -26,6 +26,7 @@ use App\Http\Controllers\Admin\HomeBuilderController;
 use App\Http\Controllers\PortalPageController;
 use App\Http\Controllers\Admin\PortalBuilderController;
 use App\Http\Controllers\Admin\LearningOfferController;
+use App\Http\Controllers\Admin\ActivityController;
 use App\Http\Controllers\EducationController;
 Route::get('/',[HomeController::class,'index'])->name('home');
 Route::get('/about',fn()=>app(PortalPageController::class)->show('about'))->name('about.index');
@@ -98,6 +99,10 @@ Route::get('/forms/{slug}',[FormController::class,'show'])->name('forms.show');
 Route::post('/forms/{slug}',[FormController::class,'submit'])->name('forms.submit');
 
 Route::prefix('admin')->name('admin.')->group(function(){
+ Route::get('/activities/{type}',[ActivityController::class,'index'])->name('activities.index');
+ Route::get('/activities/{type}/edit/{id}',[ActivityController::class,'edit'])->name('activities.edit');
+ Route::post('/activities/{type}/edit/{id}',[ActivityController::class,'save'])->name('activities.save');
+ Route::delete('/activities/{type}/{activity}',[ActivityController::class,'destroy'])->name('activities.destroy');
  Route::get('/learning/{scope}',[LearningOfferController::class,'index'])->name('learning.index');
  Route::get('/learning/{scope}/edit/{id}',[LearningOfferController::class,'edit'])->name('learning.edit');
  Route::post('/learning/{scope}/edit/{id}',[LearningOfferController::class,'save'])->name('learning.save');
