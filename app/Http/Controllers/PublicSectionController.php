@@ -2,6 +2,8 @@
 namespace App\Http\Controllers;
 use App\Models\Media;
 use App\Models\Achievement;
+use App\Models\Setting;
+use App\Models\Form;
 use Illuminate\View\View;
 class PublicSectionController extends Controller {
  public function dormitory(): View{return view('public.dormitory');}
@@ -12,5 +14,5 @@ class PublicSectionController extends Controller {
  public function pride(): View{return view('public.pride',['items'=>Achievement::where('type','pride')->with(['teacher','department','collective'])->orderByDesc('year')->paginate(24)]);}
  public function laureates(): View{return view('public.laureates',['items'=>Achievement::where('type','laureate')->with(['teacher','department','collective'])->orderByDesc('year')->paginate(40)]);}
  public function gratitudes(): View{return view('public.gratitudes',['items'=>Achievement::where('type','gratitude')->orderByDesc('year')->paginate(24)]);}
- public function contacts(): View{return view('public.contacts');}
+ public function contacts(): View{return view('public.contacts',['settings'=>Setting::grouped(),'feedbackForm'=>Form::where('slug','feedback')->where('is_active',true)->first()]);}
 }
