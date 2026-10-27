@@ -60,3 +60,16 @@ if(formFields){
  formFields.querySelectorAll('.form-field').forEach(bindField);
  document.querySelectorAll('[data-field-type]').forEach(btn=>btn.addEventListener('click',()=>{const field=document.createElement('article');field.className='form-field';field.draggable=true;field.dataset.type=btn.dataset.fieldType;field.innerHTML='<span class="drag-handle">⋮⋮</span><div><small>'+btn.dataset.fieldType+'</small><b>'+btn.querySelector('span').textContent+'</b><em>Новое поле</em></div><i>Необязательное</i><button>•••</button>';formFields.appendChild(field);bindField(field)}));
 }
+
+const blockLibrary=document.querySelector('.block-library'),formPicker=document.querySelector('.form-picker'),pageBlocks=document.querySelector('[data-page-blocks]');
+if(blockLibrary&&pageBlocks){
+ document.querySelector('.open-block-library')?.addEventListener('click',()=>blockLibrary.hidden=false);
+ document.querySelector('.block-library-close')?.addEventListener('click',()=>blockLibrary.hidden=true);
+ blockLibrary.addEventListener('click',e=>{if(e.target===blockLibrary)blockLibrary.hidden=true});
+ document.querySelectorAll('[data-page-block]').forEach(btn=>btn.addEventListener('click',()=>{const type=btn.dataset.pageBlock;if(type==='form'){blockLibrary.hidden=true;formPicker.hidden=false;return;}const el=document.createElement('article');el.className='page-content-block';el.innerHTML='<span class="drag-handle">⋮⋮</span><div><small>'+type+'</small><b>'+btn.querySelector('span').textContent+'</b><p>Настройки блока будут доступны при выборе.</p></div><button>Настроить</button>';pageBlocks.appendChild(el);blockLibrary.hidden=true}));
+}
+if(formPicker){
+ document.querySelector('.form-picker-close')?.addEventListener('click',()=>formPicker.hidden=true);
+ formPicker.addEventListener('click',e=>{if(e.target===formPicker)formPicker.hidden=true});
+ formPicker.querySelectorAll('[data-form-slug]').forEach(btn=>btn.addEventListener('click',()=>{const slug=btn.dataset.formSlug,name=btn.querySelector('b').textContent;const el=document.createElement('article');el.className='page-content-block embedded-form-block';el.dataset.form=slug;el.innerHTML='<span class="drag-handle">⋮⋮</span><div class="embedded-form-main"><small>Форма</small><b>'+name+'</b><div class="embedded-form-preview"><label>Поле формы<input disabled placeholder="Пример поля"></label><label>Поле формы<input disabled placeholder="Пример поля"></label><button disabled>Отправить</button></div></div><div class="embedded-form-actions"><label><span>Заголовок формы</span><input value="'+name+'"></label><label><span>После отправки</span><select><option>Показать сообщение</option><option>Перейти по ссылке</option></select></label><label class="switch-row"><span>Показывать описание</span><input type="checkbox" checked></label><a href="/admin/form-builder/'+slug+'">Редактировать форму</a><a href="/admin/form-reports/'+slug+'">Ответы / отчёт →</a></div>';pageBlocks.appendChild(el);formPicker.hidden=true}));
+}
