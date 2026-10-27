@@ -17,6 +17,7 @@ use App\Http\Controllers\Admin\CmsController;
 use App\Http\Controllers\Admin\PeopleController;
 use App\Http\Controllers\Admin\MediaController;
 use App\Http\Controllers\Admin\AchievementController;
+use App\Http\Controllers\Admin\DocumentController;
 use App\Http\Controllers\EducationController;
 Route::view('/','home')->name('home');
 Route::get('/about',[AboutController::class,'index'])->name('about.index');
@@ -86,6 +87,10 @@ Route::get('/personal-data-consent',[SystemController::class,'consent'])->name('
 Route::get('/cookies',[SystemController::class,'cookies'])->name('cookies');
 
 Route::prefix('admin')->name('admin.')->group(function(){
+ Route::get('/documents',[DocumentController::class,'index'])->name('documents.index');
+ Route::get('/documents/edit/{id}',[DocumentController::class,'edit'])->name('documents.edit');
+ Route::post('/documents/edit/{id}',[DocumentController::class,'save'])->name('documents.save');
+ Route::delete('/documents/{document}',[DocumentController::class,'destroy'])->name('documents.destroy');
  Route::get('/achievements',[AchievementController::class,'index'])->name('achievements.index');
  Route::get('/achievements/edit/{id}',[AchievementController::class,'edit'])->name('achievements.edit');
  Route::post('/achievements/edit/{id}',[AchievementController::class,'save'])->name('achievements.save');
