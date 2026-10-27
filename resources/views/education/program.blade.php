@@ -1,0 +1,10 @@
+@extends('layouts.app')
+@section('title',$program['title'].' — ЧМУ')
+@section('content')
+<section class="program-hero"><a href="{{ route('education.index') }}">← Образование</a><span>{{ $program['code'] }}</span><h1>{{ $program['title'] }}</h1><p>{{ $program['qualification'] }}</p></section>
+<nav class="edu-nav"><a href="#about">О программе</a><a href="#profiles">Профили</a><a href="#study">Обучение</a><a href="#practice">Практика</a><a href="#docs">Документы</a></nav>
+<section class="program-layout" id="about"><div><p class="eyebrow">Специальность</p><h2>Профессиональная подготовка</h2><p>Здесь объединены профиль подготовки, учебная документация, практика и материалы итоговой аттестации. Фактические учебные планы и сроки подключаются из CMS.</p></div><aside><small>Код</small><b>{{ $program['code'] }}</b><small>Квалификация</small><b>{{ $program['qualification'] }}</b></aside></section>
+<section class="edu-section" id="profiles"><p class="eyebrow">Профили</p><h2>Направления подготовки</h2><div class="profile-grid">@foreach($program['profiles'] as $profile)<article><span>◆</span><h3>{{ $profile }}</h3><p>Профессиональные дисциплины, исполнительская подготовка, ансамбль и практика.</p></article>@endforeach</div></section>
+<section class="edu-dark" id="study"><div><p class="eyebrow">Структура</p><h2>Что входит в обучение</h2></div><div class="edu-process">@foreach(['Профессиональный цикл','Музыкально-теоретический цикл','Общеобразовательный цикл','Сценическая практика'] as $i=>$title)<article><span>0{{ $i+1 }}</span><h3>{{ $title }}</h3><p>Содержание и документы раздела подключаются через CMS.</p></article>@endforeach</div></section>
+<section class="edu-split" id="practice"><div class="edu-feature"><p class="eyebrow">Практика</p><h2>Профессиональный опыт</h2><p>Графики, задания, отчётные документы и методические материалы.</p></div><div class="edu-feature" id="docs"><p class="eyebrow">Документы</p><h2>Учебные материалы</h2><p>Учебный план, календарный график, рабочие программы, практика и ГИА.</p><a href="/official/education">Официальные документы →</a></div></section>
+@endsection
