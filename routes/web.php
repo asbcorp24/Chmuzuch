@@ -59,6 +59,8 @@ Route::view('/dormitory/victories','dormitory.victories')->name('dormitory.victo
 Route::get('/media',[PublicSectionController::class,'media'])->name('media');
 Route::get('/achievements',[PublicSectionController::class,'achievements'])->name('achievements');
 Route::get('/gratitudes',[PublicSectionController::class,'gratitudes'])->name('gratitudes');
+Route::view('/pride','public.pride')->name('pride');
+Route::view('/laureates','public.laureates')->name('laureates');
 Route::get('/official',[OfficialController::class,'index'])->name('official');
 Route::get('/official/{slug}',[OfficialController::class,'show'])->name('official.show');
 Route::get('/safety',[ServicePortalController::class,'safety'])->name('safety');
