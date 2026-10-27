@@ -18,5 +18,8 @@ class CmsController extends Controller {
  ];
  public function dashboard(): View { return view('admin.dashboard',['modules'=>$this->modules]); }
  public function module(string $module): View { abort_unless(isset($this->modules[$module]),404); if($module==='home') return view('admin.home',['blocks'=>config('home_blocks',[])]); if($module==='media') return view('admin.media'); if($module==='forms') return view('admin.forms'); return view('admin.module',['module'=>$module,'meta'=>$this->modules[$module]]); }
+ public function formBuilder(): View { return view('admin.form-builder.index'); }
+ public function formEdit(string $id='new'): View { return view('admin.form-builder.edit',['id'=>$id]); }
+ public function formReport(string $slug): View { return view('admin.form-builder.report',['slug'=>$slug]); }
  public function editor(string $module,string $id='new'): View { abort_unless(isset($this->modules[$module]),404); return view('admin.editor',['module'=>$module,'id'=>$id,'meta'=>$this->modules[$module]]); }
 }
