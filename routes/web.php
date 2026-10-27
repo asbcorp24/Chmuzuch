@@ -27,6 +27,7 @@ use App\Http\Controllers\PortalPageController;
 use App\Http\Controllers\Admin\PortalBuilderController;
 use App\Http\Controllers\Admin\LearningOfferController;
 use App\Http\Controllers\Admin\ActivityController;
+use App\Http\Controllers\Admin\SectionEntryController;
 use App\Http\Controllers\EducationController;
 use App\Http\Controllers\CommunityPageController;
 Route::get('/',[HomeController::class,'index'])->name('home');
@@ -100,6 +101,10 @@ Route::get('/forms/{slug}',[FormController::class,'show'])->name('forms.show');
 Route::post('/forms/{slug}',[FormController::class,'submit'])->name('forms.submit');
 
 Route::prefix('admin')->name('admin.')->group(function(){
+ Route::get('/sections/{portal}',[SectionEntryController::class,'index'])->name('sections.index');
+ Route::get('/sections/{portal}/edit/{id}',[SectionEntryController::class,'edit'])->name('sections.edit');
+ Route::post('/sections/{portal}/edit/{id}',[SectionEntryController::class,'save'])->name('sections.save');
+ Route::delete('/sections/{portal}/{entry}',[SectionEntryController::class,'destroy'])->name('sections.destroy');
  Route::get('/activities/{type}',[ActivityController::class,'index'])->name('activities.index');
  Route::get('/activities/{type}/edit/{id}',[ActivityController::class,'edit'])->name('activities.edit');
  Route::post('/activities/{type}/edit/{id}',[ActivityController::class,'save'])->name('activities.save');
