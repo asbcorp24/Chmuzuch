@@ -57,6 +57,9 @@ Route::get('/dormitory',[PublicSectionController::class,'dormitory'])->name('dor
 Route::view('/dormitory/documents','dormitory.documents')->name('dormitory.documents');
 Route::view('/dormitory/victories','dormitory.victories')->name('dormitory.victories');
 Route::get('/media',[PublicSectionController::class,'media'])->name('media');
+Route::view('/activity','public.activity')->name('activity');
+Route::view('/video-gallery','public.video-gallery')->name('video-gallery');
+Route::view('/audio','public.audio')->name('audio');
 Route::get('/achievements',[PublicSectionController::class,'achievements'])->name('achievements');
 Route::get('/gratitudes',[PublicSectionController::class,'gratitudes'])->name('gratitudes');
 Route::view('/pride','public.pride')->name('pride');
