@@ -35,6 +35,7 @@ use App\Http\Controllers\EducationController;
 use App\Http\Controllers\CommunityPageController;
 use App\Http\Controllers\SearchController;
 use App\Http\Controllers\ContentPageController;
+use App\Http\Controllers\ScheduleController;
 Route::get('/',[HomeController::class,'index'])->name('home');
 Route::get('/about',[PortalPageController::class,'about'])->name('about.index');
 Route::get('/about/history',[ContentPageController::class,'history'])->name('about.history');
@@ -62,7 +63,7 @@ Route::get('/science/conferences/{slug}',[ScienceController::class,'conference']
 Route::redirect('/conferences','/science#conferences')->name('conferences');
 Route::get('/applicants',[PortalPageController::class,'applicants'])->name('applicants');
 Route::get('/students',[PortalPageController::class,'students'])->name('students');
-Route::view('/schedule','schedule.index')->name('schedule');
+Route::get('/schedule',[ScheduleController::class,'index'])->name('schedule');
 Route::get('/student-life',[CommunityPageController::class,'studentLife'])->name('student-life');
 Route::get('/student-life/council',[ContentPageController::class,'council'])->name('student-life.council');
 Route::get('/student-life/dorm-council',[ContentPageController::class,'dormCouncil'])->name('student-life.dorm-council');
