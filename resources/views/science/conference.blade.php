@@ -1,0 +1,10 @@
+@extends('layouts.app')
+@section('title',$conference['title'].' — ЧМУ')
+@section('content')
+<section class="conference-hero"><div><a href="/science#conferences" class="backlink">← Конференции</a><p class="eyebrow">{{$conference['status']}} • {{$conference['year']}}</p><h1>{{$conference['title']}}</h1><p>{{$conference['lead']}}</p></div><div class="conference-year">{{$conference['year']}}</div></section>
+<nav class="department-nav"><a href="#about">О конференции</a><a href="#docs">Положение</a><a href="#program">Программа</a><a href="#apply">Заявка</a><a href="#results">Результаты</a><a href="#materials">Материалы</a></nav>
+<section id="about" class="block split"><div><p class="eyebrow">Конференция</p><h2>О событии</h2></div><div><p>Направления работы, участники, организационный комитет, сроки проведения и требования к материалам.</p></div></section>
+<section id="docs" class="block"><p class="eyebrow">Документы</p><h2>Положение и программа</h2><div class="document-list"><a><span>PDF</span><b>Положение о конференции</b><em>Открыть →</em></a><a id="program"><span>PDF</span><b>Программа конференции</b><em>Открыть →</em></a><a><span>DOC</span><b>Требования к публикациям</b><em>Скачать →</em></a></div></section>
+<section id="apply" class="block result-zone"><div><p class="eyebrow">Участие</p><h2>Заявка и оплата</h2><p>Онлайн-заявка участника, загрузка материалов и информация об организационном взносе.</p></div><div class="result-links"><a><b>Подать заявку</b><span>→</span></a><a><b>Условия оплаты</b><span>→</span></a><a><b>Загрузить материалы</b><span>→</span></a></div></section>
+<section id="results" class="block dual"><article><p class="eyebrow">Итоги</p><h2>Результаты</h2><p>Протоколы, дипломы и итоги работы секций.</p></article><article id="materials"><p class="eyebrow">Архив</p><h2>Материалы</h2><p>Сборники статей, презентации, фото и видеозаписи.</p></article></section>
+@endsection
