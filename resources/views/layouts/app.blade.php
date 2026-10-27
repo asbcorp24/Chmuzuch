@@ -1,25 +1,23 @@
 <!doctype html>
-<html lang="ru">
+<html lang="ru" data-accent="{{data_get($siteSettings,'appearance.accent')}}" data-ornament="{{data_get($siteSettings,'appearance.ornament')}}">
 <head>
 <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>@yield('title','Чебоксарское музыкальное училище им. Ф. П. Павлова')</title>
+@php($siteName=data_get($siteSettings,'general.site_name','Чебоксарское музыкальное училище им. Ф. П. Павлова'))
+<title>@yield('title',data_get($siteSettings,'seo.default_title',$siteName))</title>
+<meta name="description" content="@yield('meta_description',data_get($siteSettings,'seo.default_description',data_get($siteSettings,'general.tagline','')))">
+@if(data_get($siteSettings,'general.favicon'))<link rel="icon" href="{{data_get($siteSettings,'general.favicon')}}">@endif
+<meta name="theme-color" content="{{data_get($siteSettings,'appearance.accent','#8d1f2d')}}">
+<script>window.CHMUZUCH=@json(['appearance'=>data_get($siteSettings,'appearance',[])]);</script>
 @vite(['resources/css/app.css','resources/js/app.js'])
 </head>
 <body>
 <header class="site-header">
-<a class="brand" href="{{ route('home') }}"><span class="brand-mark"><i>ЧМУ</i></span><span>Чебоксарское музыкальное училище<br><small>им. Ф. П. Павлова</small></span></a>
-<nav class="desktop-nav">
-<div><a href="/about">Об училище</a><a href="/departments">Отделения</a><a href="/education">Образование</a><a href="/collectives">Коллективы</a><a href="/applicants">Абитуриенту</a><a href="/students">Студенту</a><a href="/student-life">Студжизнь</a><a href="/library">Библиотека</a><a href="/career">Практика и карьера</a><a href="/schedule">Расписание</a><a href="/dshi">ДШИ</a></div>
-<div><a href="/press">Пресс-центр</a><a href="/events">Афиша</a><a href="/competitions">Конкурсы</a><a href="/science">Наука</a><a href="/media">Медиа</a><a href="/official">Сведения</a><a href="/contacts">Контакты</a></div>
-</nav>
+<a class="brand" href="{{route('home')}}">@if(data_get($siteSettings,'general.logo'))<img class="brand-logo" src="{{data_get($siteSettings,'general.logo')}}" alt="{{$siteName}}">@else<span class="brand-mark"><i>{{data_get($siteSettings,'general.short_name','ЧМУ')}}</i></span>@endif<span>{{$siteName}}@if(data_get($siteSettings,'general.tagline'))<br><small>{{data_get($siteSettings,'general.tagline')}}</small>@endif</span></a>
+<nav class="desktop-nav"><div><a href="/about">Об училище</a><a href="/departments">Отделения</a><a href="/education">Образование</a><a href="/collectives">Коллективы</a><a href="/applicants">Абитуриенту</a><a href="/students">Студенту</a><a href="/student-life">Студжизнь</a><a href="/library">Библиотека</a><a href="/career">Практика и карьера</a><a href="/schedule">Расписание</a><a href="/dshi">ДШИ</a></div><div><a href="/press">Пресс-центр</a><a href="/events">Афиша</a><a href="/competitions">Конкурсы</a><a href="/science">Наука</a><a href="/media">Медиа</a><a href="/official">Сведения</a><a href="/contacts">Контакты</a></div></nav>
 <div class="header-tools"><a href="/search" aria-label="Поиск">⌕</a><button class="vision-toggle" aria-label="Версия для слабовидящих">◐</button><button class="menu-toggle" aria-label="Меню">☰</button></div>
 </header>
-<div class="mobile-menu" aria-hidden="true">
-<div class="mobile-menu-head"><b>Меню</b><button class="menu-close" aria-label="Закрыть">×</button></div>
-<nav><a href="/about">Об училище</a><a href="/departments">Отделения</a><a href="/education">Образование</a><a href="/collectives">Творческие коллективы</a><a href="/applicants">Абитуриенту</a><a href="/students">Студенту</a><a href="/student-life">Студенческая жизнь</a><a href="/library">Библиотека</a><a href="/schedule">Расписание</a><a href="/dshi">ДШИ</a><a href="/additional-education">Дополнительное образование</a><a href="/press">Пресс-центр</a><a href="/events">Афиша</a><a href="/competitions">Конкурсы</a><a href="/science">Наука и проекты</a><a href="/dormitory">Общежитие</a><a href="/media">Медиатека</a><a href="/official">Сведения об образовательной организации</a><a href="/safety">Безопасность</a><a href="/employees">Работникам</a><a href="/union">Профком</a><a href="/aesthetic-class">Эстетический класс</a><a href="/federal-competitions">Федеральные олимпиады</a><a href="/practice">Сектор практики</a><a href="/feedback">Обратная связь</a><a href="/contacts">Контакты</a></nav>
-<div class="mobile-menu-tools"><a href="/search">⌕ Поиск</a><a href="/sitemap">Карта сайта</a></div>
-</div>
+<div class="mobile-menu" aria-hidden="true"><div class="mobile-menu-head"><b>Меню</b><button class="menu-close" aria-label="Закрыть">×</button></div><nav><a href="/about">Об училище</a><a href="/departments">Отделения</a><a href="/education">Образование</a><a href="/collectives">Творческие коллективы</a><a href="/applicants">Абитуриенту</a><a href="/students">Студенту</a><a href="/student-life">Студенческая жизнь</a><a href="/library">Библиотека</a><a href="/schedule">Расписание</a><a href="/dshi">ДШИ</a><a href="/additional-education">Дополнительное образование</a><a href="/press">Пресс-центр</a><a href="/events">Афиша</a><a href="/competitions">Конкурсы</a><a href="/science">Наука и проекты</a><a href="/dormitory">Общежитие</a><a href="/media">Медиатека</a><a href="/official">Сведения об образовательной организации</a><a href="/safety">Безопасность</a><a href="/employees">Работникам</a><a href="/union">Профком</a><a href="/practice">Сектор практики</a><a href="/feedback">Обратная связь</a><a href="/contacts">Контакты</a></nav><div class="mobile-menu-tools"><a href="/search">⌕ Поиск</a><a href="/sitemap">Карта сайта</a></div></div>
 <main>@yield('content')</main>
-<footer class="site-footer"><div><b>Чебоксарское музыкальное училище</b><span> им. Ф. П. Павлова</span></div><nav><a href="/sitemap">Карта сайта</a><a href="/privacy">Персональные данные</a><a href="/cookies">Cookie</a><a href="/contacts">Контакты</a></nav></footer>
-<div class="cookie-banner" hidden><p><b>Cookie и персональные данные</b><br>Используем необходимые cookie для работы сайта.</p><div><a href="/cookies">Подробнее</a><button class="cookie-accept">Принять</button></div></div>
+<footer class="site-footer"><div><b>{{$siteName}}</b>@if(data_get($siteSettings,'footer.footer_text'))<span> {{data_get($siteSettings,'footer.footer_text')}}</span>@endif</div><nav>@foreach(['vk'=>'VK','telegram'=>'Telegram','rutube'=>'Rutube'] as $key=>$label)@if(data_get($siteSettings,'social.'.$key))<a href="{{data_get($siteSettings,'social.'.$key)}}" target="_blank" rel="noopener">{{$label}}</a>@endif @endforeach<a href="/sitemap">Карта сайта</a><a href="{{data_get($siteSettings,'privacy.personal_data_url','/privacy')}}">Персональные данные</a><a href="{{data_get($siteSettings,'privacy.privacy_url','/privacy')}}">Политика</a><a href="/contacts">Контакты</a></nav><small>{{data_get($siteSettings,'footer.copyright')}}</small></footer>
+<div class="cookie-banner" hidden><p><b>Cookie и персональные данные</b><br>{{data_get($siteSettings,'privacy.cookie_text','Используем необходимые cookie для работы сайта.')}}</p><div><a href="{{data_get($siteSettings,'privacy.privacy_url','/cookies')}}">Подробнее</a><button class="cookie-accept">Принять</button></div></div>
 </body></html>
