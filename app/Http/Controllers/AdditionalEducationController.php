@@ -1,7 +1,9 @@
 <?php
 namespace App\Http\Controllers;
+use App\Models\Document;
+use App\Models\LearningOffer;
 use Illuminate\View\View;
 class AdditionalEducationController extends Controller {
- public function index(): View { return view('additional.index',['courses'=>config('additional_courses',[])]); }
- public function show(string $slug): View { $items=config('additional_courses',[]); abort_unless(isset($items[$slug]),404); return view('additional.show',['course'=>$items[$slug],'slug'=>$slug]); }
+ public function index(): View {return view('additional.index',['courses'=>LearningOffer::scope('additional')->where('is_active',true)->orderBy('sort')->get(),'documents'=>Document::where('is_public',true)->where('category','additional')->orderByDesc('document_date')->get()]);}
+ public function show(string $slug): View {$course=LearningOffer::scope('additional')->where('is_active',true)->where('slug',$slug)->firstOrFail();$documents=Document::where('is_public',true)->where('category','additional.'.$slug)->orderByDesc('document_date')->get();return view('additional.show',compact('course','documents'));}
 }
