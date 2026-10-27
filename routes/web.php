@@ -89,4 +89,6 @@ Route::prefix('admin')->name('admin.')->group(function(){
  Route::get('/',[CmsController::class,'dashboard'])->name('dashboard');
  Route::get('/{module}',[CmsController::class,'module'])->name('module');
  Route::get('/{module}/edit/{id}',[CmsController::class,'editor'])->name('editor');
+ Route::post('/{module}/edit/{id}',[CmsController::class,'save'])->name('save');
+ Route::delete('/{module}/{id}',[CmsController::class,'destroy'])->name('destroy');
 });
