@@ -1,0 +1,7 @@
+@extends('layouts.admin')
+@section('title','Документ — CMS ЧМУ')
+@section('content')
+<form method="POST" enctype="multipart/form-data" action="{{route('admin.documents.save',$record?->id??'new')}}">@csrf
+<header class="admin-top editor-top"><div><a href="{{route('admin.documents.index')}}" class="admin-back">← Документы</a><small>{{$record?'Редактирование':'Новый документ'}}</small><h1>Документ</h1></div><button class="admin-primary">Сохранить</button></header>
+<div class="editor-layout"><section class="editor-canvas"><div class="editor-field"><label>Название</label><input name="title" value="{{old('title',$record?->title)}}" required></div><div class="editor-field"><label>Файл</label><input type="file" name="file">@if($record?->file_path)<small>Текущий: {{$record->file_path}}</small>@endif</div></section><aside class="editor-settings"><label>Категория<input name="category" value="{{old('category',$record?->category)}}" required placeholder="official.documents"></label><small>Примеры: official.documents, official.education, dormitory, employees</small><label>Номер<input name="number" value="{{$record?->number}}"></label><label>Дата<input type="date" name="document_date" value="{{$record?->document_date?->format('Y-m-d')}}"></label><label><input type="checkbox" name="is_public" value="1" @checked($record?->is_public??true)> Публиковать</label></aside></div></form>
+@endsection
