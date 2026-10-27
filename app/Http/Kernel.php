@@ -18,6 +18,7 @@ class Kernel extends HttpKernel {
   'auth'=>\App\Http\Middleware\Authenticate::class,
   'guest'=>\App\Http\Middleware\RedirectIfAuthenticated::class,
   'throttle'=>\Illuminate\Routing\Middleware\ThrottleRequests::class,
-  'verified'=>\Illuminate\Auth\Middleware\RequirePassword::class,
+  'password.confirm'=>\Illuminate\Auth\Middleware\RequirePassword::class,
+  'verified'=>\Illuminate\Auth\Middleware\EnsureEmailIsVerified::class,
  ];
 }
