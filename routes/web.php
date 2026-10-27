@@ -10,6 +10,7 @@ use App\Http\Controllers\CompetitionController;
 use App\Http\Controllers\AboutController;
 use App\Http\Controllers\PressController;
 use App\Http\Controllers\OfficialController;
+use App\Http\Controllers\ServicePortalController;
 Route::view('/','home')->name('home');
 Route::get('/about',[AboutController::class,'index'])->name('about.index');
 Route::get('/about/{section}',[AboutController::class,'section'])->name('about.section');
@@ -42,4 +43,7 @@ Route::view('/achievements','sections.placeholder')->defaults('section','Лау�
 Route::view('/gratitudes','sections.placeholder')->defaults('section','Нас благодарят')->name('gratitudes');
 Route::get('/official',[OfficialController::class,'index'])->name('official');
 Route::get('/official/{slug}',[OfficialController::class,'show'])->name('official.show');
+Route::get('/safety',[ServicePortalController::class,'safety'])->name('safety');
+Route::get('/employees',[ServicePortalController::class,'employees'])->name('employees');
+Route::get('/service/{portal}/{slug}',[ServicePortalController::class,'show'])->name('service.show');
 Route::view('/contacts','sections.placeholder')->defaults('section','Контакты')->name('contacts');
