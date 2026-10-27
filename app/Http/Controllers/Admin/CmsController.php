@@ -20,7 +20,7 @@ class CmsController extends Controller {
  public function dashboard(): View { return view('admin.dashboard',['modules'=>$this->modules]); }
  public function module(string $module): View|RedirectResponse {
   abort_unless(isset($this->modules[$module]),404);
-  if($module==='home') return view('admin.home',['blocks'=>config('home_blocks',[])]);
+  if($module==='home') return redirect()->route('admin.home.edit');
   if(in_array($module,['departments','teachers','collectives'])) return redirect()->route('admin.people.index',$module);
   if($module==='media') return view('admin.media'); if($module==='forms') return view('admin.forms');
   $items=collect();
