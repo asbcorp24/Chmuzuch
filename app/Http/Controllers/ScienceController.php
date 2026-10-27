@@ -1,11 +1,10 @@
 <?php
 namespace App\Http\Controllers;
-use App\Models\Activity;
-use App\Models\Document;
-use App\Models\Form;
+use App\Models\{Activity,Document,Form,Post,Media};
 use Illuminate\View\View;
 class ScienceController extends Controller {
  public function index(): View {$projects=Activity::type('project')->where('is_active',true)->orderByDesc('year')->get();$conferences=Activity::type('conference')->where('is_active',true)->orderByDesc('year')->get();$years=$conferences->pluck('year')->filter()->unique()->sortDesc()->values();return view('science.index',compact('projects','conferences','years'));}
- public function project(string $slug): View {$project=Activity::type('project')->where('is_active',true)->where('slug',$slug)->firstOrFail();$documents=Document::where('is_public',true)->where('category','project.'.$slug)->orderByDesc('document_date')->get();$form=!empty($project->meta['form_slug'])?Form::where('slug',$project->meta['form_slug'])->where('is_active',true)->first():null;return view('science.project',compact('project','documents','form'));}
- public function conference(string $slug): View {$conference=Activity::type('conference')->where('is_active',true)->where('slug',$slug)->firstOrFail();$documents=Document::where('is_public',true)->where('category','conference.'.$slug)->orderByDesc('document_date')->get();$form=!empty($conference->meta['form_slug'])?Form::where('slug',$conference->meta['form_slug'])->where('is_active',true)->first():null;return view('science.conference',compact('conference','documents','form'));}
+ private function related(Activity $activity): array{$event=!empty($activity->meta['event_slug'])?Post::published()->type('event')->where('slug',$activity->meta['event_slug'])->first():null;$media=Media::where('meta->activity_id',$activity->id)->latest()->limit(18)->get();return compact('event','media');}
+ public function project(string $slug): View {$project=Activity::type('project')->where('is_active',true)->where('slug',$slug)->firstOrFail();$documents=Document::where('is_public',true)->where('category','project.'.$slug)->orderByDesc('document_date')->get();$form=!empty($project->meta['form_slug'])?Form::where('slug',$project->meta['form_slug'])->where('is_active',true)->first():null;return view('science.project',compact('project','documents','form')+$this->related($project));}
+ public function conference(string $slug): View {$conference=Activity::type('conference')->where('is_active',true)->where('slug',$slug)->firstOrFail();$documents=Document::where('is_public',true)->where('category','conference.'.$slug)->orderByDesc('document_date')->get();$form=!empty($conference->meta['form_slug'])?Form::where('slug',$conference->meta['form_slug'])->where('is_active',true)->first():null;return view('science.conference',compact('conference','documents','form')+$this->related($conference));}
 }
