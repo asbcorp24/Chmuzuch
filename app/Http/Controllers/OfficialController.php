@@ -1,9 +1,9 @@
 <?php
 namespace App\Http\Controllers;
-use App\Models\Document;
-use App\Models\SectionEntry;
+use App\Models\{Department,Document,EducationProgram,SectionEntry,Teacher};
 use Illuminate\View\View;
 class OfficialController extends Controller {
- public function index(): View {$sections=SectionEntry::portal('official')->where('is_active',true)->orderBy('sort')->get();return view('official.index',['sections'=>$sections,'groups'=>$sections->groupBy(fn($x)=>$x->group?:'Сведения')]);}
- public function show(string $slug): View {$page=SectionEntry::portal('official')->where('is_active',true)->where('slug',$slug)->firstOrFail();$documents=Document::where('is_public',true)->where('category','official.'.$slug)->orderByDesc('document_date')->get();return view('official.show',compact('page','slug','documents'));}
+ private function fallback(string $slug): ?SectionEntry{$cfg=config('official_sections.'.$slug);return $cfg?new SectionEntry(['portal'=>'official','slug'=>$slug,'title'=>$cfg['title'],'group'=>$cfg['group']??null,'lead'=>$cfg['lead']??null,'is_active'=>true]):null;}
+ public function index(): View{$configured=collect(config('official_sections',[]));$stored=SectionEntry::portal('official')->where('is_active',true)->get()->keyBy('slug');$sections=$configured->map(function($cfg,$slug)use($stored){return $stored->get($slug)??new SectionEntry(['portal'=>'official','slug'=>$slug,'title'=>$cfg['title'],'group'=>$cfg['group']??null,'lead'=>$cfg['lead']??null,'sort'=>0,'is_active'=>true]);})->values();return view('official.index',['sections'=>$sections,'groups'=>$sections->groupBy(fn($x)=>$x->group?:'Сведения')]);}
+ public function show(string $slug): View{$page=SectionEntry::portal('official')->where('is_active',true)->where('slug',$slug)->first()??$this->fallback($slug);abort_unless($page,404);$documents=Document::where('is_public',true)->where('category','official.'.$slug)->orderByDesc('document_date')->get();$data=compact('page','slug','documents');if($slug==='education')$data['programs']=EducationProgram::where('is_active',true)->with('department')->orderBy('sort')->get();if($slug==='teachers')$data['teachers']=Teacher::where('is_active',true)->with('department')->orderBy('sort')->orderBy('name')->get();if($slug==='leadership')$data['leaders']=Teacher::where('is_active',true)->where(function($q){$q->where('position','like','%директор%')->orWhere('position','like','%руковод%');})->orderBy('sort')->get();if($slug==='structure')$data['departments']=Department::where('is_active',true)->with('head')->orderBy('sort')->get();return view('official.show',$data);}
 }
