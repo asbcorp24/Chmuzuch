@@ -9,7 +9,7 @@
 <header class="site-header">
 <a class="brand" href="{{ route('home') }}"><span class="brand-mark"><i>ЧМУ</i></span><span>Чебоксарское музыкальное училище<br><small>им. Ф. П. Павлова</small></span></a>
 <nav class="desktop-nav">
-<div><a href="/about">Об училище</a><a href="/departments">Отделения</a><a href="/education">Образование</a><a href="/collectives">Коллективы</a><a href="/applicants">Абитуриенту</a><a href="/students">Студенту</a><a href="/student-life">Студжизнь</a><a href="/library">Библиотека</a><a href="/schedule">Расписание</a><a href="/dshi">ДШИ</a></div>
+<div><a href="/about">Об училище</a><a href="/departments">Отделения</a><a href="/education">Образование</a><a href="/collectives">Коллективы</a><a href="/applicants">Абитуриенту</a><a href="/students">Студенту</a><a href="/student-life">Студжизнь</a><a href="/library">Библиотека</a><a href="/career">Практика и карьера</a><a href="/schedule">Расписание</a><a href="/dshi">ДШИ</a></div>
 <div><a href="/press">Пресс-центр</a><a href="/events">Афиша</a><a href="/competitions">Конкурсы</a><a href="/science">Наука</a><a href="/media">Медиа</a><a href="/official">Сведения</a><a href="/contacts">Контакты</a></div>
 </nav>
 <div class="header-tools"><a href="/search" aria-label="Поиск">⌕</a><button class="vision-toggle" aria-label="Версия для слабовидящих">◐</button><button class="menu-toggle" aria-label="Меню">☰</button></div>
