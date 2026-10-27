@@ -4,4 +4,5 @@
 @section('content')
 <section class="public-hero"><div><p class="eyebrow">Чебоксарское музыкальное училище</p><h1>{{$page->title}}</h1>@if($page->excerpt)<p>{{$page->excerpt}}</p>@endif</div><div class="public-glyph">♫</div></section>
 <section class="block content-page">@if($page->content)<div class="rich-content">{!! $page->content !!}</div>@else<p>Содержимое страницы ещё не опубликовано в CMS.</p>@endif</section>
+@include('public.partials.embedded-form')
 @endsection
