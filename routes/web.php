@@ -29,6 +29,7 @@ use App\Http\Controllers\Admin\LearningOfferController;
 use App\Http\Controllers\Admin\ActivityController;
 use App\Http\Controllers\Admin\SectionEntryController;
 use App\Http\Controllers\Admin\SettingsController;
+use App\Http\Controllers\Admin\AuthController;
 use App\Http\Controllers\EducationController;
 use App\Http\Controllers\CommunityPageController;
 use App\Http\Controllers\SearchController;
@@ -102,7 +103,10 @@ Route::get('/cookies',[SystemController::class,'cookies'])->name('cookies');
 Route::get('/forms/{slug}',[FormController::class,'show'])->name('forms.show');
 Route::post('/forms/{slug}',[FormController::class,'submit'])->name('forms.submit');
 
-Route::prefix('admin')->name('admin.')->group(function(){
+Route::get('/admin/login',[AuthController::class,'login'])->name('admin.login');
+Route::post('/admin/login',[AuthController::class,'authenticate'])->name('admin.login.submit');
+Route::post('/admin/logout',[AuthController::class,'logout'])->middleware('auth')->name('admin.logout');
+Route::prefix('admin')->name('admin.')->middleware('auth')->group(function(){
  Route::get('/settings',[SettingsController::class,'edit'])->name('settings.edit');
  Route::post('/settings',[SettingsController::class,'save'])->name('settings.save');
  Route::get('/sections/{portal}',[SectionEntryController::class,'index'])->name('sections.index');
