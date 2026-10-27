@@ -9,6 +9,7 @@ use App\Http\Controllers\ScienceController;
 use App\Http\Controllers\CompetitionController;
 use App\Http\Controllers\AboutController;
 use App\Http\Controllers\PressController;
+use App\Http\Controllers\OfficialController;
 Route::view('/','home')->name('home');
 Route::get('/about',[AboutController::class,'index'])->name('about.index');
 Route::get('/about/{section}',[AboutController::class,'section'])->name('about.section');
@@ -39,5 +40,6 @@ Route::view('/dormitory','sections.placeholder')->defaults('section','Общеж
 Route::view('/media','sections.placeholder')->defaults('section','Медиатека')->name('media');
 Route::view('/achievements','sections.placeholder')->defaults('section','Лауреаты и дипломанты')->name('achievements');
 Route::view('/gratitudes','sections.placeholder')->defaults('section','Нас благодарят')->name('gratitudes');
-Route::view('/official','sections.placeholder')->defaults('section','Сведения об образовательной организации')->name('official');
+Route::get('/official',[OfficialController::class,'index'])->name('official');
+Route::get('/official/{slug}',[OfficialController::class,'show'])->name('official.show');
 Route::view('/contacts','sections.placeholder')->defaults('section','Контакты')->name('contacts');
