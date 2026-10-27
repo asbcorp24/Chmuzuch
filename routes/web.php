@@ -94,6 +94,8 @@ Route::get('/official',[OfficialController::class,'index'])->name('official');
 Route::get('/official/{slug}',[OfficialController::class,'show'])->name('official.show');
 Route::get('/safety',[ServicePortalController::class,'safety'])->name('safety');
 Route::get('/employees',[ServicePortalController::class,'employees'])->name('employees');
+Route::get('/anticorruption',[ServicePortalController::class,'anticorruption'])->name('anticorruption');
+Route::get('/tenants',[ServicePortalController::class,'tenants'])->name('tenants');
 Route::get('/service/{portal}/{slug}',[ServicePortalController::class,'show'])->name('service.show');
 Route::get('/contacts',[PublicSectionController::class,'contacts'])->name('contacts');
 Route::get('/union',[CommunityPageController::class,'union'])->name('union');
