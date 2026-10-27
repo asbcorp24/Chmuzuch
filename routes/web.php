@@ -28,6 +28,7 @@ use App\Http\Controllers\Admin\PortalBuilderController;
 use App\Http\Controllers\Admin\LearningOfferController;
 use App\Http\Controllers\Admin\ActivityController;
 use App\Http\Controllers\Admin\SectionEntryController;
+use App\Http\Controllers\Admin\SettingsController;
 use App\Http\Controllers\EducationController;
 use App\Http\Controllers\CommunityPageController;
 Route::get('/',[HomeController::class,'index'])->name('home');
@@ -101,6 +102,8 @@ Route::get('/forms/{slug}',[FormController::class,'show'])->name('forms.show');
 Route::post('/forms/{slug}',[FormController::class,'submit'])->name('forms.submit');
 
 Route::prefix('admin')->name('admin.')->group(function(){
+ Route::get('/settings',[SettingsController::class,'edit'])->name('settings.edit');
+ Route::post('/settings',[SettingsController::class,'save'])->name('settings.save');
  Route::get('/sections/{portal}',[SectionEntryController::class,'index'])->name('sections.index');
  Route::get('/sections/{portal}/edit/{id}',[SectionEntryController::class,'edit'])->name('sections.edit');
  Route::post('/sections/{portal}/edit/{id}',[SectionEntryController::class,'save'])->name('sections.save');
