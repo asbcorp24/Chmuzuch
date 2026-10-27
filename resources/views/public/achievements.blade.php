@@ -1,8 +1,11 @@
 @extends('layouts.app')
-@section('title','Лауреаты и дипломанты — ЧМУ')
+@section('title','Достижения — ЧМУ')
 @section('content')
-<section class="public-hero achievement-hero"><div><p class="eyebrow">Гордость училища</p><h1>Лауреаты<br>и дипломанты</h1><p>Достижения студентов, преподавателей и творческих коллективов.</p></div><div class="public-glyph">✦</div></section>
-<section class="block achievement-filter"><div><p class="eyebrow">Каталог</p><h2>Достижения</h2></div><div><button>Все</button><button>Студенты</button><button>Преподаватели</button><button>Коллективы</button></div></section>
-<section class="block"><div class="achievement-grid">@for($i=0;$i<8;$i++)<article><div class="avatar-placeholder">✦</div><small>Конкурс • год</small><h3>Лауреат / дипломант</h3><p>Специальность или коллектив • награда</p></article>@endfor</div></section>
-<section class="block open-day"><div><p class="eyebrow">Конкурсы</p><h2>От достижений — к истории конкурса</h2><p>Результаты связываются с конкурсами, участниками, преподавателями и коллективами.</p></div><a href="/competitions">Все конкурсы →</a></section>
+<section class="public-hero achievement-hero"><div><p class="eyebrow">Гордость училища</p><h1>Достижения</h1><p>Единый архив достижений студентов, преподавателей и творческих коллективов.</p></div><div class="public-glyph">✦</div></section>
+<nav class="edu-nav"><a href="/pride">Наша гордость</a><a href="/laureates">Лауреаты и дипломанты</a><a href="/gratitudes">Нас благодарят</a><a href="/achievements">Все достижения</a></nav>
+<section class="block"><div class="achievement-grid">
+@forelse($items as $item)
+<article><div class="avatar-placeholder">✦</div><small>{{$item->competition}} {{$item->year}}</small><h3>{{$item->person_name ?: $item->title}}</h3><p>{{$item->result ?: $item->description}}</p>@if($item->department)<span>{{$item->department->title}}</span>@elseif($item->collective)<span>{{$item->collective->title}}</span>@elseif($item->teacher)<span>{{$item->teacher->name}}</span>@endif</article>
+@empty<div class="empty-state">Достижения пока не опубликованы.</div>@endforelse
+</div>{{$items->links()}}</section>
 @endsection
