@@ -143,6 +143,8 @@ Route::prefix('admin')->name('admin.')->middleware('auth')->group(function(){
  Route::get('/forms/builder/{id}',[AdminFormController::class,'builder'])->name('forms.builder');
  Route::post('/forms/builder/{id}',[AdminFormController::class,'save'])->name('forms.save');
  Route::patch('/forms/submissions/{submission}',[AdminFormController::class,'status'])->name('forms.status');
+ Route::get('/form-reports/{slug}',[AdminFormController::class,'report'])->name('form-report');
+ Route::get('/form-reports/{slug}/csv',[AdminFormController::class,'csv'])->name('form-report.csv');
  Route::get('/education-programs',[EducationProgramController::class,'index'])->name('education.index');
  Route::get('/education-programs/edit/{id}',[EducationProgramController::class,'edit'])->name('education.edit');
  Route::post('/education-programs/edit/{id}',[EducationProgramController::class,'save'])->name('education.save');
@@ -163,9 +165,8 @@ Route::prefix('admin')->name('admin.')->middleware('auth')->group(function(){
  Route::get('/content/{entity}/edit/{id}',[PeopleController::class,'edit'])->name('people.edit');
  Route::post('/content/{entity}/edit/{id}',[PeopleController::class,'save'])->name('people.save');
  Route::delete('/content/{entity}/{id}',[PeopleController::class,'destroy'])->name('people.destroy');
- Route::get('/form-builder',[CmsController::class,'formBuilder'])->name('form-builder');
- Route::get('/form-builder/{id}',[CmsController::class,'formEdit'])->name('form-builder.edit');
- Route::get('/form-reports/{slug}',[CmsController::class,'formReport'])->name('form-report');
+ Route::redirect('/form-builder','/admin/forms')->name('form-builder');
+ Route::get('/form-builder/{id}',[AdminFormController::class,'builder'])->name('form-builder.edit');
  Route::get('/',[CmsController::class,'dashboard'])->name('dashboard');
  Route::get('/{module}',[CmsController::class,'module'])->name('module');
  Route::get('/{module}/edit/{id}',[CmsController::class,'editor'])->name('editor');
