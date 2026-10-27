@@ -15,7 +15,7 @@ Route::get('/collectives/{slug}',[CollectiveController::class,'show'])->name('co
 Route::view('/competitions','sections.placeholder')->defaults('section','Конкурсы')->name('competitions');
 Route::view('/conferences','sections.placeholder')->defaults('section','Конференции')->name('conferences');
 Route::view('/applicants','applicants.index')->name('applicants');
-Route::view('/students','sections.placeholder')->defaults('section','Студенту')->name('students');
+Route::view('/students','students.index')->name('students');
 Route::view('/dshi','sections.placeholder')->defaults('section','ДШИ')->name('dshi');
 Route::view('/additional-education','sections.placeholder')->defaults('section','Дополнительное образование')->name('additional');
 Route::view('/dormitory','sections.placeholder')->defaults('section','Общежитие')->name('dormitory');
