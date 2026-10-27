@@ -19,6 +19,8 @@ use App\Http\Controllers\Admin\MediaController;
 use App\Http\Controllers\Admin\AchievementController;
 use App\Http\Controllers\Admin\DocumentController;
 use App\Http\Controllers\Admin\EducationProgramController;
+use App\Http\Controllers\Admin\FormController as AdminFormController;
+use App\Http\Controllers\FormController;
 use App\Http\Controllers\EducationController;
 Route::view('/','home')->name('home');
 Route::get('/about',[AboutController::class,'index'])->name('about.index');
@@ -87,7 +89,14 @@ Route::get('/privacy',[SystemController::class,'privacy'])->name('privacy');
 Route::get('/personal-data-consent',[SystemController::class,'consent'])->name('personal-data-consent');
 Route::get('/cookies',[SystemController::class,'cookies'])->name('cookies');
 
+Route::get('/forms/{slug}',[FormController::class,'show'])->name('forms.show');
+Route::post('/forms/{slug}',[FormController::class,'submit'])->name('forms.submit');
+
 Route::prefix('admin')->name('admin.')->group(function(){
+ Route::get('/forms',[AdminFormController::class,'index'])->name('forms.index');
+ Route::get('/forms/builder/{id}',[AdminFormController::class,'builder'])->name('forms.builder');
+ Route::post('/forms/builder/{id}',[AdminFormController::class,'save'])->name('forms.save');
+ Route::patch('/forms/submissions/{submission}',[AdminFormController::class,'status'])->name('forms.status');
  Route::get('/education-programs',[EducationProgramController::class,'index'])->name('education.index');
  Route::get('/education-programs/edit/{id}',[EducationProgramController::class,'edit'])->name('education.edit');
  Route::post('/education-programs/edit/{id}',[EducationProgramController::class,'save'])->name('education.save');
