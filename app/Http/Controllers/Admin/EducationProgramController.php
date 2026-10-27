@@ -1,18 +1,11 @@
 <?php
 namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
-use App\Models\EducationProgram;
-use Illuminate\Http\RedirectResponse;
-use Illuminate\Http\Request;
-use Illuminate\Support\Str;
-use Illuminate\View\View;
+use App\Models\EducationProgram;use App\Models\Department;use App\Models\Teacher;
+use Illuminate\Http\RedirectResponse;use Illuminate\Http\Request;use Illuminate\Support\Str;use Illuminate\View\View;
 class EducationProgramController extends Controller {
- public function index(): View { return view('admin.education.index',['items'=>EducationProgram::orderBy('sort')->orderBy('title')->paginate(30)]); }
- public function edit(string $id='new'): View { return view('admin.education.edit',['record'=>$id==='new'?null:EducationProgram::findOrFail($id)]); }
- public function save(Request $r,string $id='new'): RedirectResponse {
-  $d=$r->validate(['title'=>'required|string|max:255','slug'=>'nullable|string|max:255','code'=>'nullable|string|max:50','qualification'=>'nullable|string|max:255','description'=>'nullable|string','profiles_text'=>'nullable|string','sort'=>'nullable|integer|min:0','is_active'=>'nullable|boolean']);
-  $d['slug']=Str::slug($d['slug']?:$d['title']); $d['profiles']=collect(preg_split('/\r\n|\r|\n/',$d['profiles_text']??''))->map(fn($v)=>trim($v))->filter()->values()->all(); $d['is_active']=$r->boolean('is_active'); unset($d['profiles_text']);
-  $record=$id==='new'?new EducationProgram:EducationProgram::findOrFail($id); $record->fill($d)->save(); return redirect()->route('admin.education.index')->with('success','Образовательная программа сохранена');
- }
- public function destroy(EducationProgram $program): RedirectResponse { $program->delete(); return back()->with('success','Программа удалена'); }
+ public function index(): View{return view('admin.education.index',['items'=>EducationProgram::with('department')->orderBy('sort')->orderBy('title')->paginate(30)]);}
+ public function edit(string $id='new'): View{$record=$id==='new'?null:EducationProgram::findOrFail($id);return view('admin.education.edit',compact('record')+['departments'=>Department::where('is_active',true)->orderBy('sort')->get(),'teachers'=>Teacher::where('is_active',true)->orderBy('name')->get()]);}
+ public function save(Request $r,string $id='new'): RedirectResponse{$d=$r->validate(['title'=>'required|string|max:255','slug'=>'nullable|string|max:255','code'=>'nullable|string|max:50','department_id'=>'nullable|exists:departments,id','qualification'=>'nullable|string|max:255','description'=>'nullable|string','profiles_text'=>'nullable|string','study_form'=>'nullable|string|max:100','duration'=>'nullable|string|max:100','admission_base'=>'nullable|string|max:255','admission_requirements'=>'nullable|string','curriculum'=>'nullable|string','outcomes'=>'nullable|string','gia'=>'nullable|string','teacher_ids'=>'nullable|array','teacher_ids.*'=>'integer|exists:teachers,id','sort'=>'nullable|integer|min:0','is_active'=>'nullable|boolean']);$record=$id==='new'?new EducationProgram:EducationProgram::findOrFail($id);$slug=Str::slug($d['slug']?:$d['title']);$exists=EducationProgram::where('slug',$slug)->when($record->exists,fn($q)=>$q->whereKeyNot($record->id))->exists();if($exists)return back()->withErrors(['slug'=>'Такой slug уже используется.'])->withInput();$d['slug']=$slug;$d['profiles']=collect(preg_split('/\r\n|\r|\n/',$d['profiles_text']??''))->map(fn($v)=>trim($v))->filter()->values()->all();unset($d['profiles_text']);$meta=[];foreach(['study_form','duration','admission_base','admission_requirements','curriculum','outcomes','gia'] as $key){$v=trim((string)($d[$key]??''));if($v!=='')$meta[$key]=$v;unset($d[$key]);}$meta['teacher_ids']=array_values(array_unique(array_map('intval',$d['teacher_ids']??[])));unset($d['teacher_ids']);$d['meta']=$meta;$d['is_active']=$r->boolean('is_active');$record->fill($d)->save();return redirect()->route('admin.education.index')->with('success','Образовательная программа сохранена');}
+ public function destroy(EducationProgram $program): RedirectResponse{$program->delete();return back()->with('success','Программа удалена');}
 }
