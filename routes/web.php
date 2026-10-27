@@ -30,6 +30,7 @@ use App\Http\Controllers\Admin\ActivityController;
 use App\Http\Controllers\Admin\SectionEntryController;
 use App\Http\Controllers\Admin\SettingsController;
 use App\Http\Controllers\Admin\AuthController;
+use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\EducationController;
 use App\Http\Controllers\CommunityPageController;
 use App\Http\Controllers\SearchController;
@@ -107,6 +108,10 @@ Route::get('/admin/login',[AuthController::class,'login'])->name('admin.login');
 Route::post('/admin/login',[AuthController::class,'authenticate'])->name('admin.login.submit');
 Route::post('/admin/logout',[AuthController::class,'logout'])->middleware('auth')->name('admin.logout');
 Route::prefix('admin')->name('admin.')->middleware('auth')->group(function(){
+ Route::get('/users',[UserController::class,'index'])->name('users.index');
+ Route::get('/users/{id}/edit',[UserController::class,'edit'])->name('users.edit');
+ Route::post('/users/{id}/edit',[UserController::class,'save'])->name('users.save');
+ Route::delete('/users/{user}',[UserController::class,'destroy'])->name('users.destroy');
  Route::get('/settings',[SettingsController::class,'edit'])->name('settings.edit');
  Route::post('/settings',[SettingsController::class,'save'])->name('settings.save');
  Route::get('/sections/{portal}',[SectionEntryController::class,'index'])->name('sections.index');
