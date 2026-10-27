@@ -36,3 +36,13 @@ if(homeBlocks){
  document.querySelectorAll('.block-edit').forEach(btn=>btn.addEventListener('click',e=>{e.preventDefault();const block=btn.closest('.home-block');empty.hidden=true;panel.hidden=false;title.textContent=block.querySelector('h3').textContent;panel.querySelector('[data-field="title"]').value=block.querySelector('h3').textContent;panel.classList.toggle('editing-hero',block.dataset.id==='hero')}));
  document.querySelector('.home-save')?.addEventListener('click',()=>{const state=[...homeBlocks.querySelectorAll('.home-block')].map((b,i)=>({id:b.dataset.id,order:i,enabled:b.querySelector('input[type="checkbox"]').checked}));localStorage.setItem('chmuzuchHomeBuilder',JSON.stringify(state));const toast=document.querySelector('.builder-toast');toast.hidden=false;setTimeout(()=>toast.hidden=true,2200)});
 }
+
+const mediaManager=document.querySelector('.media-manager-layout');
+if(mediaManager){
+ const items=[...document.querySelectorAll('.media-item')],details=document.querySelector('.media-details-panel'),empty=document.querySelector('.media-details-empty');
+ document.querySelectorAll('[data-media-filter]').forEach(btn=>btn.addEventListener('click',()=>{document.querySelectorAll('[data-media-filter]').forEach(b=>b.classList.remove('active'));btn.classList.add('active');const type=btn.dataset.mediaFilter;items.forEach(i=>i.hidden=type!=='all'&&i.dataset.type!==type)}));
+ document.querySelector('.media-search input')?.addEventListener('input',e=>{const q=e.target.value.toLowerCase();items.forEach(i=>i.hidden=!i.dataset.name.toLowerCase().includes(q))});
+ items.forEach(item=>item.addEventListener('click',()=>{items.forEach(i=>i.classList.remove('selected'));item.classList.add('selected');empty.hidden=true;details.hidden=false;details.querySelector('[data-media-name]').textContent=item.dataset.name;details.querySelector('[data-media-type]').textContent=item.dataset.type;details.querySelector('[data-media-title]').value=item.dataset.name}));
+ const modal=document.querySelector('.media-upload-modal');document.querySelector('.media-upload-open')?.addEventListener('click',()=>modal.hidden=false);document.querySelector('.upload-close')?.addEventListener('click',()=>modal.hidden=true);modal?.addEventListener('click',e=>{if(e.target===modal)modal.hidden=true});
+ document.querySelector('.upload-start')?.addEventListener('click',()=>{modal.hidden=true;alert('Интерфейс загрузки готов. Физическое сохранение подключим вместе с хранилищем CMS.')});
+}
