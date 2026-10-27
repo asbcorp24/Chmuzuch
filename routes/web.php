@@ -1,12 +1,14 @@
 <?php
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\DepartmentController;
+use App\Http\Controllers\TeacherController;
 Route::view('/','home')->name('home');
 Route::view('/news','sections.placeholder')->defaults('section','Новости')->name('news.index');
 Route::view('/events','sections.placeholder')->defaults('section','Афиша')->name('events.index');
 Route::view('/departments','departments.index')->name('departments.index');
 Route::get('/departments/{slug}',[DepartmentController::class,'show'])->name('departments.show');
-Route::view('/teachers','sections.placeholder')->defaults('section','Преподаватели')->name('teachers.index');
+Route::get('/teachers',[TeacherController::class,'index'])->name('teachers.index');
+Route::get('/teachers/{slug}',[TeacherController::class,'show'])->name('teachers.show');
 Route::view('/collectives','sections.placeholder')->defaults('section','Творческие коллективы')->name('collectives.index');
 Route::view('/competitions','sections.placeholder')->defaults('section','Конкурсы')->name('competitions');
 Route::view('/conferences','sections.placeholder')->defaults('section','Конференции')->name('conferences');
