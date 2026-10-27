@@ -18,9 +18,10 @@ class CmsController extends Controller {
   'settings'=>['title'=>'Настройки','icon'=>'⚙','count'=>'Сайт · SEO · контакты'],
  ];
  public function dashboard(): View { return view('admin.dashboard',['modules'=>$this->modules]); }
- public function module(string $module): View {
+ public function module(string $module): View|RedirectResponse {
   abort_unless(isset($this->modules[$module]),404);
   if($module==='home') return view('admin.home',['blocks'=>config('home_blocks',[])]);
+  if(in_array($module,['departments','teachers','collectives'])) return redirect()->route('admin.people.index',$module);
   if($module==='media') return view('admin.media'); if($module==='forms') return view('admin.forms');
   $items=collect();
   if($module==='pages') $items=Page::latest('updated_at')->paginate(30);
