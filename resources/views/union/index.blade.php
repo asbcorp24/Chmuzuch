@@ -1,0 +1,8 @@
+@extends('layouts.app')
+@section('title','Профком — ЧМУ')
+@section('content')
+<section class="legacy-hero"><p class="eyebrow">Профсоюзная организация</p><h1>Профком <i>училища</i></h1><p>Информация о профсоюзном комитете работников Чебоксарского музыкального училища им. Ф. П. Павлова.</p></section>
+<section class="legacy-section"><p class="eyebrow">Состав профкома</p><h2>Профсоюзный комитет</h2><div class="legacy-people"><article><small>Председатель профкома</small><h3>Репкина Галина Юрьевна</h3><p>Преподаватель фортепиано</p></article><article><small>Заместитель по организационной работе</small><h3>Гараев Назыр Шаукатович</h3><p>Преподаватель баяна, концертмейстер, казначей</p></article><article><small>Заместитель по культурно-массовой работе</small><h3>Орехова Елена Владиславовна</h3><p>Преподаватель дирижёрско-хорового отделения</p></article></div></section>
+<section class="legacy-dark"><div><p class="eyebrow">Ревизионная комиссия</p><h2>Состав комиссии</h2></div><div><p><b>Кузнецов Андрей Михайлович</b><br>преподаватель, концертмейстер</p><p><b>Кузнецова Юлия Геннадьевна</b><br>концертмейстер</p></div></section>
+<section class="legacy-contacts"><div><p class="eyebrow">Контакты</p><h2>Профком работников ЧМУ</h2></div><div><p><b>Адрес</b><br>428017, г. Чебоксары, Московский проспект, д. 33, корп. 1, каб. 411</p><p><b>Телефон</b><br>+7 (8352) 47-07-97</p><p><b>E-mail</b><br>galafix@mail.ru</p></div></section>
+@endsection
