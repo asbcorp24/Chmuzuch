@@ -1,7 +1,9 @@
 <?php
 namespace App\Http\Controllers;
+use App\Models\Activity;
+use App\Models\Document;
 use Illuminate\View\View;
 class CompetitionController extends Controller {
- public function index(): View { return view('competitions.index',['competitions'=>config('competitions',[])]); }
- public function show(string $slug): View { $items=config('competitions',[]); abort_unless(isset($items[$slug]),404); return view('competitions.show',['competition'=>$items[$slug],'slug'=>$slug]); }
+ public function index(): View {$competitions=Activity::type('competition')->where('is_active',true)->orderByDesc('year')->orderByDesc('starts_at')->get();$years=$competitions->pluck('year')->filter()->unique()->sortDesc()->values();return view('competitions.index',compact('competitions','years'));}
+ public function show(string $slug): View {$competition=Activity::type('competition')->where('is_active',true)->where('slug',$slug)->firstOrFail();$documents=Document::where('is_public',true)->where('category','competition.'.$slug)->orderByDesc('document_date')->get();return view('competitions.show',compact('competition','documents'));}
 }
