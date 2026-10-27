@@ -1,6 +1,7 @@
 <?php
 namespace App\Http\Controllers;
 use App\Models\Post;
+use App\Models\Form;
 use Illuminate\View\View;
 class PressController extends Controller {
  public function index(): View {
@@ -8,8 +9,8 @@ class PressController extends Controller {
  }
  public function article(string $type,string $slug): View {
   $map=['news'=>'news','announcements'=>'announcement','media'=>'media_about']; abort_unless(isset($map[$type]),404);
-  $article=Post::published()->type($map[$type])->where('slug',$slug)->firstOrFail(); return view('press.article',['article'=>$article,'type'=>$type]);
+  $article=Post::published()->type($map[$type])->where('slug',$slug)->firstOrFail();$embeddedForm=!empty($article->meta['form_slug'])?Form::where('slug',$article->meta['form_slug'])->where('is_active',true)->first():null;return view('press.article',compact('article','type','embeddedForm'));
  }
  public function events(): View { return view('events.index',['events'=>Post::published()->type('event')->orderBy('starts_at')->paginate(30)]); }
- public function event(string $slug): View { $event=Post::published()->type('event')->where('slug',$slug)->firstOrFail(); return view('events.show',['event'=>$event]); }
+ public function event(string $slug): View { $event=Post::published()->type('event')->where('slug',$slug)->firstOrFail();$embeddedForm=!empty($event->meta['form_slug'])?Form::where('slug',$event->meta['form_slug'])->where('is_active',true)->first():null;return view('events.show',compact('event','embeddedForm')); }
 }
