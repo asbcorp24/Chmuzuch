@@ -21,8 +21,10 @@ use App\Http\Controllers\Admin\DocumentController;
 use App\Http\Controllers\Admin\EducationProgramController;
 use App\Http\Controllers\Admin\FormController as AdminFormController;
 use App\Http\Controllers\FormController;
+use App\Http\Controllers\HomeController;
+use App\Http\Controllers\Admin\HomeBuilderController;
 use App\Http\Controllers\EducationController;
-Route::view('/','home')->name('home');
+Route::get('/',[HomeController::class,'index'])->name('home');
 Route::get('/about',[AboutController::class,'index'])->name('about.index');
 Route::get('/about/{section}',[AboutController::class,'section'])->name('about.section');
 Route::get('/press',[PressController::class,'index'])->name('press.index');
@@ -93,6 +95,8 @@ Route::get('/forms/{slug}',[FormController::class,'show'])->name('forms.show');
 Route::post('/forms/{slug}',[FormController::class,'submit'])->name('forms.submit');
 
 Route::prefix('admin')->name('admin.')->group(function(){
+ Route::get('/home-builder',[HomeBuilderController::class,'edit'])->name('home.edit');
+ Route::post('/home-builder',[HomeBuilderController::class,'save'])->name('home.save');
  Route::get('/forms',[AdminFormController::class,'index'])->name('forms.index');
  Route::get('/forms/builder/{id}',[AdminFormController::class,'builder'])->name('forms.builder');
  Route::post('/forms/builder/{id}',[AdminFormController::class,'save'])->name('forms.save');
