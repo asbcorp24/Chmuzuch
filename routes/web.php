@@ -43,6 +43,8 @@ Route::view('/student-life/council','student-life.council')->name('student-life.
 Route::view('/student-life/dorm-council','student-life.dorm-council')->name('student-life.dorm-council');
 Route::view('/student-life/sport-club','student-life.sport-club')->name('student-life.sport-club');
 Route::view('/student-life/philharmonic','student-life.philharmonic')->name('student-life.philharmonic');
+Route::view('/student-life/personal-growth','student-life.personal-growth')->name('student-life.personal-growth');
+Route::view('/student-life/volunteering','student-life.volunteering')->name('student-life.volunteering');
 Route::view('/library','library.index')->name('library');
 Route::view('/career','career.index')->name('career');
 Route::get('/education',[EducationController::class,'index'])->name('education.index');
