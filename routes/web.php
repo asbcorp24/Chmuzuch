@@ -24,7 +24,7 @@ Route::get('/press/{type}/{slug}',[PressController::class,'article'])->name('pre
 Route::redirect('/news','/press#news')->name('news.index');
 Route::get('/events',[PressController::class,'events'])->name('events.index');
 Route::get('/events/{slug}',[PressController::class,'event'])->name('events.show');
-Route::view('/departments','departments.index')->name('departments.index');
+Route::get('/departments',[DepartmentController::class,'index'])->name('departments.index');
 Route::get('/departments/{slug}',[DepartmentController::class,'show'])->name('departments.show');
 Route::get('/teachers',[TeacherController::class,'index'])->name('teachers.index');
 Route::get('/teachers/{slug}',[TeacherController::class,'show'])->name('teachers.show');
