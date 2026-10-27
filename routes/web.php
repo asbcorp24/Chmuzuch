@@ -57,6 +57,8 @@ Route::get('/safety',[ServicePortalController::class,'safety'])->name('safety');
 Route::get('/employees',[ServicePortalController::class,'employees'])->name('employees');
 Route::get('/service/{portal}/{slug}',[ServicePortalController::class,'show'])->name('service.show');
 Route::get('/contacts',[PublicSectionController::class,'contacts'])->name('contacts');
+Route::view('/union','union.index')->name('union');
+Route::view('/aesthetic-class','aesthetic-class.index')->name('aesthetic-class');
 
 Route::get('/search',[SystemController::class,'search'])->name('search');
 Route::get('/sitemap',[SystemController::class,'sitemap'])->name('sitemap');
