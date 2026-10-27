@@ -13,6 +13,7 @@ use App\Http\Controllers\OfficialController;
 use App\Http\Controllers\ServicePortalController;
 use App\Http\Controllers\PublicSectionController;
 use App\Http\Controllers\SystemController;
+use App\Http\Controllers\Admin\CmsController;
 Route::view('/','home')->name('home');
 Route::get('/about',[AboutController::class,'index'])->name('about.index');
 Route::get('/about/{section}',[AboutController::class,'section'])->name('about.section');
@@ -55,3 +56,9 @@ Route::get('/sitemap',[SystemController::class,'sitemap'])->name('sitemap');
 Route::get('/privacy',[SystemController::class,'privacy'])->name('privacy');
 Route::get('/personal-data-consent',[SystemController::class,'consent'])->name('personal-data-consent');
 Route::get('/cookies',[SystemController::class,'cookies'])->name('cookies');
+
+Route::prefix('admin')->name('admin.')->group(function(){
+ Route::get('/',[CmsController::class,'dashboard'])->name('dashboard');
+ Route::get('/{module}',[CmsController::class,'module'])->name('module');
+ Route::get('/{module}/edit/{id}',[CmsController::class,'editor'])->name('editor');
+});
