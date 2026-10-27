@@ -1,0 +1,8 @@
+@extends('layouts.admin')
+@section('title','Достижения — CMS ЧМУ')
+@section('content')
+<header class="admin-top"><div><a href="/admin" class="admin-back">← Панель</a><small>Гордость училища</small><h1>Достижения</h1></div><a class="admin-primary" href="{{route('admin.achievements.edit','new')}}">+ Добавить</a></header>
+@if(session('success'))<div class="admin-flash">{{session('success')}}</div>@endif
+<section class="admin-toolbar"><div class="media-filters"><a href="{{route('admin.achievements.index')}}" class="{{!$type?'active':''}}">Все</a><a href="?type=pride" class="{{$type==='pride'?'active':''}}">Наша гордость</a><a href="?type=laureate" class="{{$type==='laureate'?'active':''}}">Лауреаты</a><a href="?type=gratitude" class="{{$type==='gratitude'?'active':''}}">Благодарности</a></div></section>
+<section class="admin-list"><div class="admin-list-head"><span>Название</span><span>Тип / год</span><span>Связь</span><span></span></div>@forelse($items as $item)<div class="admin-row"><a href="{{route('admin.achievements.edit',$item->id)}}"><span><b>{{$item->title}}</b><small>{{$item->person_name}}</small></span><span>{{$item->type}} · {{$item->year?:'—'}}</span><span>{{$item->department?->title??$item->collective?->title??$item->teacher?->name??'—'}}</span><b>Редактировать</b></a><form method="POST" action="{{route('admin.achievements.destroy',$item)}}">@csrf @method('DELETE')<button onclick="return confirm('Удалить?')">×</button></form></div>@empty<div class="admin-empty"><b>Записей пока нет</b><p>Добавьте проверенное достижение.</p></div>@endforelse</section>{{$items->links()}}
+@endsection
