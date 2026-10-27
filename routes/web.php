@@ -59,6 +59,8 @@ Route::get('/service/{portal}/{slug}',[ServicePortalController::class,'show'])->
 Route::get('/contacts',[PublicSectionController::class,'contacts'])->name('contacts');
 Route::view('/union','union.index')->name('union');
 Route::view('/aesthetic-class','aesthetic-class.index')->name('aesthetic-class');
+Route::view('/federal-competitions','federal-competitions.index')->name('federal-competitions');
+Route::view('/practice','practice.index')->name('practice');
 
 Route::get('/search',[SystemController::class,'search'])->name('search');
 Route::get('/sitemap',[SystemController::class,'sitemap'])->name('sitemap');
