@@ -15,6 +15,7 @@ use App\Http\Controllers\PublicSectionController;
 use App\Http\Controllers\SystemController;
 use App\Http\Controllers\Admin\CmsController;
 use App\Http\Controllers\Admin\PeopleController;
+use App\Http\Controllers\Admin\MediaController;
 use App\Http\Controllers\EducationController;
 Route::view('/','home')->name('home');
 Route::get('/about',[AboutController::class,'index'])->name('about.index');
@@ -59,8 +60,8 @@ Route::view('/dormitory/documents','dormitory.documents')->name('dormitory.docum
 Route::view('/dormitory/victories','dormitory.victories')->name('dormitory.victories');
 Route::get('/media',[PublicSectionController::class,'media'])->name('media');
 Route::view('/activity','public.activity')->name('activity');
-Route::view('/video-gallery','public.video-gallery')->name('video-gallery');
-Route::view('/audio','public.audio')->name('audio');
+Route::get('/video-gallery',[PublicSectionController::class,'videoGallery'])->name('video-gallery');
+Route::get('/audio',[PublicSectionController::class,'audio'])->name('audio');
 Route::get('/achievements',[PublicSectionController::class,'achievements'])->name('achievements');
 Route::get('/gratitudes',[PublicSectionController::class,'gratitudes'])->name('gratitudes');
 Route::view('/pride','public.pride')->name('pride');
@@ -84,6 +85,10 @@ Route::get('/personal-data-consent',[SystemController::class,'consent'])->name('
 Route::get('/cookies',[SystemController::class,'cookies'])->name('cookies');
 
 Route::prefix('admin')->name('admin.')->group(function(){
+ Route::get('/media',[MediaController::class,'index'])->name('media.index');
+ Route::post('/media',[MediaController::class,'store'])->name('media.store');
+ Route::put('/media/{media}',[MediaController::class,'update'])->name('media.update');
+ Route::delete('/media/{media}',[MediaController::class,'destroy'])->name('media.destroy');
  Route::get('/content/{entity}',[PeopleController::class,'index'])->name('people.index');
  Route::get('/content/{entity}/edit/{id}',[PeopleController::class,'edit'])->name('people.edit');
  Route::post('/content/{entity}/edit/{id}',[PeopleController::class,'save'])->name('people.save');
