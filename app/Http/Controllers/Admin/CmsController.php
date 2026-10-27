@@ -6,6 +6,7 @@ use App\Models\Post;
 use App\Models\Department;
 use App\Models\Teacher;
 use App\Models\Collective;
+use App\Models\Form;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
@@ -35,14 +36,14 @@ class CmsController extends Controller {
  public function editor(string $module,string $id='new'): View {
   abort_unless(isset($this->modules[$module]),404); $record=null;
   if($id!=='new'){ if($module==='pages') $record=Page::findOrFail($id); elseif(isset($this->modules[$module]['post_type'])) $record=Post::type($this->modules[$module]['post_type'])->findOrFail($id); }
-  return view('admin.editor',['module'=>$module,'id'=>$id,'meta'=>$this->modules[$module],'record'=>$record,'departments'=>Department::where('is_active',true)->orderBy('sort')->get(),'teachers'=>Teacher::where('is_active',true)->orderBy('name')->get(),'collectives'=>Collective::where('is_active',true)->orderBy('sort')->orderBy('title')->get()]);
+  return view('admin.editor',['module'=>$module,'id'=>$id,'meta'=>$this->modules[$module],'record'=>$record,'departments'=>Department::where('is_active',true)->orderBy('sort')->get(),'teachers'=>Teacher::where('is_active',true)->orderBy('name')->get(),'collectives'=>Collective::where('is_active',true)->orderBy('sort')->orderBy('title')->get(),'forms'=>Form::where('is_active',true)->orderBy('title')->get()]);
  }
  public function save(Request $request,string $module,string $id='new'): RedirectResponse {
   abort_unless($module==='pages'||isset($this->modules[$module]['post_type']),404);
-  $data=$request->validate(['title'=>'required|string|max:255','slug'=>'nullable|string|max:255','excerpt'=>'nullable|string','content'=>'nullable|string','status'=>'required|in:draft,published,scheduled','published_at'=>'nullable|date','seo_title'=>'nullable|string|max:255','seo_description'=>'nullable|string','department_id'=>'nullable|integer|exists:departments,id','teacher_id'=>'nullable|integer|exists:teachers,id','collective_id'=>'nullable|integer|exists:collectives,id']);
+  $data=$request->validate(['title'=>'required|string|max:255','slug'=>'nullable|string|max:255','excerpt'=>'nullable|string','content'=>'nullable|string','status'=>'required|in:draft,published,scheduled','published_at'=>'nullable|date','seo_title'=>'nullable|string|max:255','seo_description'=>'nullable|string','department_id'=>'nullable|integer|exists:departments,id','teacher_id'=>'nullable|integer|exists:teachers,id','collective_id'=>'nullable|integer|exists:collectives,id','form_slug'=>'nullable|string|max:255']);
   $data['slug']=Str::slug($data['slug']?:$data['title']); if(!$data['slug']) $data['slug']=Str::random(10);
-  if($module==='pages'){ $record=$id==='new'?new Page:Page::findOrFail($id); $data['type']='page'; }
-  else { $record=$id==='new'?new Post:Post::type($this->modules[$module]['post_type'])->findOrFail($id); $data['type']=$this->modules[$module]['post_type']; unset($data['seo_title'],$data['seo_description']); $data['meta']=array_filter(['department_id'=>$data['department_id']??null,'teacher_id'=>$data['teacher_id']??null,'collective_id'=>$data['collective_id']??null]); unset($data['department_id'],$data['teacher_id'],$data['collective_id']); }
+  if($module==='pages'){ $record=$id==='new'?new Page:Page::findOrFail($id); $data['type']='page'; $blocks=$record->blocks??[]; if($data['form_slug']??null)$blocks['form_slug']=$data['form_slug']; else unset($blocks['form_slug']); $data['blocks']=$blocks; unset($data['form_slug']); }
+  else { $record=$id==='new'?new Post:Post::type($this->modules[$module]['post_type'])->findOrFail($id); $data['type']=$this->modules[$module]['post_type']; unset($data['seo_title'],$data['seo_description']); $postMeta=$record->meta??[];foreach(['department_id','teacher_id','collective_id','form_slug'] as $key){$value=$data[$key]??null;if($value)$postMeta[$key]=$value;else unset($postMeta[$key]);}$data['meta']=$postMeta; unset($data['department_id'],$data['teacher_id'],$data['collective_id'],$data['form_slug']); }
   $record->fill($data)->save(); return redirect()->route('admin.module',$module)->with('success','Сохранено');
  }
  public function destroy(string $module,string $id): RedirectResponse {
