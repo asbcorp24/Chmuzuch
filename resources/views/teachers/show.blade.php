@@ -1,0 +1,11 @@
+@extends('layouts.app')
+@section('title',$teacher['name'].' — ЧМУ')
+@section('content')
+<section class="teacher-hero"><div class="teacher-portrait">♪</div><div><a class="backlink" href="/teachers">← Все преподаватели</a><p class="eyebrow">{{config('departments.'.$teacher['department'].'.title')}}</p><h1>{{$teacher['name']}}</h1><p class="teacher-role">{{$teacher['role']}}</p><a class="department-link" href="{{route('departments.show',$teacher['department'])}}">Перейти к отделению →</a></div></section>
+<section class="block teacher-facts"><article><small>Образование</small><b>{{$teacher['education']}}</b></article><article><small>Опыт</small><b>{{$teacher['experience']}}</b></article><article><small>Квалификация</small><b>Категория • звания • награды</b></article></section>
+<section class="block split"><div><p class="eyebrow">Профессиональный путь</p><h2>О преподавателе</h2></div><div><p>Биография, образование, повышение квалификации, педагогическая и концертная деятельность, профессиональные интересы и сведения, которые были представлены на старом сайте.</p></div></section>
+<section class="block"><p class="eyebrow">Учебная работа</p><h2>Дисциплины</h2><div class="discipline-list">@foreach($teacher['disciplines'] as $i=>$d)<div><span>0{{$i+1}}</span><h3>{{$d}}</h3></div>@endforeach</div></section>
+<section class="block dual"><article><p class="eyebrow">Профессиональное признание</p><h2>Награды и достижения</h2><p>Почётные звания, дипломы, конкурсы, благодарности и достижения учеников.</p></article><article><p class="eyebrow">Творческая деятельность</p><h2>Коллективы и проекты</h2><p>Связанные ансамбли, оркестры, проекты, концерты и мастер-классы.</p></article></section>
+<section class="block"><div class="section-head"><div><p class="eyebrow">Методическая работа</p><h2>Публикации и материалы</h2></div></div><div class="document-list"><a><span>PDF</span><b>Методические материалы</b><em>Открыть →</em></a><a><span>DOC</span><b>Публикации и программы</b><em>Открыть →</em></a></div></section>
+<section class="block"><p class="eyebrow">Медиа</p><h2>Фото • Видео • Аудио</h2><div class="media-panels"><div>▧<span>Фотографии</span></div><div>▶<span>Видео</span></div><div>♫<span>Аудио</span></div></div></section>
+@endsection
