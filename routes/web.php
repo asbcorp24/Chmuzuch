@@ -3,6 +3,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\DepartmentController;
 use App\Http\Controllers\TeacherController;
 use App\Http\Controllers\CollectiveController;
+use App\Http\Controllers\DshiController;
 Route::view('/','home')->name('home');
 Route::view('/news','sections.placeholder')->defaults('section','Новости')->name('news.index');
 Route::view('/events','sections.placeholder')->defaults('section','Афиша')->name('events.index');
@@ -16,7 +17,8 @@ Route::view('/competitions','sections.placeholder')->defaults('section','Кон�
 Route::view('/conferences','sections.placeholder')->defaults('section','Конференции')->name('conferences');
 Route::view('/applicants','applicants.index')->name('applicants');
 Route::view('/students','students.index')->name('students');
-Route::view('/dshi','sections.placeholder')->defaults('section','ДШИ')->name('dshi');
+Route::get('/dshi',[DshiController::class,'index'])->name('dshi');
+Route::get('/dshi/programs/{slug}',[DshiController::class,'show'])->name('dshi.program');
 Route::view('/additional-education','sections.placeholder')->defaults('section','Дополнительное образование')->name('additional');
 Route::view('/dormitory','sections.placeholder')->defaults('section','Общежитие')->name('dormitory');
 Route::view('/media','sections.placeholder')->defaults('section','Медиатека')->name('media');
