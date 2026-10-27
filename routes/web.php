@@ -14,6 +14,7 @@ use App\Http\Controllers\ServicePortalController;
 use App\Http\Controllers\PublicSectionController;
 use App\Http\Controllers\SystemController;
 use App\Http\Controllers\Admin\CmsController;
+use App\Http\Controllers\EducationController;
 Route::view('/','home')->name('home');
 Route::get('/about',[AboutController::class,'index'])->name('about.index');
 Route::get('/about/{section}',[AboutController::class,'section'])->name('about.section');
@@ -36,6 +37,8 @@ Route::get('/science/conferences/{slug}',[ScienceController::class,'conference']
 Route::redirect('/conferences','/science#conferences')->name('conferences');
 Route::view('/applicants','applicants.index')->name('applicants');
 Route::view('/students','students.index')->name('students');
+Route::get('/education',[EducationController::class,'index'])->name('education.index');
+Route::get('/education/{slug}',[EducationController::class,'program'])->name('education.program');
 Route::get('/dshi',[DshiController::class,'index'])->name('dshi');
 Route::get('/dshi/programs/{slug}',[DshiController::class,'show'])->name('dshi.program');
 Route::get('/additional-education',[AdditionalEducationController::class,'index'])->name('additional');
