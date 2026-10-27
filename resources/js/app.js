@@ -46,3 +46,9 @@ if(mediaManager){
  const modal=document.querySelector('.media-upload-modal');document.querySelector('.media-upload-open')?.addEventListener('click',()=>modal.hidden=false);document.querySelector('.upload-close')?.addEventListener('click',()=>modal.hidden=true);modal?.addEventListener('click',e=>{if(e.target===modal)modal.hidden=true});
  document.querySelector('.upload-start')?.addEventListener('click',()=>{modal.hidden=true;alert('Интерфейс загрузки готов. Физическое сохранение подключим вместе с хранилищем CMS.')});
 }
+
+const inbox=document.querySelector('.inbox-layout');
+if(inbox){
+ const empty=inbox.querySelector('.inbox-empty'),card=inbox.querySelector('.request-card');
+ inbox.querySelectorAll('.inbox-row').forEach(row=>row.addEventListener('click',()=>{inbox.querySelectorAll('.inbox-row').forEach(r=>r.classList.remove('active'));row.classList.add('active');empty.hidden=true;card.hidden=false;card.querySelector('[data-request-source]').textContent=row.dataset.source;card.querySelector('[data-request-subject]').textContent=row.dataset.subject;card.querySelector('[data-request-number]').textContent='#'+row.dataset.request;card.querySelector('[data-request-status]').value=row.dataset.status}));
+}
