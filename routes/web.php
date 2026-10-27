@@ -6,6 +6,7 @@ use App\Http\Controllers\CollectiveController;
 use App\Http\Controllers\DshiController;
 use App\Http\Controllers\AdditionalEducationController;
 use App\Http\Controllers\ScienceController;
+use App\Http\Controllers\CompetitionController;
 Route::view('/','home')->name('home');
 Route::view('/news','sections.placeholder')->defaults('section','Новости')->name('news.index');
 Route::view('/events','sections.placeholder')->defaults('section','Афиша')->name('events.index');
@@ -15,7 +16,8 @@ Route::get('/teachers',[TeacherController::class,'index'])->name('teachers.index
 Route::get('/teachers/{slug}',[TeacherController::class,'show'])->name('teachers.show');
 Route::get('/collectives',[CollectiveController::class,'index'])->name('collectives.index');
 Route::get('/collectives/{slug}',[CollectiveController::class,'show'])->name('collectives.show');
-Route::view('/competitions','sections.placeholder')->defaults('section','Конкурсы')->name('competitions');
+Route::get('/competitions',[CompetitionController::class,'index'])->name('competitions');
+Route::get('/competitions/{slug}',[CompetitionController::class,'show'])->name('competitions.show');
 Route::get('/science',[ScienceController::class,'index'])->name('science.index');
 Route::get('/science/projects/{slug}',[ScienceController::class,'project'])->name('science.project');
 Route::get('/science/conferences/{slug}',[ScienceController::class,'conference'])->name('science.conference');
