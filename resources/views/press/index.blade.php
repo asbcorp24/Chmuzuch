@@ -1,10 +1,13 @@
 @extends('layouts.app')
 @section('title','Пресс-центр — ЧМУ')
 @section('content')
-<section class="press-hero"><div><p class="eyebrow">Пресс-центр</p><h1>Жизнь<br>училища<br><em>сейчас</em></h1><p>Новости, анонсы, события и публикации СМИ о Чебоксарском музыкальном училище.</p></div><div class="press-signal"><i></i><i></i><i></i><b>●</b></div></section>
-<nav class="applicant-nav"><a href="#news">Новости</a><a href="#announcements">Анонсы</a><a href="/events">Афиша</a><a href="#media">СМИ о нас</a></nav>
-<section id="news" class="block"><div class="section-head"><div><p class="eyebrow">Последнее</p><h2>Новости</h2></div></div><div class="press-grid">@foreach($news as $slug=>$item)<a href="{{route('press.article',['news',$slug])}}"><div class="press-image">▧</div><small>{{$item['date']}} • {{$item['type']}}</small><h3>{{$item['title']}}</h3><p>{{$item['lead']}}</p><b>Читать →</b></a>@endforeach</div></section>
-<section id="announcements" class="block announcement-zone"><p class="eyebrow">Скоро</p><h2>Анонсы</h2>@foreach($announcements as $slug=>$item)<a class="announcement-row" href="{{route('press.article',['announcements',$slug])}}"><time>{{$item['date']}}</time><h3>{{$item['title']}}</h3><span>→</span></a>@endforeach</section>
-<section class="block press-events"><div class="section-head"><div><p class="eyebrow">Календарь</p><h2>Афиша</h2></div><a href="/events">Все мероприятия →</a></div><div class="event-mini">@foreach(array_slice(config('press.events',[]),0,3,true) as $slug=>$event)<a href="{{route('events.show',$slug)}}"><time>{{$event['date']}}</time><small>{{$event['kind']}}</small><h3>{{$event['title']}}</h3><span>{{$event['time']}} • {{$event['place']}}</span></a>@endforeach</div></section>
-<section id="media" class="block"><p class="eyebrow">Публикации</p><h2>СМИ о нас</h2><div class="press-grid">@foreach($media as $slug=>$item)<a href="{{route('press.article',['media',$slug])}}"><div class="press-image">“</div><small>{{$item['date']}}</small><h3>{{$item['title']}}</h3><p>{{$item['lead']}}</p><b>Открыть →</b></a>@endforeach</div></section>
+<section class="press-hub-hero"><div><p class="eyebrow">Пресс-центр</p><h1>Жизнь училища <i>в событиях</i></h1><p>Новости, события, анонсы и публикации средств массовой информации — структура сохранена по оригинальному сайту училища.</p></div><div class="press-hub-index"><span>PRESS</span><b>ЧМУ</b><small>Чебоксары</small></div></section>
+<nav class="edu-nav"><a href="#news">Новости</a><a href="/press/events">События</a><a href="/press/announcements">Анонсы</a><a href="/press/media-about-us">СМИ о нас</a><a href="/events">Афиша</a></nav>
+<section class="press-hub-grid" id="news">
+<a href="/press"><span>01</span><small>Лента</small><h2>Новости</h2><p>Новости училища, отделений, преподавателей и студентов.</p><b>Смотреть →</b></a>
+<a href="/press/events"><span>02</span><small>Хроника</small><h2>События</h2><p>Материалы о прошедших значимых событиях и проектах.</p><b>Открыть →</b></a>
+<a href="/press/announcements"><span>03</span><small>Предстоящие</small><h2>Анонсы</h2><p>Информационные сообщения о предстоящих мероприятиях.</p><b>Открыть →</b></a>
+<a href="/press/media-about-us"><span>04</span><small>Публикации</small><h2>СМИ о нас</h2><p>Материалы внешних СМИ о деятельности училища.</p><b>Открыть →</b></a>
+</section>
+<section class="press-hub-latest"><div><p class="eyebrow">Публикации</p><h2>Последние материалы</h2><p>После подключения CMS здесь будет единая хронологическая лента четырёх типов публикаций.</p></div><div class="press-empty"><span>↗</span><h3>Контент будет загружаться из пресс-центра CMS</h3><p>Без демонстрационных дат и вымышленных новостей.</p></div></section>
 @endsection
