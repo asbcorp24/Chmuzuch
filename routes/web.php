@@ -18,6 +18,7 @@ use App\Http\Controllers\Admin\PeopleController;
 use App\Http\Controllers\Admin\MediaController;
 use App\Http\Controllers\Admin\AchievementController;
 use App\Http\Controllers\Admin\DocumentController;
+use App\Http\Controllers\Admin\EducationProgramController;
 use App\Http\Controllers\EducationController;
 Route::view('/','home')->name('home');
 Route::get('/about',[AboutController::class,'index'])->name('about.index');
@@ -87,6 +88,10 @@ Route::get('/personal-data-consent',[SystemController::class,'consent'])->name('
 Route::get('/cookies',[SystemController::class,'cookies'])->name('cookies');
 
 Route::prefix('admin')->name('admin.')->group(function(){
+ Route::get('/education-programs',[EducationProgramController::class,'index'])->name('education.index');
+ Route::get('/education-programs/edit/{id}',[EducationProgramController::class,'edit'])->name('education.edit');
+ Route::post('/education-programs/edit/{id}',[EducationProgramController::class,'save'])->name('education.save');
+ Route::delete('/education-programs/{program}',[EducationProgramController::class,'destroy'])->name('education.destroy');
  Route::get('/documents',[DocumentController::class,'index'])->name('documents.index');
  Route::get('/documents/edit/{id}',[DocumentController::class,'edit'])->name('documents.edit');
  Route::post('/documents/edit/{id}',[DocumentController::class,'save'])->name('documents.save');
