@@ -54,6 +54,8 @@ Route::get('/dshi/programs/{slug}',[DshiController::class,'show'])->name('dshi.p
 Route::get('/additional-education',[AdditionalEducationController::class,'index'])->name('additional');
 Route::get('/additional-education/courses/{slug}',[AdditionalEducationController::class,'show'])->name('additional.course');
 Route::get('/dormitory',[PublicSectionController::class,'dormitory'])->name('dormitory');
+Route::view('/dormitory/documents','dormitory.documents')->name('dormitory.documents');
+Route::view('/dormitory/victories','dormitory.victories')->name('dormitory.victories');
 Route::get('/media',[PublicSectionController::class,'media'])->name('media');
 Route::get('/achievements',[PublicSectionController::class,'achievements'])->name('achievements');
 Route::get('/gratitudes',[PublicSectionController::class,'gratitudes'])->name('gratitudes');
