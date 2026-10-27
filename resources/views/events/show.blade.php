@@ -6,4 +6,5 @@
 <section class="block split"><div><p class="eyebrow">О событии</p><h2>Программа</h2></div><div><p>Полное описание мероприятия, программа, исполнители, ведущие и организационная информация.</p></div></section>
 <section class="block"><p class="eyebrow">Связано с событием</p><h2>Отделения и коллективы</h2><div class="member-cloud">@foreach($event['related'] as $x)<span>{{$x}}</span>@endforeach</div></section>
 <section class="block"><p class="eyebrow">После события</p><h2>Фото • Видео • Аудио</h2><div class="media-panels"><div>▧<span>Фотографии</span></div><div>▶<span>Видео</span></div><div>♫<span>Аудиозаписи</span></div></div></section>
+@include('public.partials.embedded-form')
 @endsection
