@@ -14,4 +14,6 @@ class CommunityPageController extends Controller {
  ];
  public function studentLife(): View{return $this->show('student-life');} public function dormitory(): View{return $this->show('dormitory');} public function library(): View{return $this->show('library');} public function practice(): View{return $this->show('practice');} public function union(): View{return $this->show('union');}
  public function show(string $slug): View {abort_unless(isset($this->defaults[$slug]),404);$page=Page::where('slug',$slug)->where('status','published')->first() ?? new Page(['slug'=>$slug,'title'=>$this->defaults[$slug][0]['title'],'type'=>'builder','status'=>'published','blocks'=>$this->defaults[$slug]]);$blocks=collect($page->blocks??$this->defaults[$slug])->filter(fn($b)=>$b['enabled']??true)->values();$documents=Document::where('is_public',true)->where('category',$slug)->orderByDesc('document_date')->get();$events=Post::published()->type('event')->orderBy('starts_at')->limit(6)->get();return view('community.'.$slug,compact('page','blocks','documents','events'));}
+ public function defaults(string $slug): array {abort_unless(isset($this->defaults[$slug]),404);return $this->defaults[$slug];}
+ public function title(string $slug): string {return $this->defaults($slug)[0]['title'];}
 }
