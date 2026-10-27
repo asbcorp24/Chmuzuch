@@ -1,6 +1,6 @@
 <?php
 namespace App\Http\Controllers;
-use App\Models\{Collective,Department,Document,EducationProgram,Page,Post};
+use App\Models\{Collective,Department,Document,EducationProgram,Form,Page,Post};
 use Illuminate\View\View;
 class PortalPageController extends Controller {
  private array $defaults=[
@@ -16,6 +16,7 @@ class PortalPageController extends Controller {
   $page=Page::where('slug',$slug)->where('status','published')->first() ?? new Page(['slug'=>$slug,'title'=>$this->titles[$slug],'type'=>'builder','status'=>'published','blocks'=>$this->defaults[$slug]]);
   $blocks=collect($page->blocks??$this->defaults[$slug])->filter(fn($b)=>$b['enabled']??true)->values();
   $data=['page'=>$page,'blocks'=>$blocks,'departments'=>Department::where('is_active',true)->orderBy('sort')->get(),'collectives'=>Collective::where('is_active',true)->orderBy('sort')->orderBy('title')->limit(6)->get(),'programs'=>EducationProgram::where('is_active',true)->orderBy('sort')->get(),'documents'=>Document::where('is_public',true)->where('category',$slug)->orderByDesc('document_date')->get(),'events'=>Post::published()->type('event')->orderBy('starts_at')->limit(3)->get()];
+  if($slug==='applicants'){$data['admissionDocuments']=collect(['rules','exams','schedule','results'])->mapWithKeys(fn($kind)=>[$kind=>Document::where('is_public',true)->where('category','applicants.'.$kind)->orderByDesc('document_date')->get()]);$data['openDay']=Post::published()->type('event')->where('starts_at','>=',now())->where(function($q){$q->where('meta->audience','applicants')->orWhere('slug','like','%open%')->orWhere('title','like','%открыт%');})->orderBy('starts_at')->first();$data['questionForm']=Form::where('is_active',true)->whereIn('slug',['applicants-question','feedback'])->orderByRaw("CASE WHEN slug='applicants-question' THEN 0 ELSE 1 END")->first();}
   return view('portals.'.$slug,$data);
  }
  public function defaults(string $slug): array {abort_unless(isset($this->defaults[$slug]),404);return $this->defaults[$slug];}
