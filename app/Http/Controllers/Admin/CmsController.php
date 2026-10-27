@@ -3,6 +3,9 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\Page;
 use App\Models\Post;
+use App\Models\Department;
+use App\Models\Teacher;
+use App\Models\Collective;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
@@ -32,14 +35,14 @@ class CmsController extends Controller {
  public function editor(string $module,string $id='new'): View {
   abort_unless(isset($this->modules[$module]),404); $record=null;
   if($id!=='new'){ if($module==='pages') $record=Page::findOrFail($id); elseif(isset($this->modules[$module]['post_type'])) $record=Post::type($this->modules[$module]['post_type'])->findOrFail($id); }
-  return view('admin.editor',['module'=>$module,'id'=>$id,'meta'=>$this->modules[$module],'record'=>$record]);
+  return view('admin.editor',['module'=>$module,'id'=>$id,'meta'=>$this->modules[$module],'record'=>$record,'departments'=>Department::where('is_active',true)->orderBy('sort')->get(),'teachers'=>Teacher::where('is_active',true)->orderBy('name')->get(),'collectives'=>Collective::where('is_active',true)->orderBy('sort')->orderBy('title')->get()]);
  }
  public function save(Request $request,string $module,string $id='new'): RedirectResponse {
   abort_unless($module==='pages'||isset($this->modules[$module]['post_type']),404);
-  $data=$request->validate(['title'=>'required|string|max:255','slug'=>'nullable|string|max:255','excerpt'=>'nullable|string','content'=>'nullable|string','status'=>'required|in:draft,published,scheduled','published_at'=>'nullable|date','seo_title'=>'nullable|string|max:255','seo_description'=>'nullable|string']);
+  $data=$request->validate(['title'=>'required|string|max:255','slug'=>'nullable|string|max:255','excerpt'=>'nullable|string','content'=>'nullable|string','status'=>'required|in:draft,published,scheduled','published_at'=>'nullable|date','seo_title'=>'nullable|string|max:255','seo_description'=>'nullable|string','department_id'=>'nullable|integer|exists:departments,id','teacher_id'=>'nullable|integer|exists:teachers,id','collective_id'=>'nullable|integer|exists:collectives,id']);
   $data['slug']=Str::slug($data['slug']?:$data['title']); if(!$data['slug']) $data['slug']=Str::random(10);
   if($module==='pages'){ $record=$id==='new'?new Page:Page::findOrFail($id); $data['type']='page'; }
-  else { $record=$id==='new'?new Post:Post::type($this->modules[$module]['post_type'])->findOrFail($id); $data['type']=$this->modules[$module]['post_type']; unset($data['seo_title'],$data['seo_description']); }
+  else { $record=$id==='new'?new Post:Post::type($this->modules[$module]['post_type'])->findOrFail($id); $data['type']=$this->modules[$module]['post_type']; unset($data['seo_title'],$data['seo_description']); $data['meta']=array_filter(['department_id'=>$data['department_id']??null,'teacher_id'=>$data['teacher_id']??null,'collective_id'=>$data['collective_id']??null]); unset($data['department_id'],$data['teacher_id'],$data['collective_id']); }
   $record->fill($data)->save(); return redirect()->route('admin.module',$module)->with('success','Сохранено');
  }
  public function destroy(string $module,string $id): RedirectResponse {
