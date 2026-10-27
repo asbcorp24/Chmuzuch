@@ -16,6 +16,7 @@ use App\Http\Controllers\SystemController;
 use App\Http\Controllers\Admin\CmsController;
 use App\Http\Controllers\Admin\PeopleController;
 use App\Http\Controllers\Admin\MediaController;
+use App\Http\Controllers\Admin\AchievementController;
 use App\Http\Controllers\EducationController;
 Route::view('/','home')->name('home');
 Route::get('/about',[AboutController::class,'index'])->name('about.index');
@@ -64,8 +65,8 @@ Route::get('/video-gallery',[PublicSectionController::class,'videoGallery'])->na
 Route::get('/audio',[PublicSectionController::class,'audio'])->name('audio');
 Route::get('/achievements',[PublicSectionController::class,'achievements'])->name('achievements');
 Route::get('/gratitudes',[PublicSectionController::class,'gratitudes'])->name('gratitudes');
-Route::view('/pride','public.pride')->name('pride');
-Route::view('/laureates','public.laureates')->name('laureates');
+Route::get('/pride',[PublicSectionController::class,'pride'])->name('pride');
+Route::get('/laureates',[PublicSectionController::class,'laureates'])->name('laureates');
 Route::get('/official',[OfficialController::class,'index'])->name('official');
 Route::get('/official/{slug}',[OfficialController::class,'show'])->name('official.show');
 Route::get('/safety',[ServicePortalController::class,'safety'])->name('safety');
@@ -85,6 +86,10 @@ Route::get('/personal-data-consent',[SystemController::class,'consent'])->name('
 Route::get('/cookies',[SystemController::class,'cookies'])->name('cookies');
 
 Route::prefix('admin')->name('admin.')->group(function(){
+ Route::get('/achievements',[AchievementController::class,'index'])->name('achievements.index');
+ Route::get('/achievements/edit/{id}',[AchievementController::class,'edit'])->name('achievements.edit');
+ Route::post('/achievements/edit/{id}',[AchievementController::class,'save'])->name('achievements.save');
+ Route::delete('/achievements/{achievement}',[AchievementController::class,'destroy'])->name('achievements.destroy');
  Route::get('/media',[MediaController::class,'index'])->name('media.index');
  Route::post('/media',[MediaController::class,'store'])->name('media.store');
  Route::put('/media/{media}',[MediaController::class,'update'])->name('media.update');
