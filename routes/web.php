@@ -12,6 +12,7 @@ use App\Http\Controllers\PressController;
 use App\Http\Controllers\OfficialController;
 use App\Http\Controllers\ServicePortalController;
 use App\Http\Controllers\PublicSectionController;
+use App\Http\Controllers\SystemController;
 Route::view('/','home')->name('home');
 Route::get('/about',[AboutController::class,'index'])->name('about.index');
 Route::get('/about/{section}',[AboutController::class,'section'])->name('about.section');
@@ -48,3 +49,9 @@ Route::get('/safety',[ServicePortalController::class,'safety'])->name('safety');
 Route::get('/employees',[ServicePortalController::class,'employees'])->name('employees');
 Route::get('/service/{portal}/{slug}',[ServicePortalController::class,'show'])->name('service.show');
 Route::get('/contacts',[PublicSectionController::class,'contacts'])->name('contacts');
+
+Route::get('/search',[SystemController::class,'search'])->name('search');
+Route::get('/sitemap',[SystemController::class,'sitemap'])->name('sitemap');
+Route::get('/privacy',[SystemController::class,'privacy'])->name('privacy');
+Route::get('/personal-data-consent',[SystemController::class,'consent'])->name('personal-data-consent');
+Route::get('/cookies',[SystemController::class,'cookies'])->name('cookies');
