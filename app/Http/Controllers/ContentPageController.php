@@ -1,6 +1,7 @@
 <?php
 namespace App\Http\Controllers;
 use App\Models\Page;
+use App\Models\Form;
 use Illuminate\View\View;
 class ContentPageController extends Controller {
  private array $titles=[
@@ -15,5 +16,5 @@ class ContentPageController extends Controller {
  }
  public function history(): View{return $this->show('history');} public function pavlov(): View{return $this->show('pavlov');} public function leadership(): View{return $this->show('leadership');} public function structure(): View{return $this->show('structure');} public function facilities(): View{return $this->show('facilities');}
  public function council(): View{return $this->show('student-council');} public function dormCouncil(): View{return $this->show('dorm-council');} public function sportClub(): View{return $this->show('sport-club');} public function philharmonic(): View{return $this->show('philharmonic');} public function personalGrowth(): View{return $this->show('personal-growth');} public function volunteering(): View{return $this->show('volunteering');}
- public function career(): View{return $this->show('career');} public function aesthetic(): View{return $this->show('aesthetic-class');} public function federal(): View{return $this->show('federal-competitions');} public function dormDocuments(): View{return $this->show('dormitory-documents');} public function dormVictories(): View{return $this->show('dormitory-victories');} public function feedback(): View{return $this->show('feedback');}
+ public function career(): View{return $this->show('career');} public function aesthetic(): View{return $this->show('aesthetic-class');} public function federal(): View{return $this->show('federal-competitions');} public function dormDocuments(): View{return $this->show('dormitory-documents');} public function dormVictories(): View{return $this->show('dormitory-victories');} public function feedback(): View{$page=Page::published()->where('slug','feedback')->first()??new Page(['slug'=>'feedback','title'=>'Обратная связь','status'=>'published']);$form=Form::where('slug','feedback')->where('is_active',true)->first();return view('feedback.index',compact('page','form'));}
 }
