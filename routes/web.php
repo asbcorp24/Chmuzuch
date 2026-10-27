@@ -31,6 +31,7 @@ use App\Http\Controllers\Admin\SectionEntryController;
 use App\Http\Controllers\Admin\SettingsController;
 use App\Http\Controllers\EducationController;
 use App\Http\Controllers\CommunityPageController;
+use App\Http\Controllers\SearchController;
 Route::get('/',[HomeController::class,'index'])->name('home');
 Route::get('/about',fn()=>app(PortalPageController::class)->show('about'))->name('about.index');
 Route::get('/about/{section}',[AboutController::class,'section'])->name('about.section');
