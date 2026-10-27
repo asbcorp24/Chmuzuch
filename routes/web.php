@@ -58,6 +58,9 @@ Route::get('/personal-data-consent',[SystemController::class,'consent'])->name('
 Route::get('/cookies',[SystemController::class,'cookies'])->name('cookies');
 
 Route::prefix('admin')->name('admin.')->group(function(){
+ Route::get('/form-builder',[CmsController::class,'formBuilder'])->name('form-builder');
+ Route::get('/form-builder/{id}',[CmsController::class,'formEdit'])->name('form-builder.edit');
+ Route::get('/form-reports/{slug}',[CmsController::class,'formReport'])->name('form-report');
  Route::get('/',[CmsController::class,'dashboard'])->name('dashboard');
  Route::get('/{module}',[CmsController::class,'module'])->name('module');
  Route::get('/{module}/edit/{id}',[CmsController::class,'editor'])->name('editor');
