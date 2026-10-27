@@ -25,6 +25,7 @@ use App\Http\Controllers\HomeController;
 use App\Http\Controllers\Admin\HomeBuilderController;
 use App\Http\Controllers\PortalPageController;
 use App\Http\Controllers\Admin\PortalBuilderController;
+use App\Http\Controllers\Admin\LearningOfferController;
 use App\Http\Controllers\EducationController;
 Route::get('/',[HomeController::class,'index'])->name('home');
 Route::get('/about',fn()=>app(PortalPageController::class)->show('about'))->name('about.index');
@@ -97,6 +98,10 @@ Route::get('/forms/{slug}',[FormController::class,'show'])->name('forms.show');
 Route::post('/forms/{slug}',[FormController::class,'submit'])->name('forms.submit');
 
 Route::prefix('admin')->name('admin.')->group(function(){
+ Route::get('/learning/{scope}',[LearningOfferController::class,'index'])->name('learning.index');
+ Route::get('/learning/{scope}/edit/{id}',[LearningOfferController::class,'edit'])->name('learning.edit');
+ Route::post('/learning/{scope}/edit/{id}',[LearningOfferController::class,'save'])->name('learning.save');
+ Route::delete('/learning/{scope}/{offer}',[LearningOfferController::class,'destroy'])->name('learning.destroy');
  Route::get('/portal-builder/{slug}',[PortalBuilderController::class,'edit'])->name('portal.edit');
  Route::post('/portal-builder/{slug}',[PortalBuilderController::class,'save'])->name('portal.save');
  Route::get('/home-builder',[HomeBuilderController::class,'edit'])->name('home.edit');
