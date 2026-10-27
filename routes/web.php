@@ -23,9 +23,11 @@ use App\Http\Controllers\Admin\FormController as AdminFormController;
 use App\Http\Controllers\FormController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\Admin\HomeBuilderController;
+use App\Http\Controllers\PortalPageController;
+use App\Http\Controllers\Admin\PortalBuilderController;
 use App\Http\Controllers\EducationController;
 Route::get('/',[HomeController::class,'index'])->name('home');
-Route::get('/about',[AboutController::class,'index'])->name('about.index');
+Route::get('/about',fn()=>app(PortalPageController::class)->show('about'))->name('about.index');
 Route::get('/about/{section}',[AboutController::class,'section'])->name('about.section');
 Route::get('/press',[PressController::class,'index'])->name('press.index');
 Route::get('/press/{type}/{slug}',[PressController::class,'article'])->name('press.article');
@@ -44,8 +46,8 @@ Route::get('/science',[ScienceController::class,'index'])->name('science.index')
 Route::get('/science/projects/{slug}',[ScienceController::class,'project'])->name('science.project');
 Route::get('/science/conferences/{slug}',[ScienceController::class,'conference'])->name('science.conference');
 Route::redirect('/conferences','/science#conferences')->name('conferences');
-Route::view('/applicants','applicants.index')->name('applicants');
-Route::view('/students','students.index')->name('students');
+Route::get('/applicants',fn()=>app(PortalPageController::class)->show('applicants'))->name('applicants');
+Route::get('/students',fn()=>app(PortalPageController::class)->show('students'))->name('students');
 Route::view('/schedule','schedule.index')->name('schedule');
 Route::view('/student-life','student-life.index')->name('student-life');
 Route::view('/student-life/council','student-life.council')->name('student-life.council');
@@ -66,7 +68,7 @@ Route::get('/dormitory',[PublicSectionController::class,'dormitory'])->name('dor
 Route::view('/dormitory/documents','dormitory.documents')->name('dormitory.documents');
 Route::view('/dormitory/victories','dormitory.victories')->name('dormitory.victories');
 Route::get('/media',[PublicSectionController::class,'media'])->name('media');
-Route::view('/activity','public.activity')->name('activity');
+Route::get('/activity',fn()=>app(PortalPageController::class)->show('activity'))->name('activity');
 Route::get('/video-gallery',[PublicSectionController::class,'videoGallery'])->name('video-gallery');
 Route::get('/audio',[PublicSectionController::class,'audio'])->name('audio');
 Route::get('/achievements',[PublicSectionController::class,'achievements'])->name('achievements');
@@ -95,6 +97,8 @@ Route::get('/forms/{slug}',[FormController::class,'show'])->name('forms.show');
 Route::post('/forms/{slug}',[FormController::class,'submit'])->name('forms.submit');
 
 Route::prefix('admin')->name('admin.')->group(function(){
+ Route::get('/portal-builder/{slug}',[PortalBuilderController::class,'edit'])->name('portal.edit');
+ Route::post('/portal-builder/{slug}',[PortalBuilderController::class,'save'])->name('portal.save');
  Route::get('/home-builder',[HomeBuilderController::class,'edit'])->name('home.edit');
  Route::post('/home-builder',[HomeBuilderController::class,'save'])->name('home.save');
  Route::get('/forms',[AdminFormController::class,'index'])->name('forms.index');
