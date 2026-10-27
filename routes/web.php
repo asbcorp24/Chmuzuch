@@ -61,6 +61,7 @@ Route::view('/union','union.index')->name('union');
 Route::view('/aesthetic-class','aesthetic-class.index')->name('aesthetic-class');
 Route::view('/federal-competitions','federal-competitions.index')->name('federal-competitions');
 Route::view('/practice','practice.index')->name('practice');
+Route::view('/feedback','feedback.index')->name('feedback');
 
 Route::get('/search',[SystemController::class,'search'])->name('search');
 Route::get('/sitemap',[SystemController::class,'sitemap'])->name('sitemap');
