@@ -1,12 +1,14 @@
 import 'bootstrap';import * as THREE from 'three';
 const root=document.getElementById('hero-3d');
-if(root){
+const appearance=window.CHMUZUCH?.appearance||{};
+const settingOn=(v,fallback=false)=>v===''||v==null?fallback:['1','true','on','yes'].includes(String(v).toLowerCase());
+if(root&&settingOn(appearance.hero_3d,true)){
  const scene=new THREE.Scene(),camera=new THREE.PerspectiveCamera(45,1,.1,100),renderer=new THREE.WebGLRenderer({alpha:true,antialias:true});
  root.appendChild(renderer.domElement);camera.position.z=5;
- const knot=new THREE.Mesh(new THREE.TorusKnotGeometry(1.25,.28,180,24),new THREE.MeshStandardMaterial({color:0xc8a96a,metalness:.8,roughness:.24,wireframe:false}));
+ const knot=new THREE.Mesh(new THREE.TorusKnotGeometry(1.25,.28,180,24),new THREE.MeshStandardMaterial({color:appearance.accent||0xc8a96a,metalness:.8,roughness:.24,wireframe:settingOn(appearance.wireframe,false)}));
  scene.add(knot);scene.add(new THREE.AmbientLight(0xffffff,1.2));const light=new THREE.PointLight(0xd94a32,18);light.position.set(3,2,4);scene.add(light);
  const resize=()=>{const w=root.clientWidth||innerWidth,h=root.clientHeight||innerHeight;renderer.setSize(w,h,false);camera.aspect=w/h;camera.updateProjectionMatrix()};resize();addEventListener('resize',resize);
- const tick=()=>{knot.rotation.x+=.0015;knot.rotation.y+=.003;renderer.render(scene,camera);requestAnimationFrame(tick)};tick();
+ const rotate=settingOn(appearance.rotation,true);const tick=()=>{if(rotate){knot.rotation.x+=.0015;knot.rotation.y+=.003}renderer.render(scene,camera);requestAnimationFrame(tick)};tick();
 }
 
 const mobileMenu=document.querySelector('.mobile-menu');
