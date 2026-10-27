@@ -52,3 +52,11 @@ if(inbox){
  const empty=inbox.querySelector('.inbox-empty'),card=inbox.querySelector('.request-card');
  inbox.querySelectorAll('.inbox-row').forEach(row=>row.addEventListener('click',()=>{inbox.querySelectorAll('.inbox-row').forEach(r=>r.classList.remove('active'));row.classList.add('active');empty.hidden=true;card.hidden=false;card.querySelector('[data-request-source]').textContent=row.dataset.source;card.querySelector('[data-request-subject]').textContent=row.dataset.subject;card.querySelector('[data-request-number]').textContent='#'+row.dataset.request;card.querySelector('[data-request-status]').value=row.dataset.status}));
 }
+
+const formFields=document.querySelector('[data-form-fields]');
+if(formFields){
+ let dragged=null;
+ const bindField=field=>{field.addEventListener('dragstart',()=>{dragged=field;field.classList.add('dragging')});field.addEventListener('dragend',()=>{field.classList.remove('dragging');dragged=null});field.addEventListener('dragover',e=>{e.preventDefault();if(!dragged||dragged===field)return;const b=field.getBoundingClientRect();formFields.insertBefore(dragged,e.clientY<b.top+b.height/2?field:field.nextSibling)})};
+ formFields.querySelectorAll('.form-field').forEach(bindField);
+ document.querySelectorAll('[data-field-type]').forEach(btn=>btn.addEventListener('click',()=>{const field=document.createElement('article');field.className='form-field';field.draggable=true;field.dataset.type=btn.dataset.fieldType;field.innerHTML='<span class="drag-handle">⋮⋮</span><div><small>'+btn.dataset.fieldType+'</small><b>'+btn.querySelector('span').textContent+'</b><em>Новое поле</em></div><i>Необязательное</i><button>•••</button>';formFields.appendChild(field);bindField(field)}));
+}
