@@ -1,0 +1,9 @@
+@extends('layouts.app')
+@section('title','Контакты — ЧМУ')
+@section('content')
+<section class="public-hero contacts-hero"><div><p class="eyebrow">Связаться с нами</p><h1>Контакты</h1><p>Адрес, телефоны, электронная почта, подразделения, часы работы и схема проезда.</p></div><div class="public-glyph">⌖</div></section>
+<section class="block contact-grid"><article><small>Адрес</small><h2>Чебоксарское музыкальное училище им. Ф. П. Павлова</h2><p>Фактический и почтовый адрес</p></article><article><small>Телефон</small><h2>Приёмная</h2><p>Контактный номер</p></article><article><small>E-mail</small><h2>Электронная почта</h2><p>Официальный адрес</p></article><article><small>Режим работы</small><h2>График</h2><p>Дни и часы работы</p></article></section>
+<section class="map-placeholder"><span>⌖</span><b>Интерактивная карта и схема проезда</b></section>
+<section class="block"><p class="eyebrow">Подразделения</p><h2>К кому обратиться</h2><div class="contact-directory">@foreach(['Приёмная директора','Учебная часть','Приёмная комиссия','Детская школа искусств','Центр дополнительного образования','Общежитие'] as $x)<div><h3>{{$x}}</h3><span>Телефон • e-mail • часы работы</span></div>@endforeach</div></section>
+<section class="block feedback-zone"><div><p class="eyebrow">Обратная связь</p><h2>Написать нам</h2><p>Общие вопросы можно направить через форму обратной связи.</p></div><form><input placeholder="Имя"><input type="email" placeholder="E-mail"><input placeholder="Телефон"><textarea placeholder="Ваш вопрос"></textarea><label><input type="checkbox"> Согласен на обработку персональных данных</label><button type="button">Отправить</button></form></section>
+@endsection
