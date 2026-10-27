@@ -40,6 +40,7 @@ Route::view('/students','students.index')->name('students');
 Route::view('/schedule','schedule.index')->name('schedule');
 Route::view('/student-life','student-life.index')->name('student-life');
 Route::view('/library','library.index')->name('library');
+Route::view('/career','career.index')->name('career');
 Route::get('/education',[EducationController::class,'index'])->name('education.index');
 Route::get('/education/{slug}',[EducationController::class,'program'])->name('education.program');
 Route::get('/dshi',[DshiController::class,'index'])->name('dshi');
