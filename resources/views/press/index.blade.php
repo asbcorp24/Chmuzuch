@@ -1,0 +1,10 @@
+@extends('layouts.app')
+@section('title','Пресс-центр — ЧМУ')
+@section('content')
+<section class="press-hero"><div><p class="eyebrow">Пресс-центр</p><h1>Жизнь<br>училища<br><em>сейчас</em></h1><p>Новости, анонсы, события и публикации СМИ о Чебоксарском музыкальном училище.</p></div><div class="press-signal"><i></i><i></i><i></i><b>●</b></div></section>
+<nav class="applicant-nav"><a href="#news">Новости</a><a href="#announcements">Анонсы</a><a href="/events">Афиша</a><a href="#media">СМИ о нас</a></nav>
+<section id="news" class="block"><div class="section-head"><div><p class="eyebrow">Последнее</p><h2>Новости</h2></div></div><div class="press-grid">@foreach($news as $slug=>$item)<a href="{{route('press.article',['news',$slug])}}"><div class="press-image">▧</div><small>{{$item['date']}} • {{$item['type']}}</small><h3>{{$item['title']}}</h3><p>{{$item['lead']}}</p><b>Читать →</b></a>@endforeach</div></section>
+<section id="announcements" class="block announcement-zone"><p class="eyebrow">Скоро</p><h2>Анонсы</h2>@foreach($announcements as $slug=>$item)<a class="announcement-row" href="{{route('press.article',['announcements',$slug])}}"><time>{{$item['date']}}</time><h3>{{$item['title']}}</h3><span>→</span></a>@endforeach</section>
+<section class="block press-events"><div class="section-head"><div><p class="eyebrow">Календарь</p><h2>Афиша</h2></div><a href="/events">Все мероприятия →</a></div><div class="event-mini">@foreach(array_slice(config('press.events',[]),0,3,true) as $slug=>$event)<a href="{{route('events.show',$slug)}}"><time>{{$event['date']}}</time><small>{{$event['kind']}}</small><h3>{{$event['title']}}</h3><span>{{$event['time']}} • {{$event['place']}}</span></a>@endforeach</div></section>
+<section id="media" class="block"><p class="eyebrow">Публикации</p><h2>СМИ о нас</h2><div class="press-grid">@foreach($media as $slug=>$item)<a href="{{route('press.article',['media',$slug])}}"><div class="press-image">“</div><small>{{$item['date']}}</small><h3>{{$item['title']}}</h3><p>{{$item['lead']}}</p><b>Открыть →</b></a>@endforeach</div></section>
+@endsection
