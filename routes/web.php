@@ -14,6 +14,7 @@ use App\Http\Controllers\ServicePortalController;
 use App\Http\Controllers\PublicSectionController;
 use App\Http\Controllers\SystemController;
 use App\Http\Controllers\Admin\CmsController;
+use App\Http\Controllers\Admin\PeopleController;
 use App\Http\Controllers\EducationController;
 Route::view('/','home')->name('home');
 Route::get('/about',[AboutController::class,'index'])->name('about.index');
@@ -83,6 +84,10 @@ Route::get('/personal-data-consent',[SystemController::class,'consent'])->name('
 Route::get('/cookies',[SystemController::class,'cookies'])->name('cookies');
 
 Route::prefix('admin')->name('admin.')->group(function(){
+ Route::get('/content/{entity}',[PeopleController::class,'index'])->name('people.index');
+ Route::get('/content/{entity}/edit/{id}',[PeopleController::class,'edit'])->name('people.edit');
+ Route::post('/content/{entity}/edit/{id}',[PeopleController::class,'save'])->name('people.save');
+ Route::delete('/content/{entity}/{id}',[PeopleController::class,'destroy'])->name('people.destroy');
  Route::get('/form-builder',[CmsController::class,'formBuilder'])->name('form-builder');
  Route::get('/form-builder/{id}',[CmsController::class,'formEdit'])->name('form-builder.edit');
  Route::get('/form-reports/{slug}',[CmsController::class,'formReport'])->name('form-report');
