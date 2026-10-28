@@ -749,3 +749,19 @@ body.admin-body{color:#eef3f8;background:#101923}
 .admin-body .cms-record-empty{text-align:center;padding:35px!important;color:#e4edf5!important}
 .admin-body .cms-record-pagination{margin:18px auto;max-width:1500px}
 @media(max-width:760px){.admin-body .cms-records-table-wrap{background:transparent;border:0;overflow:visible}.admin-body .cms-records-table{min-width:0;display:block}.admin-body .cms-records-table thead{display:none}.admin-body .cms-records-table tbody{display:grid;gap:12px}.admin-body .cms-records-table tr{display:block;background:#1b2b3b;border:1px solid #536b80;border-radius:12px;overflow:hidden}.admin-body .cms-records-table td{display:flex;justify-content:space-between;align-items:flex-start;gap:12px;padding:10px 15px;border-bottom:1px solid #52677955}.admin-body .cms-records-table td:first-child{display:block;padding:16px 15px}.admin-body .cms-records-table td:not(:first-child)::before{content:attr(data-label);color:#b6c9d9;font-size:12px;font-weight:700;min-width:75px}.admin-body .cms-records-table td:last-child{display:block}.admin-body .cms-records-table td:last-child::before{display:block;margin-bottom:9px}.admin-body .cms-record-actions{justify-content:flex-start}.admin-body .cms-records-table .cms-record-empty{display:block}}
+
+
+/* Visual form builder */
+.admin-body #form-fields-visual{display:grid;gap:14px;margin:14px 0}
+.admin-body .cms-form-field-card{padding:17px;background:#152635;border:1px solid #61758a;border-radius:12px}
+.admin-body .cms-form-field-head{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;margin-bottom:12px}
+.admin-body .cms-form-field-head strong{color:#fff}
+.admin-body .cms-form-field-head>div{display:flex;gap:6px}
+.admin-body .cms-form-field-head button{padding:6px 11px;border:1px solid #75899b;border-radius:7px;background:#294156;color:#fff;cursor:pointer}
+.admin-body .cms-form-field-card label{display:flex;flex-direction:column;gap:7px;margin-bottom:12px;color:#e9f2fa}
+.admin-body .cms-form-field-card label.cms-form-required{flex-direction:row;align-items:center}
+.admin-body .cms-form-field-card input:not([type=checkbox]),.admin-body .cms-form-field-card select,.admin-body .cms-form-field-card textarea{width:100%;box-sizing:border-box;min-width:0;padding:10px;background:#0d1d2a;border:1px solid #71869b;border-radius:8px;color:#fff}
+.admin-body .cms-form-field-card [hidden]{display:none!important}
+.admin-body .cms-json-fallback{margin-top:20px;padding:13px;border:1px solid #506779;border-radius:10px}
+.admin-body .cms-json-fallback summary{cursor:pointer;color:#dce9f5}
+.admin-body .cms-json-fallback textarea{width:100%;box-sizing:border-box;margin-top:12px;background:#101e2b;color:#fff;border:1px solid #667c90;border-radius:8px}
