@@ -20,5 +20,6 @@ class Kernel extends HttpKernel {
   'throttle'=>\Illuminate\Routing\Middleware\ThrottleRequests::class,
   'password.confirm'=>\Illuminate\Auth\Middleware\RequirePassword::class,
   'verified'=>\Illuminate\Auth\Middleware\EnsureEmailIsVerified::class,
+  'role'=>\App\Http\Middleware\EnsureAdminRole::class,
  ];
 }
