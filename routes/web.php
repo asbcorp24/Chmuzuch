@@ -47,6 +47,8 @@ Route::redirect('/about/pride','/pride')->name('about.pride');
 Route::get('/press',[PressController::class,'index'])->name('press.index');
 Route::get('/press/{type}/{slug}',[PressController::class,'article'])->name('press.article');
 Route::redirect('/news','/press#news')->name('news.index');
+Route::get('/concerts',[\App\Http\Controllers\ConcertController::class,'index'])->name('concerts.index');
+Route::get('/concerts/{slug}',[\App\Http\Controllers\ConcertController::class,'show'])->name('concerts.show');
 Route::get('/events',[PressController::class,'events'])->name('events.index');
 Route::get('/events/{slug}',[PressController::class,'event'])->name('events.show');
 Route::get('/departments',[DepartmentController::class,'index'])->name('departments.index');
@@ -117,6 +119,9 @@ Route::get('/admin/login',[AuthController::class,'login'])->name('admin.login');
 Route::post('/admin/login',[AuthController::class,'authenticate'])->middleware('throttle:5,1')->name('admin.login.submit');
 Route::post('/admin/logout',[AuthController::class,'logout'])->middleware('auth')->name('admin.logout');
 Route::prefix('admin')->name('admin.')->middleware(['auth','role:super_admin,content_manager,editor'])->group(function(){
+ Route::get('/music',[\App\Http\Controllers\Admin\MusicController::class,'index'])->middleware('role:super_admin,content_manager')->name('music.index');
+ Route::post('/music/save/{track?}',[\App\Http\Controllers\Admin\MusicController::class,'save'])->middleware('role:super_admin,content_manager')->name('music.save');
+ Route::delete('/music/{track}',[\App\Http\Controllers\Admin\MusicController::class,'destroy'])->middleware('role:super_admin,content_manager')->name('music.destroy');
  Route::get('/navigation',[\App\Http\Controllers\Admin\NavigationController::class,'index'])->middleware('role:super_admin,content_manager')->name('navigation.index');
  Route::post('/navigation',[\App\Http\Controllers\Admin\NavigationController::class,'save'])->middleware('role:super_admin,content_manager')->name('navigation.save');
  Route::delete('/navigation/{item}',[\App\Http\Controllers\Admin\NavigationController::class,'destroy'])->middleware('role:super_admin,content_manager')->name('navigation.destroy');
