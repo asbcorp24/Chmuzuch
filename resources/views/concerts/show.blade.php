@@ -3,6 +3,15 @@
 @section('content')
 <section class="section-hero"><p class="eyebrow">Концерт</p><h1>{{$concert->title}}</h1><p>{{$concert->starts_at?->format('d.m.Y H:i')}} · {{$concert->place}}</p></section>
 <section class="block"><div class="prose">{!! nl2br(e($concert->content)) !!}</div>@if($concert->external_url)<p><a href="{{$concert->external_url}}" rel="noopener noreferrer" target="_blank">Подробнее о концерте →</a></p>@endif</section>
+@if($concert->concertMedia->isNotEmpty())
+<section class="block"><h2>Записи и фотографии концерта</h2><div class="concert-grid">
+@foreach($concert->concertMedia as $media)
+<div class="concert-card"><h3>{{$media->title}}</h3>
+@if($media->type==='audio')<audio controls preload="none" src="{{asset('storage/'.$media->path)}}"></audio>
+@elseif($media->type==='video')<video controls preload="metadata" style="max-width:100%" src="{{asset('storage/'.$media->path)}}"></video>
+@elseif($media->type==='image')<img loading="lazy" style="max-width:100%" alt="{{$media->alt?:$media->title}}" src="{{asset('storage/'.$media->path)}}">
+@else<a href="{{asset('storage/'.$media->path)}}">Открыть файл</a>@endif
+</div>@endforeach</div></section>@endif
 <section class="block"><h2>Программа концерта</h2>
 @forelse($concert->concertPerformances as $performance)
 <article class="concert-card"><small>№ {{$performance->program_number}}</small><h3>{{$performance->title}}</h3>
