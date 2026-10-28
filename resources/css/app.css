@@ -719,3 +719,33 @@ body.admin-body{color:#eef3f8;background:#101923}
 .admin-body .media-filters a.active{background:#b9333b;border-color:#d35d63;color:#fff}
 @media(max-width:950px){.admin-body .admin-main form:has(#record-main) .editor-layout{grid-template-columns:1fr}}
 @media(max-width:650px){.admin-body .cms-media-upload-panel .media-link-fields{grid-template-columns:1fr}.admin-body .admin-main form:has(#record-main) .editor-canvas{padding:15px}}
+
+
+/* CMS lists: dedicated table layout, independent from legacy .admin-row rules */
+.admin-body .cms-records-summary{margin:0 auto 14px;color:#d8e4ef;font-size:14px}
+.admin-body .cms-records-table-wrap{max-width:1500px;margin:0 auto;background:#1b2b3b;border:1px solid #526a80;border-radius:14px;overflow-x:auto}
+.admin-body .cms-records-table{width:100%;border-collapse:collapse;table-layout:auto;min-width:690px}
+.admin-body .cms-records-table th{padding:15px 18px;text-align:left;background:#283d51;color:#f3f7fb;font-size:12px;letter-spacing:.045em;text-transform:uppercase;border-bottom:1px solid #61778b}
+.admin-body .cms-records-table td{padding:17px 18px;vertical-align:middle;border-bottom:1px solid #4e627560;color:#e8f0f8;font-size:14px;overflow-wrap:anywhere}
+.admin-body .cms-records-table tbody tr:last-child td{border-bottom:0}
+.admin-body .cms-records-table tbody tr:hover{background:#ffffff08}
+.admin-body .cms-records-table th:first-child{width:43%}
+.admin-body .cms-records-table th:nth-child(2){width:16%}
+.admin-body .cms-records-table th:nth-child(3){width:19%}
+.admin-body .cms-record-title{font-weight:700;color:#fff;font-size:15px;line-height:1.45}
+.admin-body .cms-record-slug{font-size:12px;color:#aebfd0;margin-top:5px}
+.admin-body .cms-status{display:inline-flex;padding:5px 10px;border-radius:999px;font-size:12px;font-weight:650;background:#38495b;color:#e7edf4;white-space:nowrap}
+.admin-body .cms-status.is-published{background:#20473a;color:#c5f6db}
+.admin-body .cms-status.is-draft{background:#50432b;color:#ffe4ad}
+.admin-body .cms-status.is-scheduled{background:#293f5e;color:#d5e8ff}
+.admin-body .cms-record-actions{display:flex;align-items:center;flex-wrap:wrap;gap:9px}
+.admin-body .cms-record-actions form{display:inline-flex;margin:0;padding:0;background:transparent;border:0}
+.admin-body .cms-record-actions .cms-action-edit,.admin-body .cms-record-actions .cms-action-delete{display:inline-flex;align-items:center;justify-content:center;min-height:36px;padding:7px 11px;box-sizing:border-box;border-radius:8px;text-decoration:none;font-size:12px;font-weight:700;white-space:nowrap}
+.admin-body .cms-record-actions .cms-action-edit{color:#fff!important;background:#b43842;border:1px solid #d35b65}
+.admin-body .cms-record-actions .cms-action-delete{color:#ffdbdb!important;background:transparent;border:1px solid #a65e66;cursor:pointer}
+.admin-body .cms-record-actions .cms-action-edit:hover{background:#d04853}
+.admin-body .cms-record-actions .cms-action-delete:hover{background:#572c35}
+.admin-body .cms-record-readonly{font-size:12px;color:#c7d4e0}
+.admin-body .cms-record-empty{text-align:center;padding:35px!important;color:#e4edf5!important}
+.admin-body .cms-record-pagination{margin:18px auto;max-width:1500px}
+@media(max-width:760px){.admin-body .cms-records-table-wrap{background:transparent;border:0;overflow:visible}.admin-body .cms-records-table{min-width:0;display:block}.admin-body .cms-records-table thead{display:none}.admin-body .cms-records-table tbody{display:grid;gap:12px}.admin-body .cms-records-table tr{display:block;background:#1b2b3b;border:1px solid #536b80;border-radius:12px;overflow:hidden}.admin-body .cms-records-table td{display:flex;justify-content:space-between;align-items:flex-start;gap:12px;padding:10px 15px;border-bottom:1px solid #52677955}.admin-body .cms-records-table td:first-child{display:block;padding:16px 15px}.admin-body .cms-records-table td:not(:first-child)::before{content:attr(data-label);color:#b6c9d9;font-size:12px;font-weight:700;min-width:75px}.admin-body .cms-records-table td:last-child{display:block}.admin-body .cms-records-table td:last-child::before{display:block;margin-bottom:9px}.admin-body .cms-record-actions{justify-content:flex-start}.admin-body .cms-records-table .cms-record-empty{display:block}}
