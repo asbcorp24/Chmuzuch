@@ -7,11 +7,11 @@ document.querySelectorAll('#hero-3d,.page-3d').forEach(root=>{
  let renderer;
  try{renderer=new THREE.WebGLRenderer({alpha:true,antialias:true});}catch(e){root.textContent='♫';return;}
  const scene=new THREE.Scene(),camera=new THREE.PerspectiveCamera(45,1,.1,100);
- camera.position.z=5;root.appendChild(renderer.domElement);
+ camera.position.z=root.id==='hero-3d'?7:5;root.appendChild(renderer.domElement);
  scene.add(new THREE.AmbientLight(0xffffff,1.5));
  const light=new THREE.DirectionalLight(0xffffff,2.3);light.position.set(3,4,5);scene.add(light);
  const material=new THREE.MeshStandardMaterial({color:appearance.accent||0xc8a96a,metalness:.55,roughness:.35,side:THREE.DoubleSide,wireframe:settingOn(appearance.wireframe,false)});
- const fallback=()=>new THREE.Mesh(new THREE.TorusKnotGeometry(1.2,.28,120,18),material);
+ const fallback=()=>{const group=new THREE.Group();const ring=new THREE.Mesh(new THREE.TorusGeometry(1.1,.075,14,100),material);ring.rotation.x=.55;group.add(ring);const ring2=new THREE.Mesh(new THREE.TorusGeometry(.76,.055,12,100),material);ring2.rotation.y=1.1;group.add(ring2);const core=new THREE.Mesh(new THREE.IcosahedronGeometry(.46,1),material);group.add(core);return group;};
  let model=fallback();scene.add(model);
  const degrees=axis=>THREE.MathUtils.degToRad(Number(root.dataset['rotation'+axis])||0);
  const orient=object=>{object.rotation.set(degrees('X'),degrees('Y'),degrees('Z'));};
@@ -40,6 +40,7 @@ const menuToggle=document.querySelector('.menu-toggle');
 const menuClose=document.querySelector('.menu-close');
 function toggleMobileMenu(open){if(!mobileMenu)return;mobileMenu.classList.toggle('is-open',open);mobileMenu.setAttribute('aria-hidden',open?'false':'true');menuToggle?.setAttribute('aria-expanded',open?'true':'false');document.body.classList.toggle('menu-open',open);}
 menuToggle?.addEventListener('click',()=>toggleMobileMenu(true));
+document.querySelector('.app-menu-open')?.addEventListener('click',()=>toggleMobileMenu(true));
 menuClose?.addEventListener('click',()=>{toggleMobileMenu(false);menuToggle?.focus();});
 mobileMenu?.addEventListener('click',e=>{if(e.target===mobileMenu)toggleMobileMenu(false)});
 mobileMenu?.querySelectorAll('a').forEach(link=>link.addEventListener('click',()=>toggleMobileMenu(false)));
