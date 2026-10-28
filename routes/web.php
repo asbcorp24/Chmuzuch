@@ -119,6 +119,7 @@ Route::get('/admin/login',[AuthController::class,'login'])->name('admin.login');
 Route::post('/admin/login',[AuthController::class,'authenticate'])->middleware('throttle:5,1')->name('admin.login.submit');
 Route::post('/admin/logout',[AuthController::class,'logout'])->middleware('auth')->name('admin.logout');
 Route::prefix('admin')->name('admin.')->middleware(['auth','role:super_admin,content_manager,editor'])->group(function(){
+ Route::post('/editor-images',[\App\Http\Controllers\Admin\EditorImageController::class,'store'])->middleware('throttle:30,1')->name('editor-images.store');
  Route::post('/concerts/{concert}/media',[\App\Http\Controllers\Admin\ConcertPerformanceController::class,'saveConcertMedia'])->middleware('role:super_admin,content_manager')->name('concerts.media.save');
  Route::get('/concerts/{concert}/performances',[\App\Http\Controllers\Admin\ConcertPerformanceController::class,'index'])->name('concert-performances.index');
  Route::post('/concerts/{concert}/performances/{performance?}',[\App\Http\Controllers\Admin\ConcertPerformanceController::class,'save'])->middleware('role:super_admin,content_manager')->name('concert-performances.save');
