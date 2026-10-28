@@ -21,13 +21,13 @@ class CmsController extends Controller {
   'media'=>['title'=>'Медиатека','icon'=>'▶','count'=>'Фото · видео · аудио'],'forms'=>['title'=>'Заявки','icon'=>'↗','count'=>'Обращения и формы'],
   'settings'=>['title'=>'Настройки','icon'=>'⚙','count'=>'Сайт · SEO · контакты'],
  ];
- public function dashboard(): View { return view('admin.dashboard',['modules'=>$this->modules]); }
+ public function dashboard(): View { $modules=$this->modules; if(auth()->user()?->role==='editor')unset($modules['forms'],$modules['settings']); elseif(auth()->user()?->role!=='super_admin')unset($modules['settings']); return view('admin.dashboard',['modules'=>$modules]); }
  public function module(string $module): View|RedirectResponse {
   abort_unless(isset($this->modules[$module]),404);
   if($module==='home') return redirect()->route('admin.home.edit');
   if($module==='settings') return redirect()->route('admin.settings.edit');
   if(in_array($module,['departments','teachers','collectives'])) return redirect()->route('admin.people.index',$module);
-  if($module==='media') return view('admin.media'); if($module==='forms') return view('admin.forms');
+  if($module==='media') return view('admin.media'); if($module==='forms') return redirect()->route('admin.forms.index');
   $items=collect();
   if($module==='pages') $items=Page::latest('updated_at')->paginate(30);
   elseif(isset($this->modules[$module]['post_type'])) $items=Post::type($this->modules[$module]['post_type'])->latest('updated_at')->paginate(30);
