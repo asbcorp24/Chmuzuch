@@ -27,7 +27,7 @@ class CmsController extends Controller {
   if($module==='home') return redirect()->route('admin.home.edit');
   if($module==='settings'){abort_unless(auth()->user()?->role==='super_admin',403);return redirect()->route('admin.settings.edit');}
   if(in_array($module,['departments','teachers','collectives'])) return redirect()->route('admin.people.index',$module);
-  if($module==='media') return view('admin.media'); if($module==='forms'){abort_if(auth()->user()?->role==='editor',403);return redirect()->route('admin.forms.index');}
+  if($module==='media') return redirect()->route('admin.media.index'); if($module==='forms'){abort_if(auth()->user()?->role==='editor',403);return redirect()->route('admin.forms.index');}
   $items=collect();
   if($module==='pages') $items=Page::latest('updated_at')->paginate(30);
   elseif(isset($this->modules[$module]['post_type'])) $items=Post::type($this->modules[$module]['post_type'])->latest('updated_at')->paginate(30);
