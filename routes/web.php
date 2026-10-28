@@ -114,7 +114,7 @@ Route::get('/forms/{slug}',[FormController::class,'show'])->name('forms.show');
 Route::post('/forms/{slug}',[FormController::class,'submit'])->name('forms.submit');
 
 Route::get('/admin/login',[AuthController::class,'login'])->name('admin.login');
-Route::post('/admin/login',[AuthController::class,'authenticate'])->name('admin.login.submit');
+Route::post('/admin/login',[AuthController::class,'authenticate'])->middleware('throttle:5,1')->name('admin.login.submit');
 Route::post('/admin/logout',[AuthController::class,'logout'])->middleware('auth')->name('admin.logout');
 Route::prefix('admin')->name('admin.')->middleware('auth')->group(function(){
  Route::get('/users',[UserController::class,'index'])->name('users.index');
