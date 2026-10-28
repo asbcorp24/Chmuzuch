@@ -5,6 +5,9 @@
 <p><a href="/admin/concerts">← К концертам</a> · <a href="{{route('concerts.show',$concert->slug)}}" target="_blank">Посмотреть на сайте</a></p>
 @if(session('success'))<p class="form-success">{{session('success')}}</p>@endif
 @if($errors->any())<div class="form-errors">@foreach($errors->all() as $error)<p>{{$error}}</p>@endforeach</div>@endif
+<section class="block"><h2>Медиа всего концерта</h2><p>Выберите общую запись, афишу или фотографии из медиатеки.</p><form method="POST" action="{{route('admin.concerts.media.save',$concert)}}">@csrf
+<select name="media_ids[]" multiple size="10" style="width:100%">@foreach($media as $file)<option value="{{$file->id}}" @selected(in_array($file->id,$concertMediaIds))>{{$file->title?:basename($file->path)}} ({{$file->type}})</option>@endforeach</select>
+<p><button type="submit">Сохранить медиа концерта</button></p></form></section>
 @foreach($performances->concat([new \App\Models\ConcertPerformance()]) as $performance)
 @php $editing=$performance->exists; @endphp
 <section class="block"><h2>{{$editing?'Номер №'.$performance->program_number:'Добавить номер'}}</h2>
