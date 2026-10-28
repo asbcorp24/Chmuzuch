@@ -110,19 +110,19 @@ Route::get('/privacy',[SystemController::class,'privacy'])->name('privacy');
 Route::get('/personal-data-consent',[SystemController::class,'consent'])->name('personal-data-consent');
 Route::get('/cookies',[SystemController::class,'cookies'])->name('cookies');
 
-Route::get('/forms/{slug}',[FormController::class,'show'])->name('forms.show');
-Route::post('/forms/{slug}',[FormController::class,'submit'])->name('forms.submit');
+Route::get('/forms/{slug}',[FormController::class,'show'])->middleware('role:super_admin,content_manager')->name('forms.show');
+Route::post('/forms/{slug}',[FormController::class,'submit'])->middleware('role:super_admin,content_manager')->name('forms.submit');
 
 Route::get('/admin/login',[AuthController::class,'login'])->name('admin.login');
 Route::post('/admin/login',[AuthController::class,'authenticate'])->middleware('throttle:5,1')->name('admin.login.submit');
 Route::post('/admin/logout',[AuthController::class,'logout'])->middleware('auth')->name('admin.logout');
-Route::prefix('admin')->name('admin.')->middleware('auth')->group(function(){
- Route::get('/users',[UserController::class,'index'])->name('users.index');
- Route::get('/users/{id}/edit',[UserController::class,'edit'])->name('users.edit');
- Route::post('/users/{id}/edit',[UserController::class,'save'])->name('users.save');
- Route::delete('/users/{user}',[UserController::class,'destroy'])->name('users.destroy');
- Route::get('/settings',[SettingsController::class,'edit'])->name('settings.edit');
- Route::post('/settings',[SettingsController::class,'save'])->name('settings.save');
+Route::prefix('admin')->name('admin.')->middleware(['auth','role:super_admin,content_manager,editor'])->group(function(){
+ Route::get('/users',[UserController::class,'index'])->middleware('role:super_admin')->name('users.index');
+ Route::get('/users/{id}/edit',[UserController::class,'edit'])->middleware('role:super_admin')->name('users.edit');
+ Route::post('/users/{id}/edit',[UserController::class,'save'])->middleware('role:super_admin')->name('users.save');
+ Route::delete('/users/{user}',[UserController::class,'destroy'])->middleware('role:super_admin')->name('users.destroy');
+ Route::get('/settings',[SettingsController::class,'edit'])->middleware('role:super_admin')->name('settings.edit');
+ Route::post('/settings',[SettingsController::class,'save'])->middleware('role:super_admin')->name('settings.save');
  Route::get('/sections/{portal}',[SectionEntryController::class,'index'])->name('sections.index');
  Route::get('/sections/{portal}/edit/{id}',[SectionEntryController::class,'edit'])->name('sections.edit');
  Route::post('/sections/{portal}/edit/{id}',[SectionEntryController::class,'save'])->name('sections.save');
@@ -139,12 +139,12 @@ Route::prefix('admin')->name('admin.')->middleware('auth')->group(function(){
  Route::post('/portal-builder/{slug}',[PortalBuilderController::class,'save'])->name('portal.save');
  Route::get('/home-builder',[HomeBuilderController::class,'edit'])->name('home.edit');
  Route::post('/home-builder',[HomeBuilderController::class,'save'])->name('home.save');
- Route::get('/forms',[AdminFormController::class,'index'])->name('forms.index');
- Route::get('/forms/builder/{id}',[AdminFormController::class,'builder'])->name('forms.builder');
- Route::post('/forms/builder/{id}',[AdminFormController::class,'save'])->name('forms.save');
- Route::patch('/forms/submissions/{submission}',[AdminFormController::class,'status'])->name('forms.status');
- Route::get('/form-reports/{slug}',[AdminFormController::class,'report'])->name('form-report');
- Route::get('/form-reports/{slug}/csv',[AdminFormController::class,'csv'])->name('form-report.csv');
+ Route::get('/forms',[AdminFormController::class,'index'])->middleware('role:super_admin,content_manager')->name('forms.index');
+ Route::get('/forms/builder/{id}',[AdminFormController::class,'builder'])->middleware('role:super_admin,content_manager')->name('forms.builder');
+ Route::post('/forms/builder/{id}',[AdminFormController::class,'save'])->middleware('role:super_admin,content_manager')->name('forms.save');
+ Route::patch('/forms/submissions/{submission}',[AdminFormController::class,'status'])->middleware('role:super_admin,content_manager')->name('forms.status');
+ Route::get('/form-reports/{slug}',[AdminFormController::class,'report'])->middleware('role:super_admin,content_manager')->name('form-report');
+ Route::get('/form-reports/{slug}/csv',[AdminFormController::class,'csv'])->middleware('role:super_admin,content_manager')->name('form-report.csv');
  Route::get('/education-programs',[EducationProgramController::class,'index'])->name('education.index');
  Route::get('/education-programs/edit/{id}',[EducationProgramController::class,'edit'])->name('education.edit');
  Route::post('/education-programs/edit/{id}',[EducationProgramController::class,'save'])->name('education.save');
@@ -165,8 +165,8 @@ Route::prefix('admin')->name('admin.')->middleware('auth')->group(function(){
  Route::get('/content/{entity}/edit/{id}',[PeopleController::class,'edit'])->name('people.edit');
  Route::post('/content/{entity}/edit/{id}',[PeopleController::class,'save'])->name('people.save');
  Route::delete('/content/{entity}/{id}',[PeopleController::class,'destroy'])->name('people.destroy');
- Route::redirect('/form-builder','/admin/forms')->name('form-builder');
- Route::get('/form-builder/{id}',[AdminFormController::class,'builder'])->name('form-builder.edit');
+ Route::redirect('/form-builder','/admin/forms')->middleware('role:super_admin,content_manager')->name('form-builder');
+ Route::get('/form-builder/{id}',[AdminFormController::class,'builder'])->middleware('role:super_admin,content_manager')->name('form-builder.edit');
  Route::get('/',[CmsController::class,'dashboard'])->name('dashboard');
  Route::get('/{module}',[CmsController::class,'module'])->name('module');
  Route::get('/{module}/edit/{id}',[CmsController::class,'editor'])->name('editor');
