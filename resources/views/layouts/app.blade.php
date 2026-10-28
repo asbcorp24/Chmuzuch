@@ -15,6 +15,7 @@
 @vite(['resources/css/app.css','resources/js/app.js'])
 </head>
 <body>
+<div class="chuvash-topline" aria-hidden="true"></div>
 <a class="skip-link" href="#main-content">Перейти к содержимому</a>
 <header class="site-header">
 <a class="brand" href="{{route('home')}}">@if(data_get($siteSettings,'general.logo'))<img class="brand-logo" src="{{data_get($siteSettings,'general.logo')}}" alt="{{$siteName}}">@else<span class="brand-mark"><i>{{data_get($siteSettings,'general.short_name','ЧМУ')}}</i></span>@endif<span>{{$siteName}}@if(data_get($siteSettings,'general.tagline'))<br><small>{{data_get($siteSettings,'general.tagline')}}</small>@endif</span></a>
@@ -29,6 +30,7 @@
 <nav class="app-bottom-nav" aria-label="Быстрая навигация"><a href="/"><span>⌂</span><small>Главная</small></a><a href="/news"><span>▤</span><small>Новости</small></a><a href="/events"><span>♫</span><small>Афиша</small></a><a href="/media"><span>▶</span><small>Медиа</small></a><button type="button" class="app-menu-open" aria-label="Все разделы"><span>☰</span><small>Разделы</small></button></nav>
 <main id="main-content" tabindex="-1">@yield('content')</main>
 @include('public.music-player')
+<div class="chuvash-heritage-band" aria-hidden="true"><span>✧</span><span>◇</span><span>✧</span><span>◇</span><span>✧</span><span>◇</span><span>✧</span><span>◇</span><span>✧</span></div>
 <footer class="site-footer"><div><b>{{$siteName}}</b>@if(data_get($siteSettings,'footer.footer_text'))<span> {{data_get($siteSettings,'footer.footer_text')}}</span>@endif</div><nav>@foreach(['vk'=>'VK','telegram'=>'Telegram','rutube'=>'Rutube'] as $key=>$label)@if(data_get($siteSettings,'social.'.$key))<a href="{{data_get($siteSettings,'social.'.$key)}}" target="_blank" rel="noopener">{{$label}}</a>@endif
 @endforeach
 @foreach($siteNavigation->where('location','footer')->whereNull('parent_id') as $item)<a href="{{$item->url}}">{{$item->label}}</a>@endforeach<a href="/sitemap">Карта сайта</a><a href="{{data_get($siteSettings,'privacy.personal_data_url','/privacy')}}">Персональные данные</a><a href="{{data_get($siteSettings,'privacy.privacy_url','/privacy')}}">Политика</a><a href="/contacts">Контакты</a></nav><small>{{data_get($siteSettings,'footer.copyright')}}</small></footer>
