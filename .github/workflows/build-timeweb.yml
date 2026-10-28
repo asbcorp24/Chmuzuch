@@ -2,7 +2,7 @@ name: Build Timeweb release
 on:
   workflow_dispatch:
   push:
-    branches: [feature/legacy-site-crawler]
+    branches: [main]
     paths:
       - 'resources/**'
       - 'public/**'
