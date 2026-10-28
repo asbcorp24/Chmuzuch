@@ -110,3 +110,52 @@ php artisan up
 Источник для анализа структуры старого сайта: https://xn--g1ajvbu.xn--p1ai/. Старый контент не импортируется автоматически. См. `docs/OLD_SITE_CONTENT_MAP.md`.
 
 Сайт и CMS требуют финального тестирования на сервере. Сборка проекта в CI, публикация на Timeweb и проверка реального домена пока не подтверждены.
+
+## Развёртывание на Timeweb без Node.js
+
+Проект использует Laravel 9 (PHP 8.0.2+; рекомендуется PHP 8.2), MySQL и Vite. **На Timeweb не запускаются npm, Node.js и Vite.** Готовые CSS/JS должны быть заранее собраны в `public/build` и закоммичены вместе с `manifest.json`.
+
+### Сборка перед публикацией
+
+В GitHub откройте **Actions → Build and commit frontend assets → Run workflow** (ветка `feature/legacy-site-crawler`). Workflow выполняет `npm install`, `npm run build` и коммитит `public/build` обратно в эту ветку. Дождитесь успешного завершения и проверьте наличие `public/build/manifest.json`. Если GitHub Actions недоступны из-за квоты или настроек доступа, сборку нужно выполнить на рабочем компьютере с Node.js 20+: `npm install && npm run build && git add -f public/build && git commit -m "build: compiled assets" && git push`. **Без закоммиченной сборки запускать сайт на Timeweb рано.**
+
+### Установка на Timeweb
+
+Создайте сайт с PHP 8.2, MySQL-базу и включите HTTPS. Корень сайта (document root) должен указывать на каталог `public` Laravel-приложения, **не** на корень репозитория. Нужен тариф с SSH и Composer либо возможность загружать заранее подготовленный каталог `vendor`.
+
+```bash
+git clone --branch feature/legacy-site-crawler https://github.com/asbcorp24/Chmuzuch.git .
+composer install --no-dev --prefer-dist --optimize-autoloader
+cp .env.example .env
+php artisan key:generate
+```
+
+Настройте `.env`: `APP_ENV=production`, `APP_DEBUG=false`, `APP_URL=https://ВАШ-ДОМЕН`, `DB_HOST`, `DB_DATABASE`, `DB_USERNAME`, `DB_PASSWORD`, `FILESYSTEM_DISK=public`. Затем:
+
+```bash
+php artisan migrate --force
+php artisan storage:link
+php artisan config:cache
+php artisan view:cache
+```
+
+**Не запускайте** `npm install` и `npm run build` на Timeweb. Перед публикацией проверьте, что `public/build/manifest.json` присутствует, каталог `storage` и `bootstrap/cache` доступен PHP для записи, а `.env` не находится в публичном каталоге. Не используйте права 777.
+
+### Проверка PWA и 3D
+
+После включения HTTPS проверьте `/manifest.webmanifest`, `/sw.js`, `/offline.html`, загрузку STL из `/storage/models/stl/...`, работу интерактивного меню, аудиоплеера и установку PWA на Android. PWA требует HTTPS. Убедитесь, что браузер не показывает старые ресурсы из кэша.
+
+### Обновление
+
+Сначала соберите и закоммитьте frontend-ресурсы вне Timeweb. На сервере:
+
+```bash
+git pull
+composer install --no-dev --prefer-dist --optimize-autoloader
+php artisan migrate --force
+php artisan optimize:clear
+php artisan config:cache
+php artisan view:cache
+```
+
+Перед обновлением сохраните резервные копии БД, `.env` и `storage/app/public`. Не запускайте сидеры с контентом старого сайта до отдельного решения о миграции.
