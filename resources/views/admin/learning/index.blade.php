@@ -1,0 +1,7 @@
+@extends('layouts.admin')
+@section('title',($scope==='dshi'?'ДШИ':'Дополнительное образование').' — CMS')
+@section('content')
+<header class="admin-top"><div><a href="/admin" class="admin-back">← Панель</a><small>{{$scope==='dshi'?'Детская школа искусств':'Центр дополнительного образования'}}</small><h1>{{$scope==='dshi'?'Программы ДШИ':'Курсы и программы'}}</h1></div><a class="admin-primary" href="{{route('admin.learning.edit',[$scope,'new'])}}">+ Добавить</a></header>
+@if(session('success'))<div class="admin-flash">{{session('success')}}</div>@endif
+<section class="admin-list">@forelse($items as $item)<div class="admin-row"><a href="{{route('admin.learning.edit',[$scope,$item->id])}}"><span><b>{{$item->title}}</b><small>{{$scope==='dshi'?$item->age:$item->kind}}</small></span><span>{{$scope==='dshi'?$item->symbol:$item->hours}}</span><span>{{$item->is_active?'Опубликована':'Скрыта'}}</span><b>Редактировать</b></a><form method="POST" action="{{route('admin.learning.destroy',[$scope,$item])}}">@csrf @method('DELETE')<button onclick="return confirm('Удалить?')">×</button></form></div>@empty<div class="admin-empty"><b>Программ пока нет</b></div>@endforelse</section>{{$items->links()}}
+@endsection

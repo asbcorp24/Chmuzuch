@@ -1,0 +1,10 @@
+@extends('layouts.app')
+@section('title','Дополнительное образование — ЧМУ')
+@section('content')
+<section class="cdo-hero"><div><p class="eyebrow">Центр дополнительного образования</p><h1>Развиваться<br>в профессии<br><em>всю жизнь</em></h1><p>Повышение квалификации и профессиональная переподготовка для педагогов и специалистов сферы культуры.</p></div><div class="cdo-year"><small>ЦДО</small><b>∞</b><span>непрерывное образование</span></div></section>
+<section class="block split"><div><p class="eyebrow">О центре</p><h2>Новые знания для музыкального образования</h2></div><div><p>Центр объединяет курсы повышения квалификации, профессиональную переподготовку, методические события и практику ведущих преподавателей училища.</p></div></section>
+<section class="block"><div class="section-head"><div><p class="eyebrow">Обучение</p><h2>Курсы и программы</h2></div></div><div class="course-grid">@foreach($courses as $course)<a href="{{route('additional.course',$course->slug)}}"><small>{{$course->kind}}</small><h3>{{$course->title}}</h3><div><span>{{$course->hours}}</span><span>{{$course->format}}</span></div><b>О программе →</b></a>@endforeach</div></section>
+<section class="block retraining-feature"><div><p class="eyebrow">Новая квалификация</p><h2>Профессиональная переподготовка</h2><p>Отдельные программы с учебным планом, требованиями к слушателям, итоговой аттестацией и документом о квалификации.</p></div><span>↗</span></section>
+<section class="block"><p class="eyebrow">Официально</p><h2>Документы</h2><div class="document-list">@forelse($documents as $doc)<a href="{{asset('storage/'.$doc->file_path)}}" target="_blank"><b>{{$doc->title}}</b><em>Открыть →</em></a>@empty<p>Документы пока не опубликованы.</p>@endforelse</div></section>
+@if($enrollmentForm)<section id="enroll" class="block cdo-enroll"><div><p class="eyebrow">Регистрация</p><h2>Записаться на обучение</h2><p>Заявка отправляется через форму CMS и сохраняется для обработки ответственным сотрудником.</p></div><a class="admin-primary" href="{{route('forms.show',$enrollmentForm->slug)}}">Открыть форму заявки →</a></section>@endif
+@endsection

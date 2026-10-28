@@ -1,0 +1,8 @@
+@extends('layouts.admin')
+@section('title','Конструктор формы — CMS ЧМУ')
+@section('content')
+<form method="POST" action="{{route('admin.forms.save',$record?->id??'new')}}">@csrf
+<header class="admin-top editor-top"><div><a href="{{route('admin.forms.index')}}" class="admin-back">← Обращения</a><small>Конструктор</small><h1>{{$record?->title??'Новая форма'}}</h1></div><button class="admin-primary">Сохранить</button></header>
+@if(session('success'))<div class="admin-flash">{{session('success')}}</div>@endif
+<div class="editor-layout"><section class="editor-canvas"><div class="editor-field"><label>Название</label><input name="title" required value="{{old('title',$record?->title)}}"></div><div class="editor-field"><label>Описание</label><textarea name="description" rows="4">{{$record?->description}}</textarea></div><div class="editor-field"><label>Поля формы (JSON)</label><textarea name="fields_json" rows="22" required>{{old('fields_json',json_encode($record?->fields??[['name'=>'name','label'=>'Имя','type'=>'text','required'=>true],['name'=>'email','label'=>'E-mail','type'=>'email','required'=>true],['name'=>'message','label'=>'Сообщение','type'=>'textarea','required'=>true]],JSON_PRETTY_PRINT|JSON_UNESCAPED_UNICODE))}}</textarea><small>Типы: text, email, tel, textarea, select. Для select добавьте "options": ["Вариант 1","Вариант 2"].</small></div></section><aside class="editor-settings"><label>Slug<input name="slug" value="{{$record?->slug}}"></label><label><input type="checkbox" name="is_active" value="1" @checked($record?->is_active??true)> Форма активна</label>@if($record)<a href="{{route('forms.show',$record->slug)}}" target="_blank">Открыть публичную форму →</a>@endif</aside></div></form>
+@endsection

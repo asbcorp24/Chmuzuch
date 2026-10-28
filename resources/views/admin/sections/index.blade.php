@@ -1,0 +1,8 @@
+@extends('layouts.admin')
+@php($labels=['official'=>'Сведения об образовательной организации','employees'=>'Работникам','safety'=>'Безопасность','anticorruption'=>'Противодействие коррупции','tenants'=>'Арендаторам'])
+@section('title',($labels[$portal]??$portal).' — CMS')
+@section('content')
+<header class="admin-top"><div><a href="/admin" class="admin-back">← Панель</a><small>Структура портала</small><h1>{{$labels[$portal]}}</h1></div>@if(auth()->user()?->role!=='editor')<a class="admin-primary" href="{{route('admin.sections.edit',[$portal,'new'])}}">+ Раздел</a>@endif</header>
+@if(session('success'))<div class="admin-flash">{{session('success')}}</div>@endif
+<section class="admin-list">@forelse($items as $item)<div class="admin-row"><a href="{{route('admin.sections.edit',[$portal,$item->exists?$item->id:$item->slug])}}"><span><b>{{$item->title}}</b><small>{{$item->group}}</small></span><span>/{{$item->slug}}</span><span>{{$item->is_active?'Опубликован':'Скрыт'}}</span><b>Редактировать</b></a>@if(auth()->user()?->role!=='editor' && $item->exists)<form method="POST" action="{{route('admin.sections.destroy',[$portal,$item])}}">@csrf @method('DELETE')<button onclick="return confirm('Удалить раздел?')">×</button></form>@endif</div>@empty<div class="admin-empty"><b>Разделов пока нет</b><p>Добавьте структуру вручную или позже импортируйте её с прежнего сайта.</p></div>@endforelse</section>
+@endsection

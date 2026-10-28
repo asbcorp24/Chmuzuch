@@ -1,0 +1,9 @@
+@extends('layouts.app')
+@section('title','Наука и проекты — ЧМУ')
+@section('content')
+<section class="science-hero"><div><p class="eyebrow">Исследовать • сохранять • создавать</p><h1>Наука<br>и проекты</h1><p>Исследовательская деятельность, конференции и проекты на пересечении музыки, образования и культуры.</p></div><div class="science-orbit"><span>∑</span><i>музыка</i><i>культура</i><i>исследование</i></div></section>
+<section class="science-directions"><article><span>01</span><h2>Научная деятельность</h2></article><article><span>02</span><h2>Исследовательская деятельность</h2></article><article><span>03</span><h2>Студенческая наука</h2></article></section>
+<section class="block"><div class="section-head"><div><p class="eyebrow">Идеи в работе</p><h2>Проекты</h2></div></div><div class="project-grid">@forelse($projects as $p)<a href="{{route('science.project',$p->slug)}}"><small>{{$p->status}}</small><h3>{{$p->title}}</h3><p>{{$p->lead}}</p><b>О проекте →</b></a>@empty<p>Проекты пока не опубликованы.</p>@endforelse</div></section>
+<section id="conferences" class="block conference-zone"><div class="section-head"><div><p class="eyebrow">Профессиональный диалог</p><h2>Конференции</h2></div></div><div class="conference-list">@forelse($conferences as $conf)<a href="{{route('science.conference',$conf->slug)}}"><time>{{$conf->year}}</time><div><small>{{$conf->status}}</small><h3>{{$conf->title}}</h3></div><span>→</span></a>@empty<p>Конференции пока не опубликованы.</p>@endforelse</div></section>
+<section id="archive" class="block"><p class="eyebrow">История</p><h2>Архив конференций</h2><div class="year-archive">@foreach($years as $year)<a href="#conferences"><b>{{$year}}</b><span>{{$conferences->where('year',$year)->count()}} материалов</span><i>→</i></a>@endforeach</div></section>
+@endsection

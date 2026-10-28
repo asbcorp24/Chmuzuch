@@ -1,0 +1,8 @@
+@extends('layouts.admin')
+@section('title','Документы — CMS ЧМУ')
+@section('content')
+<header class="admin-top"><div><a href="/admin" class="admin-back">← Панель</a><small>Единая библиотека</small><h1>Документы</h1></div><a class="admin-primary" href="{{route('admin.documents.edit','new')}}">+ Добавить</a></header>
+@if(session('success'))<div class="admin-flash">{{session('success')}}</div>@endif
+<section class="admin-toolbar"><form method="GET"><select name="category" onchange="this.form.submit()"><option value="">Все категории</option>@foreach($categories as $c)<option value="{{$c}}" @selected($category===$c)>{{$c}}</option>@endforeach</select></form></section>
+<section class="admin-list"><div class="admin-list-head"><span>Документ</span><span>Категория</span><span>Дата</span><span></span></div>@forelse($items as $item)<div class="admin-row"><a href="{{route('admin.documents.edit',$item->id)}}"><span><b>{{$item->title}}</b><small>{{$item->number}}</small></span><span>{{$item->category}}</span><span>{{$item->document_date?->format('d.m.Y')??'—'}}</span><b>{{$item->is_public?'Опубликован':'Скрыт'}}</b></a><form method="POST" action="{{route('admin.documents.destroy',$item)}}">@csrf @method('DELETE')<button onclick="return confirm('Удалить документ и файл?')">×</button></form></div>@empty<div class="admin-empty"><b>Документов пока нет</b></div>@endforelse</section>{{$items->links()}}
+@endsection

@@ -1,0 +1,6 @@
+@extends('layouts.app')
+@section('title','Преподаватели — ЧМУ')
+@section('content')
+<section class="section-hero"><p class="eyebrow">Люди • ЧМУ</p><h1>Преподаватели</h1><p>Педагогическая школа училища — исполнители, наставники, исследователи и хранители музыкальной традиции.</p></section>
+<section class="block"><div class="filter-strip"><a href="/teachers" class="{{!$department?'active':''}}">Все</a>@foreach($departments as $d)<a href="/teachers?department={{$d->slug}}" class="{{$department===$d->slug?'active':''}}">{{$d->title}}</a>@endforeach</div><div class="teacher-grid">@forelse($teachers as $t)<a class="teacher-tile" href="{{route('teachers.show',$t->slug)}}"><div class="teacher-photo">@if($t->photo)<img src="{{asset('storage/'.$t->photo)}}" alt="{{$t->name}}">@else♪@endif</div><small>{{$t->department?->title??'ЧМУ'}}</small><h2>{{$t->name}}</h2><p>{{$t->position}}</p><span>О преподавателе →</span></a>@empty<div class="empty-state">Карточки преподавателей готовятся к публикации.</div>@endforelse</div>{{$teachers->links()}}</section>
+@endsection

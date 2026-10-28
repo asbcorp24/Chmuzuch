@@ -1,0 +1,7 @@
+@extends('layouts.admin')
+@section('title',$page->title.' — конструктор')
+@section('content')
+<form method="POST" action="{{route('admin.portal.save',$slug)}}">@csrf<header class="admin-top"><div><a href="/admin" class="admin-back">← Панель</a><small>Структурированная страница</small><h1>{{$page->title}}</h1></div><div class="editor-actions"><a href="/{{$slug}}" target="_blank">Предпросмотр ↗</a><button class="admin-primary">Сохранить</button></div></header>
+@if(session('success'))<div class="admin-flash">{{session('success')}}</div>@endif<input type="hidden" name="blocks_json" data-blocks-json value="{{json_encode($blocks,JSON_UNESCAPED_UNICODE)}}">
+<div class="home-builder-layout"><section><div class="builder-note"><b>Структура страницы</b><span>Меняйте порядок и видимость. Содержимое динамических блоков берётся из соответствующих модулей CMS.</span></div><div class="home-blocks" data-home-blocks>@foreach($blocks as $block)<article class="home-block" draggable="true" data-id="{{$block['id']}}"><span class="drag-handle">⋮⋮</span><div class="block-state"><input type="checkbox" @checked($block['enabled']??true)></div><div><small>{{$block['id']}}</small><h3>{{$block['title']}}</h3></div></article>@endforeach</div></section><aside class="home-inspector"><h3>Источники</h3><p>Программы, документы, отделения, коллективы и события обновляются автоматически из БД.</p></aside></div></form>
+@endsection

@@ -1,0 +1,7 @@
+@extends('layouts.app')
+@section('title',($page?->seo_title?:'Расписание').' — ЧМУ')
+@section('content')
+<section class="schedule-hero"><p class="eyebrow">Учебный процесс</p><h1>{{$page?->title?:'Расписание'}}</h1><p>{{$page?->excerpt?:'Актуальное расписание занятий, консультаций, экзаменов и других учебных мероприятий.'}}</p></section>
+@if($page?->content)<section class="block"><div class="rich-content">{!!$page->content!!}</div></section>@endif
+<section class="block"><nav class="schedule-filters"><a class="{{!$type?'active':''}}" href="{{route('schedule')}}">Все</a>@foreach(['classes'=>'Занятия','exams'=>'Экзамены','consultations'=>'Консультации','changes'=>'Замены и изменения'] as $key=>$label)<a class="{{$type===$key?'active':''}}" href="{{route('schedule',['type'=>$key])}}">{{$label}}</a>@endforeach</nav><div class="section-head"><div><p class="eyebrow">Актуальные материалы</p><h2>Расписание и изменения</h2></div></div><div class="document-list">@forelse($documents as $doc)<a href="{{asset('storage/'.$doc->file_path)}}" target="_blank" rel="noopener"><b>{{$doc->title}}</b><small>{{$doc->document_date?->format('d.m.Y')}} @if(!empty($doc->meta['schedule_type'])) · {{['classes'=>'Занятия','exams'=>'Экзамены','consultations'=>'Консультации','changes'=>'Изменения'][$doc->meta['schedule_type']]??''}} @endif</small><em>Открыть →</em></a>@empty<p>Актуальное расписание ещё не опубликовано учебной частью.</p>@endforelse</div></section>
+@endsection

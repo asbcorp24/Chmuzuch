@@ -1,0 +1,10 @@
+@extends('layouts.app')
+@section('title','Образование — ЧМУ')
+@section('content')
+<section class="edu-hero"><div><p class="eyebrow">Образование</p><h1>Профессиональная <i>музыкальная траектория</i></h1><p>Программы СПО, учебный процесс, практика и государственная итоговая аттестация.</p></div><div class="edu-orbit"><span>СПО</span></div></section>
+<nav class="edu-nav"><a href="#programs">Программы</a><a href="#process">Учебный процесс</a><a href="#practice">Практика</a><a href="#gia">ГИА</a><a href="#documents">Документы</a></nav>
+<section class="edu-section" id="programs"><p class="eyebrow">Программы СПО</p><h2>Специальности</h2><div class="edu-program-grid">@forelse($programs as $program)<a href="{{route('education.program',$program->slug)}}" class="edu-program-card"><span>{{$program->code}}</span><h3>{{$program->title}}</h3><p>{{$program->qualification}}</p><div>@foreach($program->profiles??[] as $profile)<small>{{$profile}}</small>@endforeach</div><b>Подробнее →</b></a>@empty<div class="empty-state">Образовательные программы готовятся к публикации.</div>@endforelse</div></section>
+<section class="edu-dark" id="process"><div><p class="eyebrow">Учебный процесс</p><h2>От первого курса до профессиональной сцены</h2></div><div class="edu-process">@foreach(['Учебные планы','Календарные графики','Рабочие программы','Промежуточная аттестация'] as $i=>$title)<article><span>0{{$i+1}}</span><h3>{{$title}}</h3></article>@endforeach</div></section>
+<section class="edu-split" id="practice"><div class="edu-feature"><p class="eyebrow">Расписание</p><h2>Учебная неделя</h2><a href="/schedule">Открыть расписание →</a></div><div class="edu-feature"><p class="eyebrow">Практика</p><h2>Практическая подготовка</h2><a href="/practice">Сектор практики →</a></div></section>
+<section class="edu-docs" id="documents"><div><p class="eyebrow">Документы</p><h2>Образовательная документация</h2></div><div><a href="/official/education">Сведения об образовании →</a><a href="/official/standards">Образовательные стандарты →</a><a href="/official/documents">Локальные документы →</a><a href="/applicants">Поступление →</a></div></section>
+@endsection
