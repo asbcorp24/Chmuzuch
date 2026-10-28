@@ -126,3 +126,21 @@ main .card a:focus-visible,main .concert-card a:focus-visible{outline-offset:5px
 @media(max-width:520px){.hero-explorer{padding:14px}.hero-explorer-links{grid-template-columns:1fr}.hero-explorer-heading{flex-direction:column;gap:3px}.hero-explorer-link{min-height:52px}}
 
 .page-3d{position:relative;min-height:260px;overflow:hidden}.page-3d canvas,#hero-3d canvas{display:block;width:100%;height:100%}@media(max-width:600px){.page-3d{min-height:210px}}
+
+
+/* Desktop homepage: balanced editorial layout, mobile rules only on narrow screens */
+@media(min-width:1101px){
+ .hero{min-height:760px;min-height:100svh;padding:130px max(5vw,calc((100vw - 1440px)/2)) 260px;align-items:center}
+ .hero-copy{width:min(48vw,640px);max-width:640px;padding-bottom:0}
+ .hero h1{font-size:clamp(58px,5.2vw,92px);line-height:.96;letter-spacing:-.035em;margin:20px 0 24px}
+ .hero-copy>p:not(.eyebrow){font-size:clamp(15px,1.15vw,18px);line-height:1.55;max-width:540px}
+ .hero-3d{left:48%;right:0;opacity:.65;pointer-events:none}
+ .hero-explorer{left:max(5vw,calc((100vw - 1440px)/2));right:max(5vw,calc((100vw - 1440px)/2));bottom:26px}
+ .hero-explorer-links{grid-template-columns:repeat(4,minmax(0,1fr))}
+ .site-header .brand{max-width:280px}
+}
+@media(min-width:901px) and (max-width:1100px){
+ .hero h1{font-size:clamp(54px,6vw,76px)}
+ .hero-copy{max-width:55%;padding-bottom:220px}
+ .hero-3d{left:48%}
+}
