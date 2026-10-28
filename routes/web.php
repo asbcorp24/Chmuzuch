@@ -179,7 +179,7 @@ Route::prefix('admin')->name('admin.')->middleware(['auth','role:super_admin,con
  Route::get('/content/{entity}/edit/{id}',[PeopleController::class,'edit'])->name('people.edit');
  Route::post('/content/{entity}/edit/{id}',[PeopleController::class,'save'])->middleware('role:super_admin,content_manager')->name('people.save');
  Route::delete('/content/{entity}/{id}',[PeopleController::class,'destroy'])->middleware('role:super_admin,content_manager')->name('people.destroy');
- Route::redirect('/form-builder','/admin/forms')->middleware('role:super_admin,content_manager')->name('form-builder');
+ Route::redirect('/form-builder','/admin/forms/builder/new')->middleware('role:super_admin,content_manager')->name('form-builder');
  Route::get('/form-builder/{id}',[AdminFormController::class,'builder'])->middleware('role:super_admin,content_manager')->name('form-builder.edit');
  Route::get('/',[CmsController::class,'dashboard'])->name('dashboard');
  Route::get('/{module}',[CmsController::class,'module'])->name('module');
