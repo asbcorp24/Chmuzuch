@@ -10,7 +10,7 @@ class SettingsController extends Controller {
  'general'=>['site_name','short_name','tagline','logo','favicon'],
  'contacts'=>['address','postal_address','phone','email','work_hours','map_embed'],
  'social'=>['vk','telegram','rutube'],
- 'seo'=>['default_title','default_description'],
+ 'seo'=>['default_title','default_description','site_url','robots','og_image','og_site_name','twitter_card','yandex_verification','google_verification'],
  'appearance'=>['accent','ornament','hero_3d','wireframe','bloom','rotation','quality'],
  'privacy'=>['cookie_text','privacy_url','personal_data_url'],
  'footer'=>['copyright','footer_text']
