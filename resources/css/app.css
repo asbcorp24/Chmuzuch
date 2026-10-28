@@ -687,3 +687,35 @@ body.admin-body{color:#eef3f8;background:#101923}
 .admin-body form:has(#person-main) .editor-settings{background:transparent;padding:0;border:0}
 @media(max-width:950px){.admin-body form:has(#person-main) .editor-layout{grid-template-columns:1fr}}
 @media(max-width:650px){.admin-body .cms-nav-item-fields>form:first-child,.admin-body .cms-nav-create>form{grid-template-columns:1fr}.admin-body .cms-nav-item summary{align-items:flex-start;flex-direction:column}.admin-body form:has(#person-main) .editor-canvas{padding:15px}}
+
+
+/* Unified document, education and media management */
+.admin-body .admin-main form:has(#record-main) .editor-layout{display:grid;grid-template-columns:minmax(0,1fr) minmax(280px,340px);gap:22px;align-items:start}
+.admin-body .admin-main form:has(#record-main) .editor-canvas{min-width:0;padding:24px;background:#1b2937;border:1px solid #526679;border-radius:13px}
+.admin-body .admin-main form:has(#record-main) .editor-settings{padding:0;background:transparent;border:0;min-width:0}
+.admin-body .admin-main form:has(#record-main) .editor-field{margin-bottom:18px}
+.admin-body .admin-main form:has(#record-main) .editor-field label,.admin-body .admin-main form:has(#record-main) .cms-settings-panel label{display:flex;flex-direction:column;gap:7px;margin-bottom:14px;color:#eaf1f8}
+.admin-body .admin-main form:has(#record-main) input:not([type=checkbox]),.admin-body .admin-main form:has(#record-main) textarea,.admin-body .admin-main form:has(#record-main) select{width:100%;min-width:0;box-sizing:border-box;background:#101d29;color:#fff;border:1px solid #65798b;border-radius:9px;padding:11px}
+.admin-body #record-main,.admin-body #record-options{scroll-margin-top:110px}
+.admin-body .cms-media-upload-panel{padding:18px;margin:0 0 24px;background:#1b2937;border:1px solid #506477;border-radius:13px}
+.admin-body .cms-media-upload-panel>summary{cursor:pointer;color:#fff;font-size:18px;font-weight:700;padding:4px 0 16px}
+.admin-body .cms-media-upload-panel:not([open])>summary{padding-bottom:4px}
+.admin-body .cms-media-upload-panel .media-upload-real{display:flex;flex-direction:column;gap:17px}
+.admin-body .cms-media-upload-panel .upload-drop{display:flex;flex-direction:column;align-items:center;gap:10px;padding:28px 18px;border:2px dashed #8799a9;border-radius:12px;background:#142331;color:#f1f6fa;text-align:center;cursor:pointer}
+.admin-body .cms-media-upload-panel .upload-drop input{max-width:100%;color:#e8f0f8}
+.admin-body .cms-media-upload-panel .media-link-fields{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}
+.admin-body .cms-media-upload-panel .media-link-fields label{display:flex;flex-direction:column;gap:8px;color:#f0f4f8}
+.admin-body .media-library .media-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,240px),1fr));gap:16px}
+.admin-body .media-library .media-item{min-width:0;background:#1c2c3b;border:1px solid #536779;border-radius:13px;overflow:hidden}
+.admin-body .media-library .media-preview{min-height:145px;display:flex;align-items:center;justify-content:center;background:#12212e}
+.admin-body .media-library .media-preview img,.admin-body .media-library .media-preview video{width:100%;height:185px;object-fit:cover}
+.admin-body .media-library .media-meta{padding:12px;display:flex;flex-direction:column;gap:6px;overflow-wrap:anywhere;color:#d9e5f0}
+.admin-body .media-library .media-meta b{color:#fff}
+.admin-body .media-library .media-edit{padding:10px 12px;border-top:1px solid #536779}
+.admin-body .media-library .media-edit summary{cursor:pointer;color:#f4f6f9;font-weight:650}
+.admin-body .media-library .media-edit form{display:flex;flex-direction:column;gap:9px;margin-top:12px}
+.admin-body .media-filters{display:flex;flex-wrap:wrap;gap:8px;margin:15px 0}
+.admin-body .media-filters a{padding:9px 13px;border:1px solid #637789;border-radius:9px;text-decoration:none;color:#f1f6fa}
+.admin-body .media-filters a.active{background:#b9333b;border-color:#d35d63;color:#fff}
+@media(max-width:950px){.admin-body .admin-main form:has(#record-main) .editor-layout{grid-template-columns:1fr}}
+@media(max-width:650px){.admin-body .cms-media-upload-panel .media-link-fields{grid-template-columns:1fr}.admin-body .admin-main form:has(#record-main) .editor-canvas{padding:15px}}
