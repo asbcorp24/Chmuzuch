@@ -171,5 +171,5 @@ Route::prefix('admin')->name('admin.')->middleware(['auth','role:super_admin,con
  Route::get('/{module}',[CmsController::class,'module'])->name('module');
  Route::get('/{module}/edit/{id}',[CmsController::class,'editor'])->name('editor');
  Route::post('/{module}/edit/{id}',[CmsController::class,'save'])->name('save');
- Route::delete('/{module}/{id}',[CmsController::class,'destroy'])->name('destroy');
+ Route::delete('/{module}/{id}',[CmsController::class,'destroy'])->middleware('role:super_admin,content_manager')->name('destroy');
 });
