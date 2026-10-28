@@ -1,6 +1,6 @@
 # Чебоксарское музыкальное училище — Chmuzuch
 
-Laravel 9 / PHP 8.1+ / MySQL / Vite / Three.js. Развёртывание по схеме проекта [vdmsh](https://github.com/asbcorp24/vdmsh), адаптированной для **Timeweb**. Разработка ведётся в ветке `feature/legacy-site-crawler`; в `main` изменения переносятся только после согласования.
+Laravel 9 / PHP 8.1+ / MySQL / Vite / Three.js. Развёртывание по схеме проекта [vdmsh](https://github.com/asbcorp24/vdmsh), адаптированной для **Timeweb**. Основная рабочая ветка — `main`. Все последующие изменения и обновления выполняются в `main`.
 
 ## Требования
 
@@ -22,7 +22,7 @@ Laravel 9 / PHP 8.1+ / MySQL / Vite / Three.js. Развёртывание по 
 
 ```bash
 cd /home/USER/PROJECT
-git clone --branch feature/legacy-site-crawler https://github.com/asbcorp24/Chmuzuch.git .
+git clone --branch main https://github.com/asbcorp24/Chmuzuch.git .
 composer install --no-dev --prefer-dist --optimize-autoloader
 cp .env.example .env
 php artisan key:generate
@@ -100,8 +100,8 @@ php artisan config:clear
 
 ```bash
 git fetch origin
-git checkout feature/legacy-site-crawler
-git pull --ff-only origin feature/legacy-site-crawler
+git checkout main
+git pull --ff-only origin main
 composer install --no-dev --prefer-dist --optimize-autoloader
 php artisan migrate --force
 npm install
