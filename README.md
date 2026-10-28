@@ -137,3 +137,106 @@ php artisan queue:work --sleep=3 --tries=3 --max-time=3600
 - [ ] Не импортировать legacy-контент без отдельного согласования.
 
 См. также `docs/OLD_SITE_CONTENT_MAP.md`.
+
+
+## Развёртывание на Timeweb
+
+Проект: Laravel 9, PHP 8.1+ (рекомендуется совместимая версия PHP 8.2), MySQL, Node.js 20, Vite и Three.js. Схема развёртывания основана на `asbcorp24/vdmsh`, но команды адаптированы под этот репозиторий.
+
+**Рекомендуется Timeweb VPS/VDS** с SSH, Composer и Node.js. На обычном виртуальном хостинге проверьте доступность SSH, CLI PHP и возможность указать корень сайта `public`. Не направляйте веб-сервер в корень Laravel.
+
+### 1. Подготовка сервера
+
+Установите PHP 8.2 CLI/FPM с расширениями `mbstring`, `openssl`, `pdo_mysql`, `xml`, `ctype`, `fileinfo`, `tokenizer`, `bcmath`; Composer 2; MySQL/MariaDB; Git; Node.js 20+ и npm. В панели Timeweb создайте сайт, базу MySQL и пользователя БД. Включите SSL (Let's Encrypt).
+
+Пример для сервера с SSH (замените путь на реальный путь Timeweb):
+
+```bash
+cd /var/www/DOMAIN
+git clone --branch feature/legacy-site-crawler https://github.com/asbcorp24/Chmuzuch.git .
+composer install --no-dev --prefer-dist --optimize-autoloader
+cp .env.example .env
+php artisan key:generate
+```
+
+Если каталог уже содержит файлы Timeweb, клонируйте репозиторий в пустой каталог приложения, а не поверх системных файлов.
+
+### 2. Настройка .env
+
+```dotenv
+APP_NAME="Чебоксарское музыкальное училище"
+APP_ENV=production
+APP_DEBUG=false
+APP_URL=https://DOMAIN
+LOG_LEVEL=warning
+DB_CONNECTION=mysql
+DB_HOST=127.0.0.1
+DB_PORT=3306
+DB_DATABASE=DB_NAME
+DB_USERNAME=DB_USER
+DB_PASSWORD=DB_PASSWORD
+FILESYSTEM_DISK=public
+SESSION_DRIVER=file
+CACHE_DRIVER=file
+```
+
+Никогда не коммитьте рабочий `.env`. Используйте отдельные учётные данные БД и сильные пароли.
+
+### 3. База, файлы и фронтенд
+
+```bash
+php artisan migrate --force
+php artisan storage:link
+npm install
+npm run build
+php artisan optimize:clear
+php artisan config:cache
+php artisan view:cache
+```
+
+**Не выполняйте `db:seed` автоматически:** перенос содержимого старого сайта и первоначальное наполнение CMS должны запускаться только после отдельного согласования. Перед публикацией создайте администратора предусмотренным проектом способом и проверьте маршруты авторизации.
+
+Каталоги `storage` и `bootstrap/cache` должны быть доступны на запись PHP-процессу. Не используйте права `777`. Публичный корень сайта должен указывать на `/var/www/DOMAIN/public` (фактический путь зависит от Timeweb).
+
+### 4. PWA и STL
+
+- Для установки PWA нужен рабочий HTTPS, `/manifest.webmanifest`, `/sw.js`, `/offline.html`, `/pwa-icon.svg`.
+- После сборки проверьте `/build/manifest.json` и отсутствие ошибок JavaScript.
+- STL загружаются в `storage/app/public/models/stl`; `storage:link` делает их доступными по `/storage/models/stl/...`.
+- При отсутствии STL отображается стандартная 3D-модель. При недоступном WebGL отображается текстовый резервный символ.
+- Для стабильной установки PWA на Android нужны также PNG-иконки 192×192 и 512×512; текущий SVG — базовый вариант.
+- Служебные маршруты `/admin`, `/api`, файлы `/storage` и STL не должны кэшироваться Service Worker.
+
+### 5. Обновление и откат
+
+Перед обновлением сделайте резервные копии базы и `storage/app/public`:
+
+```bash
+git fetch origin
+git checkout feature/legacy-site-crawler
+git pull --ff-only origin feature/legacy-site-crawler
+composer install --no-dev --prefer-dist --optimize-autoloader
+php artisan migrate --force
+npm install
+npm run build
+php artisan optimize:clear
+php artisan config:cache
+php artisan view:cache
+```
+
+Миграции БД не откатывайте вслепую. Для отката сохраните предыдущий Git-коммит, резервную копию БД и загруженных файлов. Ветка `main` не используется до отдельного разрешения.
+
+### 6. Проверка после установки
+
+```bash
+php artisan about
+php artisan migrate:status
+php artisan route:list
+php artisan storage:link
+```
+
+В браузере проверьте главную страницу и интерактивные разделы, административный вход, загрузку STL, 3D на динамических страницах, концерты, плеер, медиа, мобильное меню и установку PWA. Убедитесь, что `/.env` недоступен извне.
+
+### 7. Очереди и планировщик
+
+Если появятся фоновые задания, настройте Supervisor/systemd для `php artisan queue:work`. Если появятся запланированные задачи, добавьте cron с `php artisan schedule:run` раз в минуту. Для текущего проекта это не обязательные шаги без соответствующих задач.
