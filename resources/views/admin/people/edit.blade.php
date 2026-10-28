@@ -1,5 +1,11 @@
 @extends('layouts.admin')
-@php($titles=['departments'=>'Отделение','teachers'=>'Преподаватель','collectives'=>'Коллектив'];$m=$record?->meta??[];$a=$record?->achievements??[];$achievementItems=is_array($a)&&isset($a['items'])?$a['items']:(is_array($a)?$a:[]);$teacherDisciplines=is_array($a)?($a['disciplines']??[]):[])
+@php
+$titles = ['departments' => 'Отделение', 'teachers' => 'Преподаватель', 'collectives' => 'Коллектив'];
+$m = $record?->meta ?? [];
+$a = $record?->achievements ?? [];
+$achievementItems = is_array($a) && isset($a['items']) ? $a['items'] : (is_array($a) ? $a : []);
+$teacherDisciplines = is_array($a) ? ($a['disciplines'] ?? []) : [];
+@endphp
 @section('title',$titles[$entity].' — CMS ЧМУ')
 @section('content')
 <form method="POST" action="{{route('admin.people.save',[$entity,$record?->id??'new'])}}">@csrf
