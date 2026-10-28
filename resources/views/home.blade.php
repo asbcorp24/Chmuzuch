@@ -3,7 +3,7 @@
 @foreach($blocks as $block)
 @php($id=$block['id']??'')
 @if($id==='hero')
-<section class="hero"><div id="hero-3d" class="hero-3d" data-stl="{{!empty($block['scene3d']['stl'])?asset('storage/'.$block['scene3d']['stl']):''}}" data-rotation-x="{{$page?->blocks['scene3d']['rotation_x']??0}}" data-rotation-y="{{$page?->blocks['scene3d']['rotation_y']??0}}" data-rotation-z="{{$page?->blocks['scene3d']['rotation_z']??0}}" data-model-scale="{{$page?->blocks['scene3d']['scale']??1}}"></div><div class="hero-copy"><p class="eyebrow">Шупашкар • Чебоксары</p><h1>{!! $block['title']??'Музыка.<br>Наследие.<br><em>Будущее.</em>' !!}</h1><p>{{$block['subtitle']??'Чебоксарское музыкальное училище имени Ф. П. Павлова — академическая традиция в современном цифровом пространстве.'}}</p><div class="hero-actions"><a href="/applicants">Поступить</a><a href="/events" class="ghost">Афиша</a></div></div><div class="ornament"></div>
+<section class="hero"><div id="hero-3d" class="hero-3d" data-stl="{{!empty($block['scene3d']['stl'])?asset('storage/'.$block['scene3d']['stl']):''}}" data-rotation-x="{{$block['scene3d']['rotation_x']??0}}" data-rotation-y="{{$block['scene3d']['rotation_y']??0}}" data-rotation-z="{{$block['scene3d']['rotation_z']??0}}" data-model-scale="{{$block['scene3d']['scale']??1}}"></div><div class="hero-copy"><p class="eyebrow">Шупашкар • Чебоксары</p><h1>{!! $block['headline']??'Музыка.<br>Наследие.<br><em>Будущее.</em>' !!}</h1><p>{{$block['subtitle']??'Чебоксарское музыкальное училище имени Ф. П. Павлова — академическая традиция в современном цифровом пространстве.'}}</p><div class="hero-actions"><a href="/applicants">Поступить</a><a href="/events" class="ghost">Афиша</a></div></div><div class="ornament"></div>
 <nav class="hero-explorer" aria-label="Интерактивная навигация по разделам сайта">
 <div class="hero-explorer-heading"><span>Исследуйте училище</span><small>Выберите направление</small></div>
 <div class="hero-explorer-links">
@@ -19,6 +19,19 @@
 @endforeach
 </div>
 </nav></section>
+@elseif($id==='ticker')
+<section class="ticker"><span>ЧМУ • Ф. П. Павлов</span><span>Академическая музыка</span><span>Чувашская культура</span><span>Творчество и образование</span></section>
+@elseif($id==='intro')
+<section class="block"><p class="eyebrow">Училище</p><div class="split"><h2>{{$block['title']??'Музыкальная традиция Чувашии в движении'}}</h2><p>{{$block['subtitle']??'Чебоксарское музыкальное училище имени Ф. П. Павлова — музыкальное образование, творческие коллективы и культурная жизнь Чувашии.'}}</p></div></section>
+@elseif($id==='competitions' || $id==='conferences')
+<section class="block dual"><article><p class="eyebrow">Конкурсы</p><h2>Профессиональная сцена начинается здесь</h2><a href="/competitions">Конкурсы →</a></article><article><p class="eyebrow">Наука</p><h2>Конференции и исследования</h2><a href="/conferences">Конференции →</a></article></section>
+@elseif($id==='achievements')
+<section class="block achievements"><div><p class="eyebrow">Гордость училища</p><h2>Лауреаты и дипломанты</h2><a href="/achievements">Достижения →</a></div><div><p class="eyebrow">Обратная связь</p><h2>Нас благодарят</h2><a href="/gratitudes">Благодарности →</a></div></section>
+@elseif($id==='official')
+<section class="block official-teaser"><p class="eyebrow">Официально</p><h2>Сведения об образовательной организации</h2><a href="/official">Перейти →</a></section>
+@elseif($id==='additional' || $id==='dshi' || $id==='student_life' || $id==='dormitory' || $id==='applicant_consultation')
+@php($links=['additional'=>['/additional-education','Центр дополнительного образования'],'dshi'=>['/dshi','Детская школа искусств'],'student_life'=>['/student-life','Студенческая жизнь'],'dormitory'=>['/dormitory','Общежитие'],'applicant_consultation'=>['/applicants','Абитуриентам']])
+<section class="block"><p class="eyebrow">Раздел училища</p><h2>{{$block['title']??$links[$id][1]}}</h2><a href="{{$links[$id][0]}}">Подробнее →</a></section>
 @elseif($id==='news')
 <section class="block"><div class="section-head"><div><p class="eyebrow">Пресс-центр</p><h2>{{$block['title']??'Новости'}}</h2></div><a href="/news">Все новости →</a></div><div class="cards cards-3">@forelse($news as $item)<article class="card"><span>{{$item->published_at?->format('d.m')}}</span><h3><a href="{{route('press.article',['news',$item->slug])}}">{{$item->title}}</a></h3><p>{{$item->excerpt}}</p></article>@empty<p>Новости пока не опубликованы.</p>@endforelse</div></section>
 @elseif(in_array($id,['announcements','announce']))
