@@ -168,3 +168,75 @@ php artisan optimize
 ## Ветки
 
 Разработка: `feature/legacy-site-crawler`. Слияние в `main` — только после явного подтверждения. Деплой из feature-ветки подходит для тестового стенда; для боевого запуска рекомендуется сначала провести приёмку и утвердить релиз.
+
+## Развёртывание на Timeweb
+
+Разворачиваем по схеме проекта [vdmsh](https://github.com/asbcorp24/vdmsh): Git → Composer → .env → миграции → Vite → кеширование. Проект использует Laravel 9, PHP 8.0.2+ (рекомендуется PHP 8.2), MySQL, Vite 4, Three.js.
+
+**Рекомендуется Timeweb Cloud VPS** с Ubuntu, SSH, PHP-FPM, Composer 2, Node.js 20 и MySQL/MariaDB. Для обычного виртуального хостинга нужно предварительно проверить SSH, расширения PHP и настройку document root.
+
+Корень сайта в настройках веб-сервера: **/var/www/chmuzuch/public**, а не корень репозитория. Домен должен работать через HTTPS для PWA.
+
+### Установка
+
+```bash
+cd /var/www
+git clone -b feature/legacy-site-crawler https://github.com/asbcorp24/Chmuzuch.git chmuzuch
+cd chmuzuch
+composer install --no-dev --prefer-dist --optimize-autoloader
+cp .env.example .env
+php artisan key:generate
+```
+
+Создайте в Timeweb базу данных и пользователя. В .env установите APP_ENV=production, APP_DEBUG=false, APP_URL=https://ВАШ-ДОМЕН, DB_HOST, DB_DATABASE, DB_USERNAME и DB_PASSWORD. Не публикуйте .env и не добавляйте его в Git.
+
+```bash
+php artisan migrate --force
+php artisan storage:link
+npm install
+npm run build
+php artisan optimize:clear
+php artisan config:cache
+php artisan view:cache
+chmod -R ug+rwX storage bootstrap/cache
+```
+
+**Не запускайте автоматический импорт старого контента.** Проверенного сидера первого администратора пока нет: его необходимо подготовить и проверить отдельно. Пароль администратора не хранить в Git.
+
+### Настройка Timeweb
+
+В панели Timeweb задайте корневую директорию сайта public, включите SSL и перенаправление HTTP на HTTPS. Для nginx используйте Laravel try_files с передачей запросов в index.php и корректный сокет PHP-FPM. Папки storage и bootstrap/cache должны быть доступны на запись PHP-процессу; не ставьте 777.
+
+### Проверка PWA и 3D
+
+Проверьте адреса /manifest.webmanifest, /sw.js, /offline.html, /pwa-icon.svg. Для полной совместимости установки на Android дополнительно нужны PNG-иконки 192 и 512 пикселей. Проверьте на смартфоне установку через Chrome, работу меню, 3D-модель по умолчанию, загрузку STL и повороты модели. Большие STL и медиа не кэшируются автоматически.
+
+### Проверка приложения
+
+```bash
+php artisan about
+php artisan migrate:status
+php artisan route:list
+test -f public/build/manifest.json
+```
+
+Откройте главную, /admin/login, новости, концерты, динамические страницы и мобильную версию.
+
+### Обновление
+
+Перед обновлением сделайте резервную копию БД, .env и storage/app/public.
+
+```bash
+php artisan down
+git pull --ff-only origin feature/legacy-site-crawler
+composer install --no-dev --prefer-dist --optimize-autoloader
+php artisan migrate --force
+npm install
+npm run build
+php artisan optimize:clear
+php artisan config:cache
+php artisan view:cache
+php artisan up
+```
+
+Если обновление завершилось с ошибкой, исправьте её перед возвратом сайта в рабочий режим. Разработка продолжается в feature/legacy-site-crawler; main без отдельного согласования не изменяется.
