@@ -110,8 +110,8 @@ Route::get('/privacy',[SystemController::class,'privacy'])->name('privacy');
 Route::get('/personal-data-consent',[SystemController::class,'consent'])->name('personal-data-consent');
 Route::get('/cookies',[SystemController::class,'cookies'])->name('cookies');
 
-Route::get('/forms/{slug}',[FormController::class,'show'])->middleware('role:super_admin,content_manager')->name('forms.show');
-Route::post('/forms/{slug}',[FormController::class,'submit'])->middleware('role:super_admin,content_manager')->name('forms.submit');
+Route::get('/forms/{slug}',[FormController::class,'show'])->name('forms.show');
+Route::post('/forms/{slug}',[FormController::class,'submit'])->middleware('throttle:10,1')->name('forms.submit');
 
 Route::get('/admin/login',[AuthController::class,'login'])->name('admin.login');
 Route::post('/admin/login',[AuthController::class,'authenticate'])->middleware('throttle:5,1')->name('admin.login.submit');
