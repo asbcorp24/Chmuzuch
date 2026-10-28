@@ -1,0 +1,35 @@
+name: Build Timeweb release
+on:
+  workflow_dispatch:
+  push:
+    branches: [feature/legacy-site-crawler]
+    paths:
+      - 'resources/**'
+      - 'public/**'
+      - 'package.json'
+      - 'package-lock.json'
+      - 'vite.config.js'
+      - '.github/workflows/build-timeweb.yml'
+permissions:
+  contents: read
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+      - name: Install and build
+        run: |
+          if [ -f package-lock.json ]; then npm ci; else npm install --no-audit --no-fund; fi
+          npm run build
+          test -s public/build/manifest.json
+      - name: Package deployable assets
+        run: tar -czf timeweb-public-build.tar.gz -C public build
+      - uses: actions/upload-artifact@v4
+        with:
+          name: timeweb-public-build
+          path: timeweb-public-build.tar.gz
+          retention-days: 3
+          compression-level: 0
