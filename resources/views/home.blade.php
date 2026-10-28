@@ -3,7 +3,7 @@
 @foreach($blocks as $block)
 @php($id=$block['id']??'')
 @if($id==='hero')
-<section class="hero"><div id="hero-3d" class="hero-3d"></div><div class="hero-copy"><p class="eyebrow">Шупашкар • Чебоксары</p><h1>{!! $block['title']??'Музыка.<br>Наследие.<br><em>Будущее.</em>' !!}</h1><p>{{$block['subtitle']??'Чебоксарское музыкальное училище имени Ф. П. Павлова — академическая традиция в современном цифровом пространстве.'}}</p><div class="hero-actions"><a href="/applicants">Поступить</a><a href="/events" class="ghost">Афиша</a></div></div><div class="ornament"></div>
+<section class="hero"><div id="hero-3d" class="hero-3d" data-stl="{{!empty($page?->blocks['scene3d']['stl'])?asset('storage/'.$page->blocks['scene3d']['stl']):''}}" data-rotation-x="{{$page?->blocks['scene3d']['rotation_x']??0}}" data-rotation-y="{{$page?->blocks['scene3d']['rotation_y']??0}}" data-rotation-z="{{$page?->blocks['scene3d']['rotation_z']??0}}" data-model-scale="{{$page?->blocks['scene3d']['scale']??1}}"></div><div class="hero-copy"><p class="eyebrow">Шупашкар • Чебоксары</p><h1>{!! $block['title']??'Музыка.<br>Наследие.<br><em>Будущее.</em>' !!}</h1><p>{{$block['subtitle']??'Чебоксарское музыкальное училище имени Ф. П. Павлова — академическая традиция в современном цифровом пространстве.'}}</p><div class="hero-actions"><a href="/applicants">Поступить</a><a href="/events" class="ghost">Афиша</a></div></div><div class="ornament"></div>
 <nav class="hero-explorer" aria-label="Интерактивная навигация по разделам сайта">
 <div class="hero-explorer-heading"><span>Исследуйте училище</span><small>Выберите направление</small></div>
 <div class="hero-explorer-links">
