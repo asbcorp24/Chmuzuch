@@ -5,6 +5,19 @@
 @php($siteName=data_get($siteSettings,'general.site_name','Чебоксарское музыкальное училище им. Ф. П. Павлова'))
 <title>@yield('title',data_get($siteSettings,'seo.default_title',$siteName))</title>
 <meta name="description" content="@yield('meta_description',data_get($siteSettings,'seo.default_description',data_get($siteSettings,'general.tagline','')))">
+@php($seoBase=rtrim((string)data_get($siteSettings,'seo.site_url',config('app.url')),'/'))
+@php($seoCanonical=$seoBase.request()->getPathInfo())
+<link rel="canonical" href="{{ $seoCanonical }}">
+<meta name="robots" content="{{ data_get($siteSettings,'seo.robots','index,follow') }}">
+<meta property="og:type" content="website">
+<meta property="og:title" content="@yield('title',data_get($siteSettings,'seo.default_title',$siteName))">
+<meta property="og:description" content="@yield('meta_description',data_get($siteSettings,'seo.default_description',data_get($siteSettings,'general.tagline','')))">
+<meta property="og:url" content="{{ $seoCanonical }}">
+<meta property="og:site_name" content="{{ data_get($siteSettings,'seo.og_site_name',$siteName) }}">
+@if(data_get($siteSettings,'seo.og_image'))<meta property="og:image" content="{{ data_get($siteSettings,'seo.og_image') }}">@endif
+<meta name="twitter:card" content="{{ data_get($siteSettings,'seo.twitter_card','summary_large_image') }}">
+@if(data_get($siteSettings,'seo.yandex_verification'))<meta name="yandex-verification" content="{{ data_get($siteSettings,'seo.yandex_verification') }}">@endif
+@if(data_get($siteSettings,'seo.google_verification'))<meta name="google-site-verification" content="{{ data_get($siteSettings,'seo.google_verification') }}">@endif
 @if(data_get($siteSettings,'general.favicon'))<link rel="icon" href="{{data_get($siteSettings,'general.favicon')}}">@endif
 <link rel="manifest" href="/manifest.webmanifest">
 <link rel="icon" type="image/svg+xml" href="/pwa-icon.svg">
