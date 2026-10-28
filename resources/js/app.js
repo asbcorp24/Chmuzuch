@@ -14,11 +14,12 @@ if(root&&settingOn(appearance.hero_3d,true)){
 const mobileMenu=document.querySelector('.mobile-menu');
 const menuToggle=document.querySelector('.menu-toggle');
 const menuClose=document.querySelector('.menu-close');
-function toggleMobileMenu(open){if(!mobileMenu)return;mobileMenu.classList.toggle('is-open',open);mobileMenu.setAttribute('aria-hidden',open?'false':'true');document.body.classList.toggle('menu-open',open);}
+function toggleMobileMenu(open){if(!mobileMenu)return;mobileMenu.classList.toggle('is-open',open);mobileMenu.setAttribute('aria-hidden',open?'false':'true');menuToggle?.setAttribute('aria-expanded',open?'true':'false');document.body.classList.toggle('menu-open',open);}
 menuToggle?.addEventListener('click',()=>toggleMobileMenu(true));
-menuClose?.addEventListener('click',()=>toggleMobileMenu(false));
+menuClose?.addEventListener('click',()=>{toggleMobileMenu(false);menuToggle?.focus();});
+mobileMenu?.addEventListener('click',e=>{if(e.target===mobileMenu)toggleMobileMenu(false)});
 mobileMenu?.querySelectorAll('a').forEach(link=>link.addEventListener('click',()=>toggleMobileMenu(false)));
-document.addEventListener('keydown',e=>{if(e.key==='Escape')toggleMobileMenu(false);});
+document.addEventListener('keydown',e=>{if(e.key==='Escape'&&mobileMenu?.classList.contains('is-open')){toggleMobileMenu(false);menuToggle?.focus();}});
 const visionToggle=document.querySelector('.vision-toggle');
 if(localStorage.getItem('accessibleMode')==='1')document.documentElement.classList.add('accessible');
 visionToggle?.addEventListener('click',()=>{const enabled=document.documentElement.classList.toggle('accessible');localStorage.setItem('accessibleMode',enabled?'1':'0');});
