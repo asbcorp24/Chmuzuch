@@ -6,6 +6,10 @@
 <title>@yield('title',data_get($siteSettings,'seo.default_title',$siteName))</title>
 <meta name="description" content="@yield('meta_description',data_get($siteSettings,'seo.default_description',data_get($siteSettings,'general.tagline','')))">
 @if(data_get($siteSettings,'general.favicon'))<link rel="icon" href="{{data_get($siteSettings,'general.favicon')}}">@endif
+<link rel="manifest" href="/manifest.webmanifest">
+<link rel="icon" type="image/svg+xml" href="/pwa-icon.svg">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="theme-color" content="{{data_get($siteSettings,'appearance.accent','#8d1f2d')}}">
 <script>window.CHMUZUCH=@json(['appearance'=>data_get($siteSettings,'appearance',[])]);</script>
 @vite(['resources/css/app.css','resources/js/app.js'])
