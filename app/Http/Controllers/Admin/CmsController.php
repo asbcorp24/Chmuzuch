@@ -25,9 +25,9 @@ class CmsController extends Controller {
  public function module(string $module): View|RedirectResponse {
   abort_unless(isset($this->modules[$module]),404);
   if($module==='home') return redirect()->route('admin.home.edit');
-  if($module==='settings') return redirect()->route('admin.settings.edit');
+  if($module==='settings'){abort_unless(auth()->user()?->role==='super_admin',403);return redirect()->route('admin.settings.edit');}
   if(in_array($module,['departments','teachers','collectives'])) return redirect()->route('admin.people.index',$module);
-  if($module==='media') return view('admin.media'); if($module==='forms') return redirect()->route('admin.forms.index');
+  if($module==='media') return view('admin.media'); if($module==='forms'){abort_if(auth()->user()?->role==='editor',403);return redirect()->route('admin.forms.index');}
   $items=collect();
   if($module==='pages') $items=Page::latest('updated_at')->paginate(30);
   elseif(isset($this->modules[$module]['post_type'])) $items=Post::type($this->modules[$module]['post_type'])->latest('updated_at')->paginate(30);
@@ -40,6 +40,7 @@ class CmsController extends Controller {
  }
  public function save(Request $request,string $module,string $id='new'): RedirectResponse {
   abort_unless($module==='pages'||isset($this->modules[$module]['post_type']),404);
+  if($request->user()?->role==='editor' && $request->input('status')!=='draft')abort(403,'Редактор может сохранять только черновики.');
   $data=$request->validate(['title'=>'required|string|max:255','slug'=>'nullable|string|max:255','excerpt'=>'nullable|string','content'=>'nullable|string','status'=>'required|in:draft,published,scheduled','published_at'=>'nullable|date','seo_title'=>'nullable|string|max:255','seo_description'=>'nullable|string','department_id'=>'nullable|integer|exists:departments,id','teacher_id'=>'nullable|integer|exists:teachers,id','collective_id'=>'nullable|integer|exists:collectives,id','form_slug'=>'nullable|string|max:255']);
   $data['slug']=Str::slug($data['slug']?:$data['title']); if(!$data['slug']) $data['slug']=Str::random(10);
   if($module==='pages'){ $record=$id==='new'?new Page:Page::findOrFail($id); $data['type']='page'; $blocks=$record->blocks??[]; if($data['form_slug']??null)$blocks['form_slug']=$data['form_slug']; else unset($blocks['form_slug']); $data['blocks']=$blocks; unset($data['form_slug']); }
