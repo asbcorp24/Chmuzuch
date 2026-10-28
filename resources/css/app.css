@@ -520,3 +520,5 @@ body:not(:has(#hero-3d)) .department-row:hover{border-left:3px solid #b9333b}
  .chuvash-topline{height:3px}
  body:not(:has(#hero-3d)) .public-hero::before,body:not(:has(#hero-3d)) .section-hero::before,body:not(:has(#hero-3d)) .events-hero::before,body:not(:has(#hero-3d)) .press-hub-hero::before{width:4px}
 }
+
+.settings-section-nav{display:flex;flex-wrap:wrap;gap:9px;margin:14px 0 22px}.settings-section-nav a{display:inline-flex;padding:10px 15px;border:1px solid #b9333b55;border-radius:9px;background:#182831;color:#f3e6d0;text-decoration:none;font-size:13px}.settings-section-nav a:hover{border-color:#d7b980;background:#263842}.settings-card[id=settings-seo]{border:1px solid #b9333b88;grid-column:1/-1}.settings-card[id=settings-seo] label span{font-size:13px}.settings-card[id=settings-seo] input,.settings-card[id=settings-seo] textarea{width:100%;max-width:100%}html{scroll-behavior:smooth}
