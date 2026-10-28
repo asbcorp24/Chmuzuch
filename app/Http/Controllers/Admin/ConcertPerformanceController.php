@@ -5,7 +5,7 @@ use App\Models\{Post,ConcertPerformance,Student,Teacher,Media};
 use Illuminate\Http\Request;
 class ConcertPerformanceController extends Controller {
  private function concert(Post $concert): Post {abort_unless($concert->type==='concert',404);return $concert;}
- public function index(Post $concert){$this->concert($concert);return view('admin.concert-performances.index',['concert'=>$concert,'performances'=>$concert->concertPerformances()->with(['students','teachers','media'])->get(),'students'=>Student::where('is_active',true)->orderBy('name')->get(),'teachers'=>Teacher::where('is_active',true)->orderBy('name')->get(),'media'=>Media::orderByDesc('id')->get()]);}
+ public function index(Post $concert){$this->concert($concert);return view('admin.concert-performances.index',['concert'=>$concert,'performances'=>$concert->concertPerformances()->with(['students','teachers','media'])->get(),'students'=>Student::where('is_active',true)->orderBy('name')->get(),'teachers'=>Teacher::where('is_active',true)->orderBy('name')->get(),'media'=>Media::orderByDesc('id')->get(),'concertMediaIds'=>$concert->concertMedia()->pluck('media.id')->all()]);}
  public function save(Request $r,Post $concert,?ConcertPerformance $performance=null){
   $this->concert($concert);
   abort_if($performance && $performance->post_id!==$concert->id,404);
@@ -18,5 +18,6 @@ class ConcertPerformanceController extends Controller {
   $performance->media()->sync($data['media_ids']??[]);
   return redirect()->route('admin.concert-performances.index',$concert)->with('success','Номер сохранён');
  }
+ public function saveConcertMedia(Request $r,Post $concert){$this->concert($concert);$d=$r->validate(['media_ids'=>'array','media_ids.*'=>'integer|distinct|exists:media,id']);$concert->concertMedia()->sync($d['media_ids']??[]);return back()->with('success','Медиа концерта сохранены');}
  public function destroy(Post $concert,ConcertPerformance $performance){$this->concert($concert);abort_unless($performance->post_id===$concert->id,404);$performance->delete();return back()->with('success','Номер удалён');}
 }
