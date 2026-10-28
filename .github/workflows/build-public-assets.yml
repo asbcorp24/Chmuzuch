@@ -1,7 +1,7 @@
 name: Build public assets for Timeweb
 on:
   push:
-    branches: [feature/legacy-site-crawler]
+    branches: [main]
     paths:
       - 'resources/js/**'
       - 'resources/css/**'
@@ -9,6 +9,7 @@ on:
       - 'package-lock.json'
       - 'vite.config.js'
       - '.github/workflows/build-public-assets.yml'
+      - 'public/build/**'
   workflow_dispatch:
 permissions:
   contents: write
@@ -41,5 +42,5 @@ jobs:
           git add -f public/build
           if ! git diff --cached --quiet; then
             git commit -m "build: update compiled public assets [skip ci]"
-            git push
+            git push origin HEAD:main
           fi
