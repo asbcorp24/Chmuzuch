@@ -444,3 +444,44 @@ body:not(:has(#hero-3d)) .discipline-list h3{margin:0;font-size:16px}
  body:not(:has(#hero-3d)) .media-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
 }
 @media(max-width:450px){body:not(:has(#hero-3d)) .media-grid{grid-template-columns:1fr}}
+
+
+/* CMS and article page editorial redesign: preserve editable content and STL */
+body:not(:has(#hero-3d)) .public-hero{position:relative;display:grid;grid-template-columns:minmax(0,1fr) minmax(220px,34%);align-items:center;gap:30px;padding:130px clamp(20px,5vw,80px) 40px;min-height:0;background:radial-gradient(ellipse at 83% 38%,#25424a,#0d1c25 65%);border-bottom:1px solid #d7b9802a;overflow:hidden}
+body:not(:has(#hero-3d)) .public-hero>div:first-child{min-width:0;position:relative;z-index:2}
+body:not(:has(#hero-3d)) .public-hero h1{font-family:Georgia,serif;font-size:clamp(32px,3.5vw,52px);line-height:1.12;max-width:850px;margin:12px 0 15px}
+body:not(:has(#hero-3d)) .public-hero p:not(.eyebrow){max-width:680px;font-size:15px;line-height:1.65;color:#c5d0d1}
+body:not(:has(#hero-3d)) .public-hero .page-3d{height:240px;min-height:240px;max-height:240px;width:100%;border:1px solid #d7b9802b;border-radius:15px;background:radial-gradient(circle,#26434a,#0c1a23 75%);overflow:hidden}
+body:not(:has(#hero-3d)) .content-page{padding:36px clamp(20px,5vw,80px) 60px}
+body:not(:has(#hero-3d)) .content-page .rich-content{max-width:940px;margin-inline:auto;font-size:15px;line-height:1.8;color:#d7e0df;overflow-wrap:anywhere}
+body:not(:has(#hero-3d)) .rich-content h2{font-size:clamp(23px,2.3vw,33px);margin:32px 0 12px;color:#f3f0e8}
+body:not(:has(#hero-3d)) .rich-content h3{font-size:clamp(19px,1.7vw,25px);margin:24px 0 10px}
+body:not(:has(#hero-3d)) .rich-content p{margin:0 0 17px}
+body:not(:has(#hero-3d)) .rich-content img{max-width:100%;height:auto;border-radius:10px;display:block;margin:18px auto}
+body:not(:has(#hero-3d)) .rich-content iframe,body:not(:has(#hero-3d)) .rich-content video{max-width:100%;border-radius:10px}
+body:not(:has(#hero-3d)) .rich-content a{color:#e2bd7f;text-decoration:underline;text-underline-offset:3px}
+body:not(:has(#hero-3d)) .rich-content blockquote{margin:25px 0;padding:12px 22px;border-left:3px solid #d7b980;background:#d7b9800d}
+body:not(:has(#hero-3d)) .rich-content table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}
+body:not(:has(#hero-3d)) .rich-content th,body:not(:has(#hero-3d)) .rich-content td{padding:10px 13px;border:1px solid #d7b98038;text-align:left}
+body:not(:has(#hero-3d)) .document-list{display:grid;gap:9px;max-width:1050px}
+body:not(:has(#hero-3d)) .document-list>a{padding:16px 20px;background:#162932;border:1px solid #d7b98026;border-radius:10px;transition:border-color .2s}
+body:not(:has(#hero-3d)) .document-list>a:hover{border-color:#d7b98088}
+body:not(:has(#hero-3d)) .editorial-article{max-width:none;background:linear-gradient(160deg,#112630,#0b161e 440px);padding:125px clamp(20px,5vw,80px) 70px}
+body:not(:has(#hero-3d)) .editorial-article>header{max-width:950px;margin:0 auto 28px}
+body:not(:has(#hero-3d)) .editorial-article h1{font-family:Georgia,serif;font-weight:400;font-size:clamp(32px,3.7vw,53px);line-height:1.15;margin:15px 0 18px}
+body:not(:has(#hero-3d)) .editorial-article .article-lead{font-size:clamp(15px,1.3vw,19px);line-height:1.65;color:#c5d1d2}
+body:not(:has(#hero-3d)) .editorial-article .article-cover{max-width:1050px;margin:0 auto 30px;overflow:hidden;border-radius:12px}
+body:not(:has(#hero-3d)) .editorial-article .article-cover img{display:block;width:100%;height:auto;max-height:540px;object-fit:cover}
+body:not(:has(#hero-3d)) .editorial-article .article-body{max-width:850px;margin-inline:auto;font-size:16px;line-height:1.8;color:#dce3e1;overflow-wrap:anywhere}
+body:not(:has(#hero-3d)) .editorial-article .article-body img{max-width:100%;height:auto;border-radius:10px}
+@media(max-width:900px){
+ body:not(:has(#hero-3d)) .public-hero{padding:92px 18px 26px;grid-template-columns:minmax(0,1fr);gap:15px}
+ body:not(:has(#hero-3d)) .public-hero h1{font-size:clamp(29px,8vw,41px)}
+ body:not(:has(#hero-3d)) .public-hero .page-3d{height:145px;min-height:145px;max-height:145px}
+ body:not(:has(#hero-3d)) .content-page{padding:24px 18px 40px}
+ body:not(:has(#hero-3d)) .content-page .rich-content{font-size:14px}
+ body:not(:has(#hero-3d)) .editorial-article{padding:94px 18px 38px}
+ body:not(:has(#hero-3d)) .editorial-article h1{font-size:clamp(29px,7.5vw,41px)}
+ body:not(:has(#hero-3d)) .editorial-article .article-body{font-size:15px}
+ body:not(:has(#hero-3d)) .document-list>a{padding:13px}
+}
