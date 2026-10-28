@@ -67,16 +67,25 @@ php artisan optimize
 
 Если PHP CLI в SSH отличается от PHP сайта, укажите путь к нужному исполняемому файлу PHP из панели Timeweb. Если `composer` недоступен, устанавливайте зависимости локально на совместимой платформе, затем переносите `vendor`.
 
-## 5. Сборка фронтенда (на компьютере)
+## 5. Готовые ассеты — без Node.js на Timeweb
 
-В корне проекта:
+**Node.js, npm и Vite на Timeweb не устанавливать и не запускать.**
+
+В репозитории настроен GitHub Actions workflow `.github/workflows/build-public-assets.yml`. Он собирает проект на GitHub и коммитит сгенерированные файлы **непосредственно в `public/build/` текущей ветки**, включая `manifest.json`. Для запуска вручную: GitHub → Actions → **Build public assets for Timeweb** → Run workflow → выбрать `feature/legacy-site-crawler`.
+
+Перед первым развёртыванием **обязательно убедитесь**, что в нужной ветке есть непустой файл `public/build/manifest.json`. Пока файла нет, сборка не подтверждена и сайт с директивой `@vite` может выдавать ошибку.
+
+На Timeweb достаточно получить обновления Git:
 
 ```bash
-npm install
-npm run build
+git checkout feature/legacy-site-crawler
+git pull --ff-only
+test -s public/build/manifest.json && echo "Vite assets OK"
+php artisan optimize:clear
+php artisan optimize
 ```
 
-Загрузите на Timeweb **`public/build/` целиком**, включая `manifest.json`. В production не нужен Vite dev server. При обновлениях собирайте фронтенд заново. При наличии lock-файла используйте `npm ci` вместо `npm install`.
+Если GitHub Actions недоступен из-за квоты или прав записи, нужно один раз собрать проект **на компьютере разработчика** и закоммитить каталог `public/build/` в эту ветку. Копировать на Timeweb только исходники `resources/js` и `resources/css` недостаточно. Не используйте Vite dev server в production.
 
 ## 6. Права, файлы и 3D
 
@@ -121,7 +130,7 @@ php artisan optimize:clear
 php artisan optimize
 ```
 
-Пересоберите `npm run build` локально и загрузите новый `public/build`. Проверьте кэш PWA и обновление Service Worker. Для отката кода используйте проверенный предыдущий релиз; миграции БД не всегда обратимы.
+Дождитесь GitHub Actions и проверьте, что новая сборка закоммичена в `public/build/` **до** `git pull` на Timeweb. Проверьте кэш PWA и обновление Service Worker. Для отката кода используйте проверенный предыдущий релиз; миграции БД не всегда обратимы.
 
 ## 10. Cron и очереди
 
