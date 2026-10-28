@@ -12,6 +12,9 @@
 @if($performance->teacher)<p>Преподаватель: {{$performance->teacher->name}}</p>@endif
 @if($performance->accompanist)<p>Концертмейстер: {{$performance->accompanist}}</p>@endif
 @if($performance->description)<p>{{$performance->description}}</p>@endif
+@foreach($performance->students as $student)<p>Студент: {{$student->name}}@if($student->pivot->role) — {{$student->pivot->role}}@endif</p>@endforeach
+@foreach($performance->teachers as $teacher)<p>Преподаватель: {{$teacher->name}}@if($teacher->pivot->role) — {{$teacher->pivot->role}}@endif</p>@endforeach
+@foreach($performance->media as $media)<div class="concert-media"><p>{{$media->title}}</p>@if($media->type==='audio')<audio controls preload="none" src="{{asset('storage/'.$media->path)}}"></audio>@elseif($media->type==='video')<video controls preload="metadata" style="max-width:100%;width:720px" src="{{asset('storage/'.$media->path)}}"></video>@elseif($media->type==='image')<img loading="lazy" alt="{{$media->alt?:$media->title}}" src="{{asset('storage/'.$media->path)}}">@else<a href="{{asset('storage/'.$media->path)}}" target="_blank" rel="noopener">Открыть файл</a>@endif</div>@endforeach
 @if($performance->audio_url)<audio controls preload="none" src="{{$performance->audio_url}}"></audio>@endif
 @if($performance->video_url)<video controls preload="metadata" style="width:100%;max-width:720px" src="{{$performance->video_url}}"></video>@endif
 </article>
