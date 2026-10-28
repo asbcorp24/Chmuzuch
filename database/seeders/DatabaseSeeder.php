@@ -12,6 +12,7 @@ class DatabaseSeeder extends Seeder
             OfficialNavigationSeeder::class,
             HomePageSeeder::class,
             OriginalSiteContentSeeder::class,
+            MuzuchDepartmentsSeeder::class,
         ]);
     }
 }
