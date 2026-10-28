@@ -3,13 +3,13 @@
 @foreach($blocks as $block)
 @php($id=$block['id']??'')
 @if($id==='hero')
-<section class="hero"><div id="hero-3d" class="hero-3d" data-stl="{{!empty($block['scene3d']['stl'])?asset('storage/'.$block['scene3d']['stl']):''}}" data-rotation-x="{{$block['scene3d']['rotation_x']??0}}" data-rotation-y="{{$block['scene3d']['rotation_y']??0}}" data-rotation-z="{{$block['scene3d']['rotation_z']??0}}" data-model-scale="{{$block['scene3d']['scale']??1}}"></div><div class="hero-copy"><p class="eyebrow">Шупашкар • Чебоксары</p><h1>{!! $block['headline']??'Музыка.<br>Наследие.<br><em>Будущее.</em>' !!}</h1><p>{{$block['subtitle']??'Чебоксарское музыкальное училище имени Ф. П. Павлова — академическая традиция в современном цифровом пространстве.'}}</p><div class="hero-actions"><a href="/applicants">Поступить</a><a href="/events" class="ghost">Афиша</a></div></div><div class="ornament"></div>
+<section class="hero"><div class="hero-atmosphere" aria-hidden="true"><span></span><span></span><span></span></div><div id="hero-3d" class="hero-3d" data-stl="{{!empty($block['scene3d']['stl'])?asset('storage/'.$block['scene3d']['stl']):''}}" data-rotation-x="{{$block['scene3d']['rotation_x']??0}}" data-rotation-y="{{$block['scene3d']['rotation_y']??0}}" data-rotation-z="{{$block['scene3d']['rotation_z']??0}}" data-model-scale="{{$block['scene3d']['scale']??1}}"></div><div class="hero-copy"><p class="eyebrow"><span class="live-dot"></span> Чебоксары · музыкальное образование с традициями</p><h1>{!! $block['headline']??'Музыка.<br>Наследие.<br><em>Будущее.</em>' !!}</h1><p>{{$block['subtitle']??'Чебоксарское музыкальное училище имени Ф. П. Павлова — академическая традиция в современном цифровом пространстве.'}}</p><div class="hero-actions"><a href="/applicants">Поступить <span aria-hidden="true">↗</span></a><a href="/events" class="ghost">Афиша концертов <span aria-hidden="true">→</span></a></div><div class="hero-caption"><span>01 / Музыкальная академия</span><span>Чебоксары · Чувашия</span></div></div><div class="ornament"></div>
 <nav class="hero-explorer" aria-label="Интерактивная навигация по разделам сайта">
-<div class="hero-explorer-heading"><span>Исследуйте училище</span><small>Выберите направление</small></div>
+<div class="hero-explorer-heading"><span>Откройте свой путь</span><small>Образование · творчество · события</small></div>
 <div class="hero-explorer-links">
 @foreach($siteNavigation->where('location','header')->whereNull('parent_id')->take(8) as $navItem)
 <div class="hero-explorer-item">
-<a href="{{$navItem->url}}" class="hero-explorer-link"><span class="hero-explorer-note">♫</span><span>{{$navItem->label}}</span><span aria-hidden="true">↗</span></a>
+<a href="{{$navItem->url}}" class="hero-explorer-link"><span class="hero-explorer-note" aria-hidden="true">{{ ['◈','◇','✦','♫','◎','▤','◉','✧'][$loop->index % 8] }}</span><span>{{$navItem->label}}</span><span aria-hidden="true">↗</span></a>
 @php($navChildren=$siteNavigation->where('parent_id',$navItem->id))
 @if($navChildren->isNotEmpty())
 <button type="button" class="hero-explorer-expand" aria-expanded="false" aria-label="Подразделы: {{$navItem->label}}">+</button>
