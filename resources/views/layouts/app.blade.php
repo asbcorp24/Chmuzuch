@@ -26,6 +26,7 @@
 <div id="site-mobile-menu" class="mobile-menu" aria-hidden="true"><div class="mobile-menu-head"><b>Меню</b><button class="menu-close" type="button" aria-label="Закрыть меню">×</button></div><nav>@foreach($siteNavigation->where('location','header')->whereNull('parent_id') as $item)<a href="{{ $item->url }}">{{ $item->label }}</a>@foreach($siteNavigation->where('parent_id',$item->id) as $child)<a class="mobile-submenu-link" href="{{ $child->url }}">{{ $child->label }}</a>@endforeach
 @endforeach
 </nav><div class="mobile-menu-tools"><a href="/search">⌕ Поиск</a><a href="/sitemap">Карта сайта</a></div></div>
+<nav class="app-bottom-nav" aria-label="Быстрая навигация"><a href="/"><span>⌂</span><small>Главная</small></a><a href="/news"><span>▤</span><small>Новости</small></a><a href="/events"><span>♫</span><small>Афиша</small></a><a href="/media"><span>▶</span><small>Медиа</small></a><button type="button" class="app-menu-open" aria-label="Все разделы"><span>☰</span><small>Разделы</small></button></nav>
 <main id="main-content" tabindex="-1">@yield('content')</main>
 @include('public.music-player')
 <footer class="site-footer"><div><b>{{$siteName}}</b>@if(data_get($siteSettings,'footer.footer_text'))<span> {{data_get($siteSettings,'footer.footer_text')}}</span>@endif</div><nav>@foreach(['vk'=>'VK','telegram'=>'Telegram','rutube'=>'Rutube'] as $key=>$label)@if(data_get($siteSettings,'social.'.$key))<a href="{{data_get($siteSettings,'social.'.$key)}}" target="_blank" rel="noopener">{{$label}}</a>@endif
