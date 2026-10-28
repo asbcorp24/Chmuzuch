@@ -9,12 +9,12 @@ class ConcertPerformanceController extends Controller {
  public function save(Request $r,Post $concert,?ConcertPerformance $performance=null){
   $this->concert($concert);
   abort_if($performance && $performance->post_id!==$concert->id,404);
-  $data=$r->validate(['title'=>'required|string|max:255','program_number'=>'required|integer|min:0','composer'=>'nullable|string|max:255','performer'=>'nullable|string|max:255','instrument'=>'nullable|string|max:255','accompanist'=>'nullable|string|max:255','description'=>'nullable|string','is_published'=>'nullable|boolean','student_ids'=>'array','student_ids.*'=>'integer|distinct|exists:students,id','teacher_ids'=>'array','teacher_ids.*'=>'integer|distinct|exists:teachers,id','media_ids'=>'array','media_ids.*'=>'integer|distinct|exists:media,id']);
+  $data=$r->validate(['title'=>'required|string|max:255','program_number'=>'required|integer|min:0','composer'=>'nullable|string|max:255','performer'=>'nullable|string|max:255','instrument'=>'nullable|string|max:255','accompanist'=>'nullable|string|max:255','description'=>'nullable|string','is_published'=>'nullable|boolean','student_roles'=>'nullable|array','student_roles.*'=>'nullable|string|max:120','teacher_roles'=>'nullable|array','teacher_roles.*'=>'nullable|string|max:120','student_ids'=>'array','student_ids.*'=>'integer|distinct|exists:students,id','teacher_ids'=>'array','teacher_ids.*'=>'integer|distinct|exists:teachers,id','media_ids'=>'array','media_ids.*'=>'integer|distinct|exists:media,id']);
   $performance??=new ConcertPerformance;
   $data['post_id']=$concert->id;$data['is_published']=$r->boolean('is_published');
-  $performance->fill(collect($data)->except(['student_ids','teacher_ids','media_ids'])->all())->save();
-  $performance->students()->sync($data['student_ids']??[]);
-  $performance->teachers()->sync($data['teacher_ids']??[]);
+  $performance->fill(collect($data)->except(['student_ids','teacher_ids','media_ids','student_roles','teacher_roles'])->all())->save();
+  $studentLinks=[];foreach(($data['student_ids']??[]) as $i=>$id){$studentLinks[$id]=['role'=>($data['student_roles'][$id]??null),'sort'=>$i];}$performance->students()->sync($studentLinks);
+  $teacherLinks=[];foreach(($data['teacher_ids']??[]) as $i=>$id){$teacherLinks[$id]=['role'=>($data['teacher_roles'][$id]??null),'sort'=>$i];}$performance->teachers()->sync($teacherLinks);
   $performance->media()->sync($data['media_ids']??[]);
   return redirect()->route('admin.concert-performances.index',$concert)->with('success','Номер сохранён');
  }
