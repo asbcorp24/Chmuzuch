@@ -11,6 +11,7 @@ class DatabaseSeeder extends Seeder
         $this->call([
             OfficialNavigationSeeder::class,
             HomePageSeeder::class,
+            OriginalSiteContentSeeder::class,
         ]);
     }
 }
