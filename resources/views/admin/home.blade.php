@@ -1,10 +1,18 @@
 @extends('layouts.admin')
 @section('title','Конструктор главной — CMS ЧМУ')
 @section('content')
-<form method="POST" action="{{route('admin.home.save')}}">@csrf
+<form method="POST" action="{{route('admin.home.save')}}" enctype="multipart/form-data">@csrf
 <header class="admin-top"><div><a href="/admin" class="admin-back">← Панель</a><small>Настройки главной</small><h1>Конструктор главной</h1></div><div class="editor-actions"><a href="/" target="_blank">Предпросмотр ↗</a><button type="submit" class="admin-primary home-save">Сохранить</button></div></header>
 @if(session('success'))<div class="admin-flash">{{session('success')}}</div>@endif
 <input type="hidden" name="blocks_json" data-blocks-json value="{{json_encode($blocks,JSON_UNESCAPED_UNICODE)}}">
+@php($heroScene=collect($blocks)->firstWhere('id','hero')['scene3d']??[])
+<section class="block" style="padding:20px"><h2>3D-модель первого экрана</h2>
+<p>Загрузите STL или оставьте поле пустым для стандартной модели.</p>
+<label>STL <input type="file" name="scene_stl" accept=".stl"></label>
+@if(!empty($heroScene['stl']))<p>Загружено: {{basename($heroScene['stl'])}}</p><label><input type="checkbox" name="scene_clear" value="1"> Вернуть модель по умолчанию</label>@endif
+@foreach(['x','y','z'] as $axis)<label>Поворот {{strtoupper($axis)}} (градусы) <input type="number" name="scene_rotation_{{$axis}}" min="-360" max="360" value="{{$heroScene['rotation_'.$axis]??0}}"></label>@endforeach
+<label>Масштаб <input type="number" name="scene_scale" min="0.1" max="10" step="0.1" value="{{$heroScene['scale']??1}}"></label>
+</section>
 <div class="home-builder-layout"><section><div class="builder-note"><b>Порядок блоков</b><span>Перетаскивайте карточки за маркер ⋮⋮. Выключенные блоки останутся в CMS, но не будут показаны на сайте.</span></div><div class="home-blocks" data-home-blocks>
 @foreach($blocks as $block)<article class="home-block" draggable="true" data-id="{{$block['id']}}"><span class="drag-handle">⋮⋮</span><div class="block-state"><input type="checkbox" {{$block['enabled']?'checked':''}}></div><div><small>{{$block['type']}}</small><h3>{{$block['title']}}</h3><p>{{$block['hint']}}</p></div><button class="block-edit" data-edit="{{$block['id']}}">Настроить</button></article>@endforeach
 </div></section>
