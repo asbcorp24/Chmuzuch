@@ -32,6 +32,8 @@ jobs:
         run: |
           npm run build
           test -s public/build/manifest.json
+      - name: Verify production manifest
+        run: test -s public/build/manifest.json
       - name: Commit compiled assets into public/build
         run: |
           git config user.name "github-actions[bot]"
