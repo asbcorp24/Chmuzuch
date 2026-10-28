@@ -125,3 +125,27 @@ php artisan optimize
 Для Timeweb VPS/Cloud Server можно настроить cron `* * * * * cd /path/to/project && php artisan schedule:run >/dev/null 2>&1`, если используются запланированные задания. Очереди включайте только при реальном использовании и с отдельным worker-процессом.
 
 Документация по исходной структуре: `docs/OLD_SITE_CONTENT_MAP.md`. Старый сайт — ориентир по содержанию, **не шаблон дизайна**.
+
+
+## Timeweb: сборка фронтенда Vite после развёртывания
+
+Проект использует Laravel 9, Vite 4 и Three.js. На Timeweb выполняйте команды **в корне Laravel**, где расположены `package.json` и `vite.config.js`:
+
+```bash
+node -v
+npm -v
+npm install
+npm run build
+test -f public/build/manifest.json && echo "Vite build OK"
+php artisan optimize:clear
+```
+
+Рекомендуется Node.js 18 или 20. Если в репозитории есть `package-lock.json`, для воспроизводимой сборки используйте `npm ci` вместо `npm install`.
+
+**Веб-корень домена:** каталог `public`, не корень проекта. Vite создаёт `public/build/manifest.json` и `public/build/assets/`. Не путайте `public/manifest.webmanifest` (PWA) с `public/build/manifest.json` (Vite). Файл `public/hot` от локального dev-сервера на production должен отсутствовать.
+
+Если Timeweb не позволяет запускать Node.js, выполните `npm install && npm run build` на компьютере с Node.js 20, затем загрузите **весь** каталог `public/build` в соответствующий каталог сервера. После обновления сборки выполните `php artisan optimize:clear`.
+
+Для пользовательских STL и медиа требуется `php artisan storage:link`. Для PWA необходим HTTPS. Проверяйте в браузере главную, 3D-модели, динамические страницы, музыку, меню и установку приложения. Не включайте `APP_DEBUG=true` на production.
+
+**Важно:** команды выше являются инструкцией; сборка непосредственно на сервере Timeweb не запускается из GitHub и должна быть выполнена в SSH или через локальную сборку.
