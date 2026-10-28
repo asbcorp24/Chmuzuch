@@ -1,15 +1,39 @@
 import 'bootstrap';import * as THREE from 'three';
-const root=document.getElementById('hero-3d');
+import { STLLoader } from 'three/addons/loaders/STLLoader.js';
 const appearance=window.CHMUZUCH?.appearance||{};
 const settingOn=(v,fallback=false)=>v===''||v==null?fallback:['1','true','on','yes'].includes(String(v).toLowerCase());
-if(root&&settingOn(appearance.hero_3d,true)){
- const scene=new THREE.Scene(),camera=new THREE.PerspectiveCamera(45,1,.1,100),renderer=new THREE.WebGLRenderer({alpha:true,antialias:true});
- root.appendChild(renderer.domElement);camera.position.z=5;
- const knot=new THREE.Mesh(new THREE.TorusKnotGeometry(1.25,.28,180,24),new THREE.MeshStandardMaterial({color:appearance.accent||0xc8a96a,metalness:.8,roughness:.24,wireframe:settingOn(appearance.wireframe,false)}));
- scene.add(knot);scene.add(new THREE.AmbientLight(0xffffff,1.2));const light=new THREE.PointLight(0xd94a32,18);light.position.set(3,2,4);scene.add(light);
- const resize=()=>{const w=root.clientWidth||innerWidth,h=root.clientHeight||innerHeight;renderer.setSize(w,h,false);camera.aspect=w/h;camera.updateProjectionMatrix()};resize();addEventListener('resize',resize);
- const rotate=settingOn(appearance.rotation,true);const tick=()=>{if(rotate){knot.rotation.x+=.0015;knot.rotation.y+=.003}renderer.render(scene,camera);requestAnimationFrame(tick)};tick();
-}
+document.querySelectorAll('#hero-3d,.page-3d').forEach(root=>{
+ if(root.id==='hero-3d'&&!settingOn(appearance.hero_3d,true))return;
+ let renderer;
+ try{renderer=new THREE.WebGLRenderer({alpha:true,antialias:true});}catch(e){root.textContent='♫';return;}
+ const scene=new THREE.Scene(),camera=new THREE.PerspectiveCamera(45,1,.1,100);
+ camera.position.z=5;root.appendChild(renderer.domElement);
+ scene.add(new THREE.AmbientLight(0xffffff,1.5));
+ const light=new THREE.DirectionalLight(0xffffff,2.3);light.position.set(3,4,5);scene.add(light);
+ const material=new THREE.MeshStandardMaterial({color:appearance.accent||0xc8a96a,metalness:.55,roughness:.35,side:THREE.DoubleSide,wireframe:settingOn(appearance.wireframe,false)});
+ const fallback=()=>new THREE.Mesh(new THREE.TorusKnotGeometry(1.2,.28,120,18),material);
+ let model=fallback();scene.add(model);
+ const degrees=axis=>THREE.MathUtils.degToRad(Number(root.dataset['rotation'+axis])||0);
+ const orient=object=>{object.rotation.set(degrees('X'),degrees('Y'),degrees('Z'));};
+ orient(model);
+ const url=root.dataset.stl;
+ if(url){
+  new STLLoader().load(url,geometry=>{
+   geometry.computeBoundingBox();geometry.center();geometry.computeVertexNormals();
+   const size=new THREE.Vector3();geometry.boundingBox.getSize(size);
+   const extent=Math.max(size.x,size.y,size.z);
+   if(!Number.isFinite(extent)||extent<=0){geometry.dispose();return;}
+   const mesh=new THREE.Mesh(geometry,material);
+   mesh.scale.setScalar(2.6/extent*Math.max(.1,Math.min(10,Number(root.dataset.modelScale)||1)));
+   orient(mesh);scene.remove(model);if(model.geometry)model.geometry.dispose();model=mesh;scene.add(model);
+  },undefined,()=>{ /* Keep default geometry on STL error */ });
+ }
+ const resize=()=>{const w=root.clientWidth||320,h=root.clientHeight||300;renderer.setSize(w,h,false);camera.aspect=w/h;camera.updateProjectionMatrix();};
+ resize();const observer=new ResizeObserver(resize);observer.observe(root);
+ const reduced=window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+ const rotate=settingOn(appearance.rotation,true)&&!reduced;
+ const tick=()=>{if(!root.isConnected){observer.disconnect();renderer.dispose();return;}if(rotate)model.rotation.y+=.003;renderer.render(scene,camera);requestAnimationFrame(tick);};tick();
+});
 
 const mobileMenu=document.querySelector('.mobile-menu');
 const menuToggle=document.querySelector('.menu-toggle');
