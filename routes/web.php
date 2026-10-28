@@ -117,6 +117,9 @@ Route::get('/admin/login',[AuthController::class,'login'])->name('admin.login');
 Route::post('/admin/login',[AuthController::class,'authenticate'])->middleware('throttle:5,1')->name('admin.login.submit');
 Route::post('/admin/logout',[AuthController::class,'logout'])->middleware('auth')->name('admin.logout');
 Route::prefix('admin')->name('admin.')->middleware(['auth','role:super_admin,content_manager,editor'])->group(function(){
+ Route::get('/navigation',[\App\Http\Controllers\Admin\NavigationController::class,'index'])->middleware('role:super_admin,content_manager')->name('navigation.index');
+ Route::post('/navigation',[\App\Http\Controllers\Admin\NavigationController::class,'save'])->middleware('role:super_admin,content_manager')->name('navigation.save');
+ Route::delete('/navigation/{item}',[\App\Http\Controllers\Admin\NavigationController::class,'destroy'])->middleware('role:super_admin,content_manager')->name('navigation.destroy');
  Route::get('/users',[UserController::class,'index'])->middleware('role:super_admin')->name('users.index');
  Route::get('/users/{id}/edit',[UserController::class,'edit'])->middleware('role:super_admin')->name('users.edit');
  Route::post('/users/{id}/edit',[UserController::class,'save'])->middleware('role:super_admin')->name('users.save');
