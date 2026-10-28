@@ -543,3 +543,19 @@ body.admin-login-page{min-height:100vh;min-height:100dvh;margin:0;display:grid;p
 .admin-login>a:hover{text-decoration:underline}
 .admin-login .form-error{color:#ffb9b9;font-size:13px;margin:0}
 @media(max-width:520px){body.admin-login-page{padding:14px}.admin-login{padding:25px 20px;border-radius:13px}}
+
+
+/* CMS accordion sidebar */
+.admin-sidebar .admin-accordion{display:flex;flex-direction:column;gap:8px;min-width:0}
+.admin-accordion .admin-nav-overview{display:block;padding:12px 14px;border-radius:10px;font-weight:700}
+.admin-accordion .admin-nav-group{border:1px solid #ffffff1d;border-radius:12px;overflow:hidden;background:#ffffff05}
+.admin-accordion .admin-nav-group[open]{border-color:#b9333b77;background:#b9333b0b}
+.admin-accordion .admin-nav-group summary{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:13px 14px;cursor:pointer;list-style:none;color:#f0e9df;font-size:13px;font-weight:700;user-select:none}
+.admin-accordion .admin-nav-group summary::-webkit-details-marker{display:none}
+.admin-accordion .admin-nav-group summary::after{content:'⌄';font-size:18px;color:#d7b980;transition:transform .2s}
+.admin-accordion .admin-nav-group[open] summary::after{transform:rotate(180deg)}
+.admin-accordion .admin-nav-group summary:focus-visible{outline:2px solid #d7b980;outline-offset:-3px}
+.admin-accordion .admin-nav-group>div{display:flex;flex-direction:column;gap:2px;padding:0 7px 8px}
+.admin-sidebar .admin-accordion .admin-nav-group>div a{display:block;padding:9px 13px 9px 20px;border-radius:8px;font-size:13px;line-height:1.4;text-decoration:none}
+.admin-sidebar .admin-accordion .admin-nav-group>div a:hover{background:#b9333b2b;color:#fff}
+.admin-sidebar .admin-accordion .admin-nav-group>div a[aria-current=page]{background:#b9333b38;color:#fff;border-left:3px solid #d7b980}
