@@ -1,3 +1,5 @@
+import { Jodit } from 'jodit';
+import 'jodit/es2021/jodit.min.css';
 import 'bootstrap';import * as THREE from 'three';
 import { STLLoader } from 'three/addons/loaders/STLLoader.js';
 const appearance=window.CHMUZUCH?.appearance||{};
@@ -128,4 +130,8 @@ document.querySelectorAll('.hero-explorer-expand').forEach(button=>{
 
 if('serviceWorker' in navigator && (location.protocol==='https:'||location.hostname==='localhost')){
  window.addEventListener('load',()=>navigator.serviceWorker.register('/sw.js',{scope:'/'}).catch(error=>console.warn('PWA service worker:',error)));
+}
+
+if(document.querySelector('.cms-content-editor')){
+ Jodit.make('.cms-content-editor',{height:500,toolbarAdaptive:false,buttons:['source','|','bold','italic','underline','|','ul','ol','|','fontsize','paragraph','|','image','table','link','|','align','undo','redo'],uploader:{insertImageAsBase64URI:false,url:'/admin/editor-images',format:'json',headers:{'X-CSRF-TOKEN':document.querySelector('meta[name=csrf-token]')?.content||''}},language:'ru'});
 }
