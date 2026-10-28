@@ -289,3 +289,29 @@ body:has(#hero-3d) .department-strip a:hover{background:#d7b98014}
  .app-bottom-nav a,.app-bottom-nav button{color:#e6e9e7}
  .app-bottom-nav a[href="/"]{color:#d7b980}
 }
+
+
+/* Compact desktop editorial scale: applies to ALL homepage sections */
+@media(min-width:901px){
+ body:has(#hero-3d) .block{padding:44px clamp(28px,5vw,80px)!important}
+ body:has(#hero-3d) .block h2,
+ body:has(#hero-3d) .dual h2,
+ body:has(#hero-3d) .achievements h2,
+ body:has(#hero-3d) .official-teaser h2{font-family:Georgia,serif!important;font-size:clamp(26px,2.55vw,39px)!important;line-height:1.18!important;margin:7px 0 18px!important;letter-spacing:-.02em}
+ body:has(#hero-3d) .feature-row h3{font-size:clamp(24px,2.3vw,36px)!important;line-height:1.2!important;margin:6px 0 14px!important}
+ body:has(#hero-3d) .eyebrow{font-size:10px!important;letter-spacing:.16em!important}
+ body:has(#hero-3d) .section-head{align-items:center}
+ body:has(#hero-3d) .cards{margin-top:22px}
+ body:has(#hero-3d) .card{min-height:160px!important;padding:18px!important}
+ body:has(#hero-3d) .card h3{font-size:clamp(17px,1.5vw,23px)!important;margin-top:16px!important}
+ body:has(#hero-3d) .dual article{min-height:260px!important;padding:36px 5vw!important}
+ body:has(#hero-3d) .achievements>div{min-height:220px!important;padding:36px 5vw!important}
+ body:has(#hero-3d) .accent-block{padding-block:32px!important}
+ body:has(#hero-3d) .block p{font-size:14px;line-height:1.55}
+ body:has(#hero-3d) .ticker{padding-block:10px}
+ body:has(#hero-3d) .department-strip{margin-top:20px}
+ body:has(#hero-3d) .department-strip a{padding:14px}
+ body:has(#hero-3d) .portal-grid a{padding:25px}
+ body:has(#hero-3d) .portal-grid b{font-size:clamp(19px,1.7vw,26px)!important}
+ body:has(#hero-3d) .section-head>a{font-size:13px}
+}
