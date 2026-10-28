@@ -119,6 +119,9 @@ Route::get('/admin/login',[AuthController::class,'login'])->name('admin.login');
 Route::post('/admin/login',[AuthController::class,'authenticate'])->middleware('throttle:5,1')->name('admin.login.submit');
 Route::post('/admin/logout',[AuthController::class,'logout'])->middleware('auth')->name('admin.logout');
 Route::prefix('admin')->name('admin.')->middleware(['auth','role:super_admin,content_manager,editor'])->group(function(){
+ Route::get('/concerts/{concert}/performances',[\App\Http\Controllers\Admin\ConcertPerformanceController::class,'index'])->name('concert-performances.index');
+ Route::post('/concerts/{concert}/performances/{performance?}',[\App\Http\Controllers\Admin\ConcertPerformanceController::class,'save'])->middleware('role:super_admin,content_manager')->name('concert-performances.save');
+ Route::delete('/concerts/{concert}/performances/{performance}',[\App\Http\Controllers\Admin\ConcertPerformanceController::class,'destroy'])->middleware('role:super_admin,content_manager')->name('concert-performances.destroy');
  Route::get('/music',[\App\Http\Controllers\Admin\MusicController::class,'index'])->middleware('role:super_admin,content_manager')->name('music.index');
  Route::post('/music/save/{track?}',[\App\Http\Controllers\Admin\MusicController::class,'save'])->middleware('role:super_admin,content_manager')->name('music.save');
  Route::delete('/music/{track}',[\App\Http\Controllers\Admin\MusicController::class,'destroy'])->middleware('role:super_admin,content_manager')->name('music.destroy');
