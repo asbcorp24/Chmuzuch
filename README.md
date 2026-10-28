@@ -1,48 +1,31 @@
 # Чебоксарское музыкальное училище — Chmuzuch
 
-Сайт училища на Laravel 9, PHP 8.2, MySQL, Vite, Three.js. Публичный сайт, CMS, медиатека, концерты, интерактивные STL-сцены и PWA.
-
-Разработка: `feature/legacy-site-crawler`. Не сливать в `main` без подтверждения. Старый сайт используется как ориентир по структуре; импорт старого контента отдельно согласуется.
+Laravel 9 / PHP 8.2 / MySQL / Vite / Three.js / PWA. Репозиторий: https://github.com/asbcorp24/Chmuzuch
 
 ## Развёртывание на Timeweb
 
-Инструкция рассчитана на **Timeweb VPS/VDS с SSH и возможностью настроить document root**, по принципу проекта [vdmsh](https://github.com/asbcorp24/vdmsh). На обычном виртуальном хостинге доступность SSH, Composer, Node.js, cron и смены корня сайта зависит от тарифа. Если этих функций нет — используйте VPS.
+Подход аналогичен проекту [ДШИ Волжска](https://github.com/asbcorp24/vdmsh), но этот проект использует **Laravel 9**. Для PHP 8.2 подходит; переход на Laravel 11 не выполнен.
 
-### 1. Подготовка сервера
+### 1. Требования
 
-- Ubuntu 22.04/24.04, nginx + PHP-FPM **8.2** (Laravel 9 требует PHP >=8.0.2), MySQL 8 / MariaDB.
-- PHP-расширения: `mbstring xml curl zip gd fileinfo openssl pdo_mysql bcmath tokenizer ctype`.
-- Composer 2, Git, Node.js 20 LTS + npm (для сборки Vite).
-- Домен с A/AAAA-записью на IP сервера; выпустить SSL Let's Encrypt.
-- Корень веб-сайта должен быть **`/var/www/chmuzuch/public`**, не каталог проекта.
+- Timeweb VPS или хостинг с SSH, PHP CLI 8.2, Composer 2, MySQL/MariaDB, cron и возможностью установить корень сайта на `public/`.
+- PHP: mbstring, openssl, pdo_mysql, tokenizer, xml, ctype, fileinfo, json, curl, gd (для обработки изображений).
+- Node.js 18+ (желательно 20 LTS) для сборки Vite. Если на хостинге Node недоступен, соберите `public/build` локально и загрузите его на сервер.
+- Домен и SSL-сертификат: для PWA необходим HTTPS.
 
-Пример команд для Ubuntu (пакеты и PHP-FPM уточните под установленную ОС):
+### 2. Код и окружение
+
+В SSH перейдите в **каталог проекта, расположенный выше публичного корня** (путь зависит от панели Timeweb):
 
 ```bash
-sudo apt update
-sudo apt install -y nginx mysql-server git unzip curl composer php8.2-fpm php8.2-cli php8.2-mysql php8.2-mbstring php8.2-xml php8.2-curl php8.2-zip php8.2-gd php8.2-bcmath
-sudo mkdir -p /var/www/chmuzuch
-sudo chown -R "$USER":www-data /var/www/chmuzuch
-cd /var/www/chmuzuch
-git clone --branch feature/legacy-site-crawler https://github.com/asbcorp24/Chmuzuch.git .
-composer install --no-dev --prefer-dist --optimize-autoloader
+git clone --branch feature/legacy-site-crawler https://github.com/asbcorp24/Chmuzuch.git chmuzuch
+cd chmuzuch
+composer install --no-dev --optimize-autoloader
 cp .env.example .env
 php artisan key:generate
 ```
 
-Установите Node.js 20 LTS из доверенного репозитория или nvm перед `npm install`. Не запускайте `npm ci`, пока в репозитории нет `package-lock.json`.
-
-### 2. База данных и .env
-
-Создайте отдельную БД и пользователя MySQL (не используйте root в приложении):
-
-```sql
-CREATE DATABASE chmuzuch CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
-CREATE USER 'chmuzuch'@'localhost' IDENTIFIED BY 'REPLACE_WITH_STRONG_PASSWORD';
-GRANT ALL PRIVILEGES ON chmuzuch.* TO 'chmuzuch'@'localhost';
-```
-
-Заполните `.env` на сервере:
+Создайте пустую базу и пользователя MySQL в панели Timeweb. В `.env` укажите:
 
 ```dotenv
 APP_NAME="Чебоксарское музыкальное училище"
@@ -54,20 +37,19 @@ LOG_LEVEL=warning
 DB_CONNECTION=mysql
 DB_HOST=127.0.0.1
 DB_PORT=3306
-DB_DATABASE=chmuzuch
-DB_USERNAME=chmuzuch
-DB_PASSWORD=ЗАМЕНИТЬ_НА_СЕКРЕТ
+DB_DATABASE=ИМЯ_БАЗЫ
+DB_USERNAME=ПОЛЬЗОВАТЕЛЬ_БАЗЫ
+DB_PASSWORD=СЛОЖНЫЙ_ПАРОЛЬ
 SESSION_DRIVER=file
 CACHE_DRIVER=file
 FILESYSTEM_DISK=public
 ```
 
-Не коммитьте `.env` в Git и не раскрывайте `APP_KEY`.
+Не публикуйте `.env` и не добавляйте его в Git. Убедитесь, что `APP_KEY` установлен. **Не запускайте seeders с импортом старого контента** без отдельного решения.
 
-### 3. Первоначальная установка
+### 3. База, файлы и фронтенд
 
 ```bash
-cd /var/www/chmuzuch
 php artisan migrate --force
 php artisan storage:link
 npm install
@@ -75,69 +57,65 @@ npm run build
 php artisan optimize:clear
 php artisan config:cache
 php artisan view:cache
+```
+
+Для `route:cache` предварительно убедитесь, что маршруты не содержат Closure. Команду `php artisan optimize` применяйте только после проверки совместимости.
+
+Загруженные STL, фото, аудио и видео хранятся в `storage/app/public` и доступны через символическую ссылку `public/storage`. Для больших медиа настройте лимиты PHP `upload_max_filesize` и `post_max_size`, а также ограничения веб-сервера.
+
+### 4. Настройка сайта в Timeweb
+
+В настройках домена установите **Document Root** на полный путь к `chmuzuch/public`. Не используйте корень репозитория и не переносите `.env` в `public`.
+
+Включите HTTPS, перенаправление HTTP → HTTPS и PHP 8.2. Права записи должны быть у PHP-пользователя для `storage` и `bootstrap/cache`:
+
+```bash
 chmod -R ug+rwX storage bootstrap/cache
 ```
 
-**Важно:** в этом репозитории пока нет подтверждённого штатного сидера администратора. Не запускайте `migrate --seed` без проверки сидеров. Создание первой учётной записи администратора следует реализовать отдельной защищённой командой/сидером; не регистрируйте открытый публичный маршрут создания администратора.
+Если PHP работает от другого пользователя, настройте владельца и группу через панель или администратора VPS. **Не устанавливайте 777**.
 
-### 4. Nginx
+### 5. PWA
 
-Пример server-блока (путь PHP-FPM и домен замените):
+В репозитории находятся `public/manifest.webmanifest`, `public/sw.js`, `public/offline.html`, `public/pwa-icon.svg`. После включения HTTPS проверьте в Chrome DevTools → Application:
 
-```nginx
-server {
-    listen 80;
-    server_name ВАШ-ДОМЕН;
-    root /var/www/chmuzuch/public;
-    index index.php;
-    client_max_body_size 64M;
+- Manifest загружается без 404;
+- Service Worker зарегистрирован и контролирует публичную страницу;
+- офлайн-страница отображается без сети;
+- обновление версии сайта не оставляет устаревшие JS/CSS;
+- установка на Android доступна.
 
-    location / {
-        try_files $uri $uri/ /index.php?$query_string;
-    }
-    location ~ \.php$ {
-        include snippets/fastcgi-php.conf;
-        fastcgi_pass unix:/run/php/php8.2-fpm.sock;
-    }
-    location ~ /\.(?!well-known).* { deny all; }
-}
+Для широкой совместимости добавьте растровые PNG-иконки 192×192 и 512×512. Сейчас SVG-иконка уже присутствует, но установку на устройствах необходимо тестировать.
+
+### 6. Планировщик и очереди
+
+При использовании планировщика добавьте в cron Timeweb (укажите **свой абсолютный путь**):
+
+```cron
+* * * * * cd /ПУТЬ/К/chmuzuch && /usr/bin/php artisan schedule:run >> /dev/null 2>&1
 ```
 
-После проверки nginx включите HTTPS через Certbot или SSL-панель Timeweb. **Не оставляйте production на HTTP:** PWA Service Worker работает только в защищённом контексте.
+Если приложение использует фоновые задания, запускайте `php artisan queue:work` через Supervisor/systemd на VPS. На обычном хостинге сначала проверьте доступные способы запуска.
 
-Для загрузки STL (до 20 МБ) и медиа согласуйте `client_max_body_size`, `upload_max_filesize` и `post_max_size` (например 64M), а также лимиты времени выполнения.
-
-### 5. PWA и 3D
-
-- `/manifest.webmanifest`, `/sw.js`, `/offline.html`, `/pwa-icon.svg` должны открываться без авторизации и возвращать HTTP 200.
-- Для полной совместимости установщика Android нужны PNG-иконки 192×192 и 512×512, включая maskable; SVG уже добавлена как базовая иконка.
-- STL хранятся в `storage/app/public/models/stl`, доступны через `public/storage` после `storage:link`.
-- Для страницы без STL или при ошибке загрузки используется стандартная Three.js-модель.
-- Service Worker не кэширует админку, API, `/storage/` и STL, чтобы не сохранять персональные данные и большие модели офлайн.
-- После обновления проверяйте установку PWA в Chrome Android, офлайн-экран и 3D на главной и динамических страницах.
-
-### 6. Проверка
+### 7. Проверка
 
 ```bash
 php artisan about
 php artisan migrate:status
 php artisan route:list
 php artisan storage:link
-curl -I https://ВАШ-ДОМЕН/
-curl -I https://ВАШ-ДОМЕН/manifest.webmanifest
-curl -I https://ВАШ-ДОМЕН/sw.js
+ls -la public/build public/storage
 ```
 
-Проверьте вручную: главную и интерактивные разделы, админку и авторизацию, сохранение контента, загрузку STL и медиа, воспроизведение концертов, PWA-установку и офлайн-страницу. **Сборка и браузерные тесты ещё не подтверждены.**
+В браузере проверьте главную, разделы, новости, концерты, медиатеку, административную авторизацию, загрузку STL, 3D и установку PWA. Маршрут входа администратора уточните по `php artisan route:list`; не предполагается, что он совпадает с проектом vdmsh.
 
-### 7. Обновление без потери файлов
+### 8. Обновление без потери данных
 
-Перед обновлением сделайте дамп БД и резервную копию `storage/app/public` и `.env` в защищённое хранилище. Затем:
+Перед обновлением создайте резервную копию базы и `storage/app/public`. Затем:
 
 ```bash
-cd /var/www/chmuzuch
-git pull --ff-only origin feature/legacy-site-crawler
-composer install --no-dev --prefer-dist --optimize-autoloader
+git pull --ff-only
+composer install --no-dev --optimize-autoloader
 php artisan migrate --force
 npm install
 npm run build
@@ -146,12 +124,12 @@ php artisan config:cache
 php artisan view:cache
 ```
 
-Не удаляйте `storage/app/public`, не выполняйте `migrate:fresh` на рабочей базе. Если потребуется очередь, настройте Supervisor; планировщик Laravel — cron `* * * * * cd /var/www/chmuzuch && php artisan schedule:run >/dev/null 2>&1`.
+На production лучше использовать зафиксированные версии зависимостей и `npm ci`, когда в репозитории появится актуальный `package-lock.json`. Не удаляйте `storage`, `.env` и пользовательские файлы при обновлении.
 
-### 8. Известные задачи до запуска
+### 9. Ветки
 
-- Проверить наличие `composer.lock` и `package-lock.json` и воспроизводимость установки.
-- Создать безопасный механизм первого администратора.
-- Сгенерировать PNG-иконки PWA и проверить установку на Android.
-- Проверить 3D STL на всех публичных шаблонах, включая концерты и новости.
-- Выполнить smoke-тесты и резервное копирование перед публикацией.
+Рабочая ветка: `feature/legacy-site-crawler`. Перенос в `main` — только после отдельного подтверждения.
+
+## Архитектура и миграция контента
+
+Оригинальный сайт используется как справочник структуры и контента: https://xn--g1ajvbu.xn--p1ai/ . Импорт старого контента не выполняется автоматически. См. `docs/OLD_SITE_CONTENT_MAP.md`.
