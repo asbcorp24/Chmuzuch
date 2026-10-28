@@ -76,7 +76,7 @@ CMS: `/admin`; публичный сайт: `/`. После первого вх�
 
 ### 5. PWA
 
-Публичные файлы: `/manifest.webmanifest`, `/sw.js`, `/offline.html`, `/pwa-icon.svg`. PWA работает только через HTTPS (или localhost). Админка, API, STL и загруженные пользовательские файлы исключены из кэширования Service Worker. Текущая версия использует SVG-иконку; для максимальной совместимости Android и iOS перед релизом нужны PNG 192×192, 512×512 и apple-touch-icon.
+Публичные файлы: `/manifest.webmanifest`, `/sw.js`, `/offline.html`, `/pwa-icon.svg`. PWA работает только через HTTPS (или localhost). Админка, API, STL и загруженные пользовательские файлы исключены из кэширования Service Worker. Текущая версия использует SVG-иконку; для максимальной совместимости Android и iOS перед релизом нужны PNG 192×192, 512×512 и apple-touch-icon. Генератор добавлен: `python3 -m pip install cairosvg && python3 tools/generate_pwa_icons.py`; полученные PNG следует добавить в Git и прописать в manifest/Blade.
 
 Проверить в Chrome DevTools → Application → Manifest / Service Workers, затем на Android — «Установить приложение». Проверить обновление приложения, офлайн-страницу, 3D, аудио и мобильное меню.
 
