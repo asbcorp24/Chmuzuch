@@ -149,3 +149,82 @@ php artisan optimize:clear
 Для пользовательских STL и медиа требуется `php artisan storage:link`. Для PWA необходим HTTPS. Проверяйте в браузере главную, 3D-модели, динамические страницы, музыку, меню и установку приложения. Не включайте `APP_DEBUG=true` на production.
 
 **Важно:** команды выше являются инструкцией; сборка непосредственно на сервере Timeweb не запускается из GitHub и должна быть выполнена в SSH или через локальную сборку.
+
+## Развёртывание на Timeweb без Node.js
+
+Проект использует Laravel 9 (PHP 8.0.2+ по composer.json; рекомендуется совместимый PHP 8.2), MySQL и Vite. Схема аналогична vdmsh, но сборка JavaScript/CSS происходит **в GitHub Actions**, не на Timeweb. Ветка разработки: `feature/legacy-site-crawler`; в `main` не сливать без согласования.
+
+### 1. Сборка фронтенда в GitHub
+
+Откройте **Actions → Build Timeweb release → Run workflow**, выберите `feature/legacy-site-crawler`. После успешного выполнения скачайте артефакт `timeweb-public-build`, извлеките из него `timeweb-public-build.tar.gz`. В архиве находится каталог `build/`, который необходимо распаковать **в `public/`** на сервере, чтобы появился `public/build/manifest.json`.
+
+Workflow запускает Node.js 20, устанавливает npm-зависимости и выполняет `npm run build`. Он не публикует скомпилированные файлы в git, чтобы не раздувать историю. Если GitHub Actions не запускается из-за квоты или ограничений, скачайте исходники и выполните сборку на другом компьютере с Node.js 20, затем загрузите `public/build` на Timeweb.
+
+### 2. Хостинг
+
+Нужен тариф Timeweb с PHP, MySQL, Composer/SSH (либо возможность загрузить готовый каталог `vendor`). Укажите **корень сайта на `public/`**, а не на корень репозитория. Не размещайте `.env` в публичной директории.
+
+На сервере:
+```bash
+git clone -b feature/legacy-site-crawler https://github.com/asbcorp24/Chmuzuch.git chmuzuch
+cd chmuzuch
+composer install --no-dev --optimize-autoloader
+cp .env.example .env
+php artisan key:generate
+```
+
+Укажите в `.env`:
+```dotenv
+APP_ENV=production
+APP_DEBUG=false
+APP_URL=https://ВАШ-ДОМЕН
+DB_CONNECTION=mysql
+DB_HOST=127.0.0.1
+DB_PORT=3306
+DB_DATABASE=ИМЯ_БАЗЫ
+DB_USERNAME=ПОЛЬЗОВАТЕЛЬ
+DB_PASSWORD=ПАРОЛЬ
+FILESYSTEM_DISK=public
+```
+
+Далее после настройки базы:
+```bash
+php artisan migrate --force
+php artisan storage:link
+php artisan optimize:clear
+php artisan config:cache
+php artisan view:cache
+```
+
+**Важно:** не выполнять `migrate --seed` без проверки сидеров — старый контент пока не переносим. Не использовать `APP_DEBUG=true` на рабочем сайте. Права на запись необходимы для `storage/` и `bootstrap/cache/`; не устанавливайте 777.
+
+### 3. Загрузка готовой сборки
+
+Загрузите содержимое `public/build` из артефакта GitHub в `<корень проекта>/public/build`. Проверьте наличие `public/build/manifest.json` и файлов CSS/JS в `public/build/assets`. На Timeweb **не выполнять** `npm install` или `npm run build`.
+
+### 4. PWA и STL
+
+PWA работает по HTTPS. Проверьте доступность `/manifest.webmanifest`, `/sw.js`, `/offline.html`, `/pwa-icon.svg`. В админке загрузите тестовый STL и проверьте отображение на главной и динамических страницах. Для пользовательских STL и изображений обязателен рабочий `public/storage` → `storage/app/public`.
+
+### 5. Обновление
+
+Перед обновлением сделайте резервную копию БД, `.env` и `storage/app/public`. Затем:
+```bash
+git pull --ff-only
+composer install --no-dev --optimize-autoloader
+php artisan migrate --force
+php artisan optimize:clear
+php artisan config:cache
+php artisan view:cache
+```
+Скачайте новый `timeweb-public-build` из GitHub Actions и замените `public/build` целиком. Для пользователей PWA может потребоваться обновление страницы/Service Worker.
+
+### 6. Контроль после установки
+
+```bash
+php artisan about
+php artisan migrate:status
+php artisan route:list
+test -s public/build/manifest.json && echo "Vite assets OK"
+```
+Откройте главную, несколько внутренних страниц, концерты, административный вход, проверьте ссылки и адаптивность. В браузере убедитесь, что нет ошибок загрузки CSS/JS, STL и Service Worker. **Успешный workflow не означает, что сайт уже протестирован на Timeweb.**
