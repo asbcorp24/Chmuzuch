@@ -128,3 +128,38 @@ cd /ПУТЬ/К/ПРОЕКТУ && php artisan schedule:run
 
 - Карта структуры старого сайта: [docs/OLD_SITE_CONTENT_MAP.md](docs/OLD_SITE_CONTENT_MAP.md).
 - Референс процесса установки: [asbcorp24/vdmsh](https://github.com/asbcorp24/vdmsh).
+
+
+## Развёртывание на Timeweb
+
+Проект использует Laravel 9 (PHP 8.1/8.2), MySQL и Vite. Как и в asbcorp24/vdmsh, для production рекомендуется сервер с SSH, Composer 2, Node.js 20, nginx/Apache и HTTPS. В Timeweb укажите корневой каталог сайта на `/путь/к/Chmuzuch/public`. На виртуальном хостинге предварительно проверьте возможность настроить document root и символическую ссылку storage.
+
+```bash
+git clone --branch feature/legacy-site-crawler https://github.com/asbcorp24/Chmuzuch.git
+cd Chmuzuch
+composer install --no-dev --optimize-autoloader
+cp .env.example .env
+php artisan key:generate
+```
+
+В `.env` установите `APP_ENV=production`, `APP_DEBUG=false`, `APP_URL=https://ВАШ-ДОМЕН`, параметры MySQL и `FILESYSTEM_DISK=public`. Не публикуйте пароль БД или APP_KEY.
+
+```bash
+php artisan migrate --force
+php artisan storage:link
+npm install
+npm run build
+php artisan optimize:clear
+php artisan config:cache
+php artisan view:cache
+```
+
+Настройте права на запись в `storage` и `bootstrap/cache` для пользователя PHP, без chmod 777. Для STL и медиа обязательно проверьте URL `/storage/...`.
+
+Первого администратора создайте через `php artisan tinker`, используя модель `App\\Models\\User`, роль `super_admin`, `is_active=true` и пароль, хешированный `Hash::make`. До создания пользователя проверьте схему таблицы users. Вход: `/admin/login`.
+
+PWA: проверьте по HTTPS `/manifest.webmanifest`, `/sw.js`, `/offline.html`, `/pwa-icon.svg`. Установка на Android и работа офлайн требуют проверки в браузере. PNG-иконки 192 и 512 пикселей пока необходимо добавить отдельно.
+
+Обновление: сделайте резервную копию БД, `.env` и `storage/app/public`; затем выполните `git pull --ff-only origin feature/legacy-site-crawler`, `composer install --no-dev --optimize-autoloader`, `php artisan migrate --force`, `npm install && npm run build`, `php artisan optimize:clear && php artisan config:cache && php artisan view:cache`. Не используйте `migrate:fresh` на production.
+
+**Отличия от vdmsh:** здесь Laravel 9, ветка `feature/legacy-site-crawler`, и отсутствует подтверждённый production-сидер администратора. Не запускайте `migrate --seed` без проверки. Перенос в `main` — только после отдельного согласования.
