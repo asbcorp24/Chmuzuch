@@ -233,3 +233,59 @@ main .card a:focus-visible,main .concert-card a:focus-visible{outline-offset:5px
  body:has(#hero-3d) .hero{background:radial-gradient(ellipse at 73% 42%,#1a343c,#0a141a 55%,#080c10)}
  body:has(#hero-3d) .hero-3d{filter:drop-shadow(0 0 50px #c8a96a22)}
 }
+
+
+/* Conservatory editorial redesign: original styling, inspired by leading music schools */
+body:has(#hero-3d){--bg:#091017;--panel:#14232b;--text:#f4f2ec;--muted:#afbdc1;--gold:#d7b980;--accent:#d29b68;background:#091017}
+body:has(#hero-3d) .site-header{background:#09131bea;border-bottom:1px solid #d7b98020;box-shadow:0 10px 45px #0003}
+body:has(#hero-3d) .brand{letter-spacing:0;font-weight:600}
+body:has(#hero-3d) .hero{isolation:isolate;background:linear-gradient(110deg,#091118 0%,#10242d 60%,#12232a 100%);overflow:hidden}
+body:has(#hero-3d) .hero-atmosphere{position:absolute;inset:0;pointer-events:none;overflow:hidden;z-index:0;background:radial-gradient(ellipse at 70% 42%,#50748325,transparent 38%)}
+body:has(#hero-3d) .hero-atmosphere span{position:absolute;display:block;border:1px solid #d7b98022;border-radius:50%;width:70vw;height:70vw;left:48%;top:-26%;transform:rotate(-25deg)}
+body:has(#hero-3d) .hero-atmosphere span:nth-child(2){width:50vw;height:50vw;left:57%;top:3%;border-color:#d7b98013}
+body:has(#hero-3d) .hero-atmosphere span:nth-child(3){width:35vw;height:35vw;left:64%;top:17%;border-color:#d7b98018}
+body:has(#hero-3d) .hero-copy{z-index:3}
+body:has(#hero-3d) .hero h1{font-family:Georgia,'Times New Roman',serif;font-weight:400;text-wrap:balance}
+body:has(#hero-3d) .hero h1 em{color:#d7b980;font-weight:400}
+body:has(#hero-3d) .hero-copy .eyebrow{color:#d7b980;font-weight:600;letter-spacing:.15em}
+body:has(#hero-3d) .live-dot{display:inline-block;width:7px;height:7px;margin-right:7px;border-radius:50%;background:#d7b980;box-shadow:0 0 14px #d7b98090;vertical-align:middle}
+body:has(#hero-3d) .hero-actions a{display:inline-flex;align-items:center;justify-content:space-between;gap:24px;border-radius:7px;background:#d7b980;border-color:#d7b980;color:#101c22;font-weight:650}
+body:has(#hero-3d) .hero-actions a.ghost{background:#ffffff08;color:#f4f2ec;border-color:#d7b98055}
+body:has(#hero-3d) .hero-actions a:hover{transform:translateY(-2px);box-shadow:0 12px 30px #0004}
+body:has(#hero-3d) .hero-caption{display:flex;gap:20px;justify-content:space-between;max-width:460px;margin-top:26px;padding-top:14px;border-top:1px solid #d7b98033;font-size:10px;letter-spacing:.09em;color:#b5c3c6}
+body:has(#hero-3d) .hero-explorer{background:#0e1c25ed;border:1px solid #d7b9802f;border-radius:14px}
+body:has(#hero-3d) .hero-explorer-heading span{font-family:Georgia,serif;color:#f4f2ec}
+body:has(#hero-3d) .hero-explorer-link{background:#ffffff07;border:1px solid #ffffff13;transition:background .2s,transform .2s,border-color .2s}
+body:has(#hero-3d) .hero-explorer-link:hover{background:#d7b98016;border-color:#d7b98088}
+body:has(#hero-3d) .hero-explorer-note{color:#d7b980}
+body:has(#hero-3d) .block{background:#0c161e;border-color:#d7b98018}
+body:has(#hero-3d) .block:nth-of-type(even){background:#111f27}
+body:has(#hero-3d) .block h2{font-weight:400;letter-spacing:-.02em}
+body:has(#hero-3d) .card{background:linear-gradient(145deg,#1a2b33,#101d25);border:1px solid #d7b9801d;border-radius:12px}
+body:has(#hero-3d) .card:hover{border-color:#d7b98080;transform:translateY(-3px)}
+body:has(#hero-3d) .department-strip a{transition:background .2s;padding:20px;border-radius:8px}
+body:has(#hero-3d) .department-strip a:hover{background:#d7b98014}
+@media(min-width:1101px){
+ body:has(#hero-3d) .hero{height:auto;min-height:760px;padding-bottom:215px}
+ body:has(#hero-3d) .hero-3d{inset:85px 2vw 190px 46%;opacity:1}
+ body:has(#hero-3d) .hero h1{font-size:clamp(50px,4.2vw,75px)}
+ body:has(#hero-3d) .hero-explorer{bottom:22px}
+}
+@media(max-width:900px){
+ body:has(#hero-3d) .hero{background:linear-gradient(160deg,#102630,#09151d 65%,#0b1921);padding-top:88px}
+ body:has(#hero-3d) .hero h1{font-size:clamp(38px,9vw,55px)}
+ body:has(#hero-3d) .hero-atmosphere span{width:95vw;height:95vw;left:50%;top:7%}
+ body:has(#hero-3d) .hero-atmosphere span:nth-child(2){width:65vw;height:65vw;left:60%;top:12%}
+ body:has(#hero-3d) .hero-atmosphere span:nth-child(3){display:none}
+ body:has(#hero-3d) .hero-caption{font-size:9px;margin-top:18px}
+ body:has(#hero-3d) .hero-3d{border-radius:15px;background:radial-gradient(circle,#253e48,#0c1a22 70%)}
+ body:has(#hero-3d) .hero-explorer{padding:14px;border-radius:15px;background:#12222c}
+ body:has(#hero-3d) .hero-explorer-links{gap:8px}
+ body:has(#hero-3d) .hero-explorer-link{min-height:70px;border-radius:10px}
+ body:has(#hero-3d) .hero-explorer-heading span{font-size:20px}
+ body:has(#hero-3d) .block{padding:44px 18px}
+ body:has(#hero-3d) .section-head{align-items:flex-start}
+ .app-bottom-nav{background:#0b1922f8}
+ .app-bottom-nav a,.app-bottom-nav button{color:#e6e9e7}
+ .app-bottom-nav a[href="/"]{color:#d7b980}
+}
