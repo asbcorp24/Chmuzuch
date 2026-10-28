@@ -5,7 +5,7 @@
 <p><a href="/admin/concerts">← К концертам</a> · <a href="{{route('concerts.show',$concert->slug)}}" target="_blank">Посмотреть на сайте</a></p>
 @if(session('success'))<p class="form-success">{{session('success')}}</p>@endif
 @if($errors->any())<div class="form-errors">@foreach($errors->all() as $error)<p>{{$error}}</p>@endforeach</div>@endif
-@foreach($performances->concat([new \App\Models\ConcertPerformance]) as $performance)
+@foreach($performances->concat([new \App\Models\ConcertPerformance()]) as $performance)
 @php $editing=$performance->exists; @endphp
 <section class="block"><h2>{{$editing?'Номер №'.$performance->program_number:'Добавить номер'}}</h2>
 <form method="POST" action="{{route('admin.concert-performances.save',[$concert,$editing?$performance:null])}}">@csrf
