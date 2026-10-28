@@ -1,13 +1,19 @@
 @extends('layouts.app')
 @section('title','Карта сайта — ЧМУ')
 @section('content')
-<section class="system-hero"><p class="eyebrow">Навигация</p><h1>Карта сайта</h1><p>Все основные публичные разделы училища.</p></section>
+<section class="system-hero"><p class="eyebrow">Навигация</p><h1>Карта сайта</h1><p>Разделы сайта и опубликованные каталоги.</p></section>
 <section class="block sitemap-grid">
-@foreach([
-'Училище'=>[['Об училище','/about'],['Преподаватели','/teachers'],['Отделения','/departments'],['Коллективы','/collectives'],['Контакты','/contacts']],
-'Учёба'=>[['Абитуриенту','/applicants'],['Студенту','/students'],['ДШИ','/dshi'],['Дополнительное образование','/additional-education'],['Общежитие','/dormitory']],
-'События и творчество'=>[['Пресс-центр','/press'],['Афиша','/events'],['Конкурсы','/competitions'],['Наука и проекты','/science'],['Медиатека','/media'],['Лауреаты','/achievements']],
-'Официально'=>[['Сведения об образовательной организации','/official'],['Безопасность','/safety'],['Работникам','/employees'],['Нас благодарят','/gratitudes']]
-] as $group=>$links)<div><h2>{{$group}}</h2>@foreach($links as $link)<a href="{{$link[1]}}">{{$link[0]}} <span>→</span></a>@endforeach</div>@endforeach
+<div><h2>Навигация</h2>
+@foreach($siteNavigation->where('location','header')->whereNull('parent_id') as $item)
+<a href="{{$item->url}}">{{$item->label}} →</a>
+@foreach($siteNavigation->where('parent_id',$item->id) as $child)<a href="{{$child->url}}">— {{$child->label}} →</a>@endforeach
+@endforeach
+</div>
+<div><h2>Отделения</h2>@foreach($departments as $item)<a href="{{route('departments.show',$item->slug)}}">{{$item->title}} →</a>@endforeach</div>
+<div><h2>Коллективы</h2>@foreach($collectives as $item)<a href="{{route('collectives.show',$item->slug)}}">{{$item->title}} →</a>@endforeach</div>
+<div><h2>Конкурсы и проекты</h2>@foreach($activities as $item)
+@php $url=$item->type==='competition'?route('competitions.show',$item->slug):($item->type==='conference'?route('science.conference',$item->slug):route('science.project',$item->slug)); @endphp
+<a href="{{$url}}">{{$item->title}} →</a>
+@endforeach</div>
 </section>
 @endsection
