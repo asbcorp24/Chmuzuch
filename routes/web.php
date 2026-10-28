@@ -106,6 +106,7 @@ Route::get('/federal-competitions',[ContentPageController::class,'federal'])->na
 Route::get('/practice',[CommunityPageController::class,'practice'])->name('practice');
 Route::get('/feedback',[ContentPageController::class,'feedback'])->name('feedback');
 
+Route::get('/page/{slug}',[\App\Http\Controllers\CustomPageController::class,'show'])->where('slug','[A-Za-z0-9_-]+')->name('custom-page.show');
 Route::get('/search',SearchController::class)->name('search');
 Route::get('/sitemap',[SystemController::class,'sitemap'])->name('sitemap');
 Route::get('/privacy',[SystemController::class,'privacy'])->name('privacy');
