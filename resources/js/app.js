@@ -124,3 +124,7 @@ document.querySelectorAll('.hero-explorer-expand').forEach(button=>{
   panel.hidden=expanded;
  });
 });
+
+if('serviceWorker' in navigator && (location.protocol==='https:'||location.hostname==='localhost')){
+ window.addEventListener('load',()=>navigator.serviceWorker.register('/sw.js',{scope:'/'}).catch(error=>console.warn('PWA service worker:',error)));
+}
