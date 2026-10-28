@@ -1,6 +1,6 @@
 <?php
 return [
- ['id'=>'hero','title'=>'Hero / первый экран','type'=>'hero','enabled'=>true,'hint'=>'Заголовок, подзаголовок, кнопки, 3D-сцена'],
+ ['id'=>'hero','title'=>'Музыка. Наследие. Будущее.','type'=>'hero','enabled'=>true,'hint'=>'Заголовок, подзаголовок, кнопки, 3D-сцена'],
  ['id'=>'ticker','title'=>'Информационная строка','type'=>'ticker','enabled'=>true,'hint'=>'Важные объявления и быстрые сообщения'],
  ['id'=>'intro','title'=>'Об училище','type'=>'content','enabled'=>true,'hint'=>'Короткое представление училища'],
  ['id'=>'news','title'=>'Новости','type'=>'feed','enabled'=>true,'hint'=>'Последние публикации пресс-центра'],
