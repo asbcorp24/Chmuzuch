@@ -3,7 +3,22 @@
 @foreach($blocks as $block)
 @php($id=$block['id']??'')
 @if($id==='hero')
-<section class="hero"><div id="hero-3d" class="hero-3d"></div><div class="hero-copy"><p class="eyebrow">Шупашкар • Чебоксары</p><h1>{!! $block['title']??'Музыка.<br>Наследие.<br><em>Будущее.</em>' !!}</h1><p>{{$block['subtitle']??'Чебоксарское музыкальное училище имени Ф. П. Павлова — академическая традиция в современном цифровом пространстве.'}}</p><div class="hero-actions"><a href="/applicants">Поступить</a><a href="/events" class="ghost">Афиша</a></div></div><div class="ornament"></div></section>
+<section class="hero"><div id="hero-3d" class="hero-3d"></div><div class="hero-copy"><p class="eyebrow">Шупашкар • Чебоксары</p><h1>{!! $block['title']??'Музыка.<br>Наследие.<br><em>Будущее.</em>' !!}</h1><p>{{$block['subtitle']??'Чебоксарское музыкальное училище имени Ф. П. Павлова — академическая традиция в современном цифровом пространстве.'}}</p><div class="hero-actions"><a href="/applicants">Поступить</a><a href="/events" class="ghost">Афиша</a></div></div><div class="ornament"></div>
+<nav class="hero-explorer" aria-label="Интерактивная навигация по разделам сайта">
+<div class="hero-explorer-heading"><span>Исследуйте училище</span><small>Выберите направление</small></div>
+<div class="hero-explorer-links">
+@foreach($siteNavigation->where('location','header')->whereNull('parent_id')->take(8) as $navItem)
+<div class="hero-explorer-item">
+<a href="{{$navItem->url}}" class="hero-explorer-link"><span class="hero-explorer-note">♫</span><span>{{$navItem->label}}</span><span aria-hidden="true">↗</span></a>
+@php($navChildren=$siteNavigation->where('parent_id',$navItem->id))
+@if($navChildren->isNotEmpty())
+<button type="button" class="hero-explorer-expand" aria-expanded="false" aria-label="Подразделы: {{$navItem->label}}">+</button>
+<div class="hero-explorer-children" hidden>@foreach($navChildren as $child)<a href="{{$child->url}}">{{$child->label}}</a>@endforeach</div>
+@endif
+</div>
+@endforeach
+</div>
+</nav></section>
 @elseif($id==='news')
 <section class="block"><div class="section-head"><div><p class="eyebrow">Пресс-центр</p><h2>{{$block['title']??'Новости'}}</h2></div><a href="/news">Все новости →</a></div><div class="cards cards-3">@forelse($news as $item)<article class="card"><span>{{$item->published_at?->format('d.m')}}</span><h3><a href="{{route('press.article',['news',$item->slug])}}">{{$item->title}}</a></h3><p>{{$item->excerpt}}</p></article>@empty<p>Новости пока не опубликованы.</p>@endforelse</div></section>
 @elseif(in_array($id,['announcements','announce']))
