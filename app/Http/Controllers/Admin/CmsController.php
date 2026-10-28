@@ -14,7 +14,7 @@ use Illuminate\View\View;
 class CmsController extends Controller {
  private array $modules=[
   'home'=>['title'=>'Главная','icon'=>'⌂','count'=>'12 блоков'],'pages'=>['title'=>'Страницы','icon'=>'□','count'=>'Страницы сайта'],
-  'news'=>['title'=>'Новости','icon'=>'N','count'=>'Публикации','post_type'=>'news'],'events'=>['title'=>'Афиша','icon'=>'◉','count'=>'Мероприятия','post_type'=>'event'],
+  'news'=>['title'=>'Новости','icon'=>'N','count'=>'Публикации','post_type'=>'news'],'concerts'=>['title'=>'Концерты','icon'=>'♫','count'=>'Концертные программы','post_type'=>'concert'],'events'=>['title'=>'Афиша','icon'=>'◉','count'=>'Мероприятия','post_type'=>'event'],
   'announcements'=>['title'=>'Анонсы','icon'=>'A','count'=>'Пресс-центр','post_type'=>'announcement'],'media-about'=>['title'=>'СМИ о нас','icon'=>'M','count'=>'Публикации СМИ','post_type'=>'media_about'],
   'departments'=>['title'=>'Отделения','icon'=>'11','count'=>'11 отделений'],'teachers'=>['title'=>'Преподаватели','icon'=>'P','count'=>'Карточки педагогов'],
   'collectives'=>['title'=>'Коллективы','icon'=>'♫','count'=>'Творческие коллективы'],'documents'=>['title'=>'Документы','icon'=>'D','count'=>'Файлы и категории'],
