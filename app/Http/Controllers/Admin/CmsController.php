@@ -36,6 +36,7 @@ class CmsController extends Controller {
  public function editor(string $module,string $id='new'): View {
   abort_unless(isset($this->modules[$module]),404); $record=null;
   if($id!=='new'){ if($module==='pages') $record=Page::findOrFail($id); elseif(isset($this->modules[$module]['post_type'])) $record=Post::type($this->modules[$module]['post_type'])->findOrFail($id); }
+  if(auth()->user()?->role==='editor' && $record && $record->status!=='draft')abort(403,'Редактирование опубликованного материала недоступно.');
   return view('admin.editor',['module'=>$module,'id'=>$id,'meta'=>$this->modules[$module],'record'=>$record,'departments'=>Department::where('is_active',true)->orderBy('sort')->get(),'teachers'=>Teacher::where('is_active',true)->orderBy('name')->get(),'collectives'=>Collective::where('is_active',true)->orderBy('sort')->orderBy('title')->get(),'forms'=>Form::where('is_active',true)->orderBy('title')->get()]);
  }
  public function save(Request $request,string $module,string $id='new'): RedirectResponse {
