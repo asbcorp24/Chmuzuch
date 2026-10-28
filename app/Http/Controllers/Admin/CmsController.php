@@ -49,6 +49,7 @@ class CmsController extends Controller {
  }
  public function destroy(string $module,string $id): RedirectResponse {
   abort_unless($module==='pages'||isset($this->modules[$module]['post_type']),404);
+  abort_unless(in_array(auth()->user()?->role,['super_admin','content_manager'],true),403);
   $record=$module==='pages'?Page::findOrFail($id):Post::type($this->modules[$module]['post_type'])->findOrFail($id); $record->delete();
   return redirect()->route('admin.module',$module)->with('success','Удалено');
  }
