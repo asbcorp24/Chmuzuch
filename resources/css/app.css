@@ -559,3 +559,27 @@ body.admin-login-page{min-height:100vh;min-height:100dvh;margin:0;display:grid;p
 .admin-sidebar .admin-accordion .admin-nav-group>div a{display:block;padding:9px 13px 9px 20px;border-radius:8px;font-size:13px;line-height:1.4;text-decoration:none}
 .admin-sidebar .admin-accordion .admin-nav-group>div a:hover{background:#b9333b2b;color:#fff}
 .admin-sidebar .admin-accordion .admin-nav-group>div a[aria-current=page]{background:#b9333b38;color:#fff;border-left:3px solid #d7b980}
+
+
+/* Admin readability: high contrast on dark backgrounds */
+body.admin-body{color:#eef3f8;background:#101923}
+.admin-body .admin-main{color:#eef3f8}
+.admin-body .admin-main h1,.admin-body .admin-main h2,.admin-body .admin-main h3,.admin-body .admin-main h4{color:#fff!important;opacity:1!important}
+.admin-body .admin-main p,.admin-body .admin-main label,.admin-body .admin-main small,.admin-body .admin-main span{color:#d7e0e9}
+.admin-body .admin-top small,.admin-body .admin-back{color:#d6b99b!important}
+.admin-body .settings-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,330px),1fr));gap:20px;align-items:start}
+.admin-body .settings-card{background:#1b2937!important;border:1px solid #516274!important;border-radius:14px;padding:24px;box-shadow:0 10px 30px #0002;color:#f2f5f8!important}
+.admin-body .settings-card h2{color:#fff!important;font-size:21px;font-weight:700;margin:0 0 20px}
+.admin-body .settings-card label{display:flex;flex-direction:column;gap:8px;margin:0 0 16px;color:#e5ebf2!important;font-size:14px;font-weight:500}
+.admin-body .settings-card label span{color:#e5ebf2!important;opacity:1!important;visibility:visible!important;font-size:14px;line-height:1.45}
+.admin-body .settings-card input,.admin-body .settings-card textarea,.admin-body .settings-card select{display:block;width:100%;min-height:44px;padding:11px 13px;box-sizing:border-box;background:#101c28!important;border:1px solid #647789!important;border-radius:9px;color:#fff!important;font:inherit;opacity:1!important}
+.admin-body .settings-card textarea{min-height:100px;resize:vertical}
+.admin-body .settings-card input:focus,.admin-body .settings-card textarea:focus{outline:2px solid #d7b980;outline-offset:1px;border-color:#d7b980!important}
+.admin-body .settings-card small{color:#c6d1dc!important;line-height:1.6}
+.admin-body .settings-section-nav a{color:#f7f1e9!important;background:#223346!important;border:1px solid #647789!important}
+.admin-body .settings-section-nav a:hover{background:#34495d!important}
+.admin-body .admin-accordion summary{color:#f2f5f8!important}
+.admin-body .admin-accordion a{color:#dce6ef!important}
+.admin-body .admin-main .editor-field label,.admin-body .editor-settings label{color:#e6eef6!important}
+.admin-body .admin-main input:not([type=checkbox]):not([type=radio]),.admin-body .admin-main textarea,.admin-body .admin-main select{color:#f4f7fa}
+@media(max-width:700px){.admin-body .settings-grid{grid-template-columns:minmax(0,1fr)}.admin-body .settings-card{padding:18px}.admin-body .settings-section-nav{gap:7px}}
