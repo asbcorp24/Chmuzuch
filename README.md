@@ -163,3 +163,11 @@ PWA: проверьте по HTTPS `/manifest.webmanifest`, `/sw.js`, `/offline.
 Обновление: сделайте резервную копию БД, `.env` и `storage/app/public`; затем выполните `git pull --ff-only origin feature/legacy-site-crawler`, `composer install --no-dev --optimize-autoloader`, `php artisan migrate --force`, `npm install && npm run build`, `php artisan optimize:clear && php artisan config:cache && php artisan view:cache`. Не используйте `migrate:fresh` на production.
 
 **Отличия от vdmsh:** здесь Laravel 9, ветка `feature/legacy-site-crawler`, и отсутствует подтверждённый production-сидер администратора. Не запускайте `migrate --seed` без проверки. Перенос в `main` — только после отдельного согласования.
+
+### Timeweb: если нельзя выбрать корень `public`
+
+В репозитории предусмотрены два файла: корневой `.htaccess` перенаправляет запросы в `public/`, а `public/.htaccess` передаёт маршруты в `index.php`. Для Apache с разрешённым `AllowOverride` это может позволить запустить сайт без изменения document root.
+
+**Внимание:** это компромисс, не равноценный безопасному document root в `public`. При размещении всего Laravel в доступном из веба каталоге нельзя гарантировать защиту исходников только правилами `.htaccess`, особенно при отключённом `mod_rewrite` или нестандартной конфигурации сервера. Предпочтительнее держать исходники Laravel вне веб-корня либо попросить поддержку Timeweb настроить корень на `public`.
+
+После публикации обязательно проверьте, что `/.env`, `/composer.json`, `/vendor/autoload.php`, `/storage/logs/laravel.log` и `/.git/config` недоступны извне (ответ 403 или 404), а главная, `/admin/login`, PWA-манифест и файлы из `/build/` открываются. Если какой-либо закрытый файл доступен — немедленно прекратите публикацию и измените схему размещения.
