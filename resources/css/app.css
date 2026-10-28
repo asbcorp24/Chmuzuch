@@ -587,3 +587,31 @@ body.admin-body{color:#eef3f8;background:#101923}
 .page-media-editor{margin-top:24px;padding:20px;border:1px solid #526475;border-radius:14px;background:#1b2937;color:#eef3f8}
 .page-media-editor h2{color:#fff;font-size:21px}.page-media-editor label{display:flex;flex-direction:column;gap:9px;margin:15px 0}.page-media-editor input[type=file]{max-width:100%;color:#f0f4f8}.page-media-row{display:flex;justify-content:space-between;gap:15px;align-items:center;border-top:1px solid #ffffff25;padding:10px 0;overflow-wrap:anywhere}.page-media-row label{flex-direction:row;white-space:nowrap}
 .page-media-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,270px),1fr));gap:20px}.page-media-item{min-width:0;margin:0;padding:12px;border:1px solid #ffffff24;border-radius:14px;background:#ffffff08}.page-media-item img,.page-media-item video{display:block;width:100%;max-height:400px;object-fit:contain;border-radius:9px}.page-media-item audio{width:100%}.page-media-item figcaption{padding:12px 3px 3px;overflow-wrap:anywhere;font-size:13px;color:#c9d4df}
+
+
+/* Shared CMS editor redesign */
+.admin-body .cms-record-form{max-width:1500px;margin:0 auto;color:#eaf0f7}
+.admin-body .cms-record-form .editor-top{position:sticky;top:0;z-index:20;display:flex;justify-content:space-between;align-items:center;gap:18px;padding:16px 20px;background:#142230f5;border:1px solid #4d6073;border-radius:14px;backdrop-filter:blur(14px);margin-bottom:16px}
+.admin-body .cms-record-form .editor-top h1{font-size:clamp(21px,2.3vw,30px);margin:6px 0 0}
+.admin-body .cms-record-form .editor-actions{display:flex;gap:10px;flex-wrap:wrap}
+.admin-body .cms-record-form .editor-actions button{min-height:42px;padding:9px 16px;border-radius:9px;cursor:pointer}
+.admin-body .cms-editor-tabs{display:flex;gap:8px;flex-wrap:wrap;margin:0 0 18px;padding:6px;background:#1c2c3a;border:1px solid #43576b;border-radius:12px}
+.admin-body .cms-editor-tabs a{padding:10px 14px;border-radius:8px;color:#f0f4f8;text-decoration:none;font-size:13px;font-weight:650}
+.admin-body .cms-editor-tabs a:hover,.admin-body .cms-editor-tabs a:focus-visible{background:#b9333b;color:#fff}
+.admin-body .cms-record-form .editor-layout{display:grid;grid-template-columns:minmax(0,1fr) minmax(280px,340px);align-items:start;gap:22px}
+.admin-body .cms-record-form .editor-canvas{min-width:0;background:#1b2937;border:1px solid #4b5e70;border-radius:14px;padding:clamp(16px,2.5vw,28px)}
+.admin-body .cms-record-form .editor-settings{display:flex;flex-direction:column;gap:15px;min-width:0;background:transparent;border:0;padding:0}
+.admin-body .cms-settings-panel{background:#1b2937;border:1px solid #4b5e70;border-radius:14px;padding:20px;scroll-margin-top:120px}
+.admin-body .cms-settings-panel h3{color:#fff!important;margin:0 0 15px;font-size:17px}
+.admin-body .cms-record-form .editor-field{margin-bottom:20px}
+.admin-body .cms-record-form .editor-field label,.admin-body .cms-settings-panel label{display:flex;flex-direction:column;gap:7px;margin:0 0 13px;color:#eaf0f7!important;font-size:13px;font-weight:600}
+.admin-body .cms-record-form input:not([type=checkbox]):not([type=radio]),.admin-body .cms-record-form textarea,.admin-body .cms-record-form select{display:block;box-sizing:border-box;width:100%;max-width:100%;min-width:0;background:#101d29!important;color:#fff!important;border:1px solid #60768a!important;border-radius:9px;padding:11px 12px;font-size:14px}
+.admin-body .cms-record-form input:focus,.admin-body .cms-record-form textarea:focus,.admin-body .cms-record-form select:focus{outline:2px solid #d7b980;outline-offset:1px}
+.admin-body .cms-record-form .editor-title{font-size:21px!important;font-weight:650}
+.admin-body .cms-record-form .jodit-container{color:#222;background:#fff;max-width:100%}
+.admin-body .cms-record-form .jodit-workplace,.admin-body .cms-record-form .jodit-wysiwyg{color:#222;background:#fff}
+.admin-body .cms-editor-errors{padding:14px 18px;margin:0 0 16px;border:1px solid #f69b9b;border-radius:10px;background:#4d2027;color:#fff}
+.admin-body .cms-editor-errors li{margin:5px 0}
+.admin-body .cms-record-form #editor-content,.admin-body .cms-record-form #editor-media{scroll-margin-top:120px}
+@media(max-width:1100px){.admin-body .cms-record-form .editor-layout{grid-template-columns:minmax(0,1fr)}.admin-body .cms-record-form .editor-settings{display:grid;grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:700px){.admin-body .cms-record-form .editor-top{position:static;flex-direction:column;align-items:stretch;padding:14px}.admin-body .cms-record-form .editor-actions button{flex:1}.admin-body .cms-record-form .editor-settings{display:flex}.admin-body .cms-record-form .editor-canvas{padding:15px}.admin-body .cms-editor-tabs{overflow-x:auto;flex-wrap:nowrap}.admin-body .cms-editor-tabs a{white-space:nowrap}.admin-body .cms-settings-panel{scroll-margin-top:20px}}
