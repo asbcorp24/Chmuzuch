@@ -168,3 +168,40 @@ main .card a:focus-visible,main .concert-card a:focus-visible{outline-offset:5px
  body:has(#hero-3d) .hero h1{font-size:clamp(48px,5.5vw,66px);line-height:1}
  body:has(#hero-3d) .hero-3d{inset:100px 0 200px 43%;opacity:1}
 }
+
+
+/* Mobile app-like homepage, not a scaled desktop hero */
+@media(max-width:800px){
+ body:has(#hero-3d) .site-header{height:64px;min-height:64px;padding:8px 16px;gap:8px;background:#0c1318f5}
+ body:has(#hero-3d) .brand{max-width:calc(100vw - 155px);font-size:11px}
+ body:has(#hero-3d) .brand-mark{width:34px;height:34px}
+ body:has(#hero-3d) .hero{display:flex;flex-direction:column;align-items:stretch;min-height:0;height:auto;padding:84px 16px 28px;overflow:visible;background:radial-gradient(ellipse at 80% 12%,#213641 0%,#0c151a 55%,#080c10 100%)}
+ body:has(#hero-3d) .hero-copy{order:0;width:100%;max-width:none;padding:0;margin:0;z-index:2}
+ body:has(#hero-3d) .hero-copy .eyebrow{font-size:10px;letter-spacing:.18em;margin:4px 0 12px}
+ body:has(#hero-3d) .hero h1{font-size:clamp(38px,9vw,56px);line-height:1.02;letter-spacing:-.035em;margin:0 0 14px}
+ body:has(#hero-3d) .hero-copy>p:not(.eyebrow){font-size:13px;line-height:1.5;margin:0;max-width:460px}
+ body:has(#hero-3d) .hero-actions{gap:9px;margin-top:18px}
+ body:has(#hero-3d) .hero-actions a{min-height:44px;display:inline-flex;align-items:center;justify-content:center;border-radius:12px;padding:10px 18px;font-size:13px}
+ body:has(#hero-3d) .hero-3d{order:1;position:relative;inset:auto!important;left:auto!important;right:auto!important;top:auto!important;bottom:auto!important;width:100%;height:220px;min-height:220px;max-height:220px;margin:18px 0 0;opacity:1!important;z-index:1;border-radius:20px;overflow:hidden;background:radial-gradient(circle at 50% 50%,#253941 0%,#111b20 65%,#0b1318 100%);border:1px solid #c8a96a33}
+ body:has(#hero-3d) .hero-3d canvas{display:block;width:100%!important;height:100%!important}
+ body:has(#hero-3d) .ornament{display:none}
+ body:has(#hero-3d) .hero-explorer{order:2;position:relative;inset:auto!important;left:auto!important;right:auto!important;bottom:auto!important;margin:16px 0 0;padding:16px;border-radius:18px;background:#121e24;border:1px solid #ffffff1c;box-shadow:none}
+ body:has(#hero-3d) .hero-explorer-heading{display:flex;flex-direction:row;justify-content:space-between;align-items:center;gap:8px;margin-bottom:12px}
+ body:has(#hero-3d) .hero-explorer-heading span{font-size:19px}
+ body:has(#hero-3d) .hero-explorer-heading small{font-size:10px}
+ body:has(#hero-3d) .hero-explorer-links{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:9px}
+ body:has(#hero-3d) .hero-explorer-link{min-height:72px;display:flex;flex-direction:column;align-items:flex-start;justify-content:center;gap:4px;padding:10px 32px 10px 12px;border-radius:13px;background:#1b2a31;font-size:12px;line-height:1.3}
+ body:has(#hero-3d) .hero-explorer-note{font-size:19px}
+ body:has(#hero-3d) .hero-explorer-expand{top:7px;right:6px;width:27px;height:29px}
+ body:has(#hero-3d) .hero-explorer-children:not([hidden]){position:relative;z-index:5}
+ body:has(#hero-3d) .block{padding:38px 16px}
+ body:has(#hero-3d) .block h2{font-size:clamp(28px,7vw,40px);line-height:1.13}
+ body:has(#hero-3d) .cards-3,body:has(#hero-3d) .department-strip,body:has(#hero-3d) .portal-grid.expanded{grid-template-columns:1fr}
+ body:has(#hero-3d) .card{min-height:155px;padding:20px;border-radius:15px}
+ body:has(#hero-3d) .card h3{font-size:21px;margin-top:18px}
+ body:has(#hero-3d) .portal-grid b{font-size:23px}
+}
+@media(max-width:370px){
+ body:has(#hero-3d) .hero-explorer-heading{align-items:flex-start;flex-direction:column}
+ body:has(#hero-3d) .hero h1{font-size:37px}
+}
