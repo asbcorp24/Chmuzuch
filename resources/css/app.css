@@ -485,3 +485,38 @@ body:not(:has(#hero-3d)) .editorial-article .article-body img{max-width:100%;hei
  body:not(:has(#hero-3d)) .editorial-article .article-body{font-size:15px}
  body:not(:has(#hero-3d)) .document-list>a{padding:13px}
 }
+
+
+/* Chuvash-inspired identity: red embroidery geometry, warm ivory and subtle national pattern */
+:root{--chuvash-red:#b9333b;--chuvash-ivory:#f3e6d0;--chuvash-gold:#d7b980}
+.chuvash-topline{position:fixed;top:0;left:0;right:0;height:4px;z-index:120;pointer-events:none;background:repeating-linear-gradient(90deg,#b9333b 0 18px,#f3e6d0 18px 22px,#b9333b 22px 26px,#101a22 26px 40px,#d7b980 40px 44px,#101a22 44px 58px)}
+.chuvash-heritage-band{display:flex;align-items:center;justify-content:space-around;gap:12px;overflow:hidden;height:42px;padding:0 8vw;background:#b9333b;color:#f3e6d0;border-top:2px solid #d7b980;border-bottom:2px solid #d7b980;font-size:23px;letter-spacing:10px;user-select:none}
+.site-header{border-top:4px solid transparent}
+.brand-mark{border-color:#d7b980!important;color:#f3e6d0!important;background:linear-gradient(135deg,#b9333b44,#152630)}
+.brand-mark i{color:#f3e6d0}
+body:has(#hero-3d) .hero-atmosphere::after{content:"";position:absolute;right:0;top:0;bottom:0;width:56px;opacity:.38;background:repeating-linear-gradient(180deg,transparent 0 24px,#b9333b 24px 30px,transparent 30px 44px,#d7b980 44px 47px,transparent 47px 68px);mask-image:linear-gradient(transparent,#000 20%,#000 80%,transparent)}
+body:has(#hero-3d) .hero .eyebrow{color:#e7b4a6!important}
+body:has(#hero-3d) .hero-actions a:not(.ghost){background:#b9333b!important;border-color:#d85a60!important;color:#fff9ee!important}
+body:has(#hero-3d) .hero-actions a:not(.ghost):hover{background:#d3444c!important}
+body:has(#hero-3d) .hero-explorer-note{color:#d8a5a1}
+body:has(#hero-3d) .hero-explorer{border-top:2px solid #b9333b}
+body:has(#hero-3d) .hero-caption{border-top-color:#b9333b77}
+body:not(:has(#hero-3d)) .public-hero::before,
+body:not(:has(#hero-3d)) .section-hero::before,
+body:not(:has(#hero-3d)) .events-hero::before,
+body:not(:has(#hero-3d)) .press-hub-hero::before{content:"";position:absolute;left:0;top:0;bottom:0;width:7px;background:repeating-linear-gradient(180deg,#b9333b 0 20px,#f3e6d0 20px 24px,#152630 24px 36px,#d7b980 36px 40px,#152630 40px 54px)}
+body:not(:has(#hero-3d)) .public-hero,
+body:not(:has(#hero-3d)) .section-hero,
+body:not(:has(#hero-3d)) .events-hero,
+body:not(:has(#hero-3d)) .press-hub-hero{position:relative}
+body:not(:has(#hero-3d)) main .eyebrow{color:#e3aaa5}
+body:not(:has(#hero-3d)) main .card:hover{border-color:#b9333b}
+body:not(:has(#hero-3d)) .editorial-article>header{border-left:3px solid #b9333b;padding-left:clamp(15px,2vw,28px)}
+body:not(:has(#hero-3d)) .department-row:hover{border-left:3px solid #b9333b}
+.site-footer{border-top:0!important}
+@media(max-width:900px){
+ .chuvash-heritage-band{height:28px;font-size:15px;letter-spacing:3px}
+ body:has(#hero-3d) .hero-atmosphere::after{width:19px;opacity:.3}
+ .chuvash-topline{height:3px}
+ body:not(:has(#hero-3d)) .public-hero::before,body:not(:has(#hero-3d)) .section-hero::before,body:not(:has(#hero-3d)) .events-hero::before,body:not(:has(#hero-3d)) .press-hub-hero::before{width:4px}
+}
