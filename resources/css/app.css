@@ -205,3 +205,31 @@ main .card a:focus-visible,main .concert-card a:focus-visible{outline-offset:5px
  body:has(#hero-3d) .hero-explorer-heading{align-items:flex-start;flex-direction:column}
  body:has(#hero-3d) .hero h1{font-size:37px}
 }
+
+
+/* Conservatory-inspired visual system and mobile application shell */
+.app-bottom-nav{display:none}
+@media(max-width:900px){
+ body{padding-bottom:calc(74px + env(safe-area-inset-bottom,0px))}
+ .app-bottom-nav{position:fixed;display:grid!important;grid-template-columns:repeat(5,minmax(0,1fr));bottom:0;left:0;right:0;z-index:95;gap:0;padding:7px 7px calc(7px + env(safe-area-inset-bottom,0px));background:#101b22f7;border-top:1px solid #ffffff20;backdrop-filter:blur(20px);box-shadow:0 -12px 35px #0006}
+ .app-bottom-nav a,.app-bottom-nav button{min-width:0;min-height:54px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;background:transparent;border:0;color:#dbe5e7;font:inherit;border-radius:12px;cursor:pointer}
+ .app-bottom-nav a:active,.app-bottom-nav button:active{background:#ffffff18}
+ .app-bottom-nav span{font-size:23px;line-height:1}
+ .app-bottom-nav small{font-size:10px;line-height:1.2}
+ .mobile-menu{z-index:110!important;background:#0d171e!important}
+ .mobile-menu-head{padding:24px 20px 16px}
+ .mobile-menu nav{padding:12px 18px 95px;gap:6px}
+ .mobile-menu nav>a{display:block;padding:13px 16px;border:1px solid #ffffff12;background:#18252d;border-radius:12px;font-size:15px}
+ .mobile-menu nav>a.mobile-submenu-link{margin-left:12px;background:#111d24;font-size:13px;color:#bac8cf}
+ body:has(#hero-3d) .hero{background:radial-gradient(ellipse at 80% 10%,#17303a,#0b151c 52%,#080d12)}
+ body:has(#hero-3d) .hero-3d{height:185px;min-height:185px;max-height:185px;background:radial-gradient(circle at 50% 50%,#263b42,#101b22 75%);box-shadow:inset 0 0 50px #c8a96a12}
+ body:has(#hero-3d) .hero-explorer{background:#101d25}
+ body:has(#hero-3d) .hero-explorer-link{background:linear-gradient(145deg,#21333d,#18262f);border-color:#ffffff18}
+ body:has(#hero-3d) .hero-explorer-link:active{background:#314750}
+ .site-music-player{bottom:calc(85px + env(safe-area-inset-bottom,0px))}
+}
+@media(min-width:901px){
+ .app-bottom-nav{display:none!important}
+ body:has(#hero-3d) .hero{background:radial-gradient(ellipse at 73% 42%,#1a343c,#0a141a 55%,#080c10)}
+ body:has(#hero-3d) .hero-3d{filter:drop-shadow(0 0 50px #c8a96a22)}
+}
