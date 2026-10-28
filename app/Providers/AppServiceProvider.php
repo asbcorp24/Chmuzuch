@@ -1,6 +1,7 @@
 <?php
 namespace App\Providers;
 use App\Models\Setting;
+use App\Models\NavigationItem;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\Facades\View;
 use Illuminate\Support\ServiceProvider;
@@ -11,6 +12,8 @@ class AppServiceProvider extends ServiceProvider {
    $settings=[];
    try{if(Schema::hasTable('settings'))$settings=Setting::grouped();}catch(\Throwable $e){}
    $view->with('siteSettings',$settings);
+   $navigation=collect();try{if(Schema::hasTable('navigation_items'))$navigation=NavigationItem::where('is_active',true)->orderBy('sort')->orderBy('id')->get();}catch(\Throwable $e){}
+   $view->with('siteNavigation',$navigation);
   });
  }
 }
