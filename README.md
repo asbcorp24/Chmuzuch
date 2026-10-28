@@ -1,139 +1,159 @@
 # Чебоксарское музыкальное училище — Chmuzuch
 
-Laravel 9 / PHP 8.1–8.2 / MySQL / Vite 4 / Three.js. Сайт и CMS с интерактивной главной страницей, концертами, медиатекой, PWA и настраиваемыми STL-сценами.
+Laravel 9 / PHP 8.1+ / MySQL / Vite / Three.js. Развёртывание по схеме проекта [vdmsh](https://github.com/asbcorp24/vdmsh), адаптированной для **Timeweb**. Основная рабочая ветка — `main`. Все последующие изменения и обновления выполняются в `main`.
 
-**Разработка:** `feature/legacy-site-crawler`. Не переключайтесь на `main` при развертывании текущей версии без отдельного решения. Исходный сайт — ориентир по структуре; автоматический импорт старого контента не выполняется.
+## Требования
 
-## Развертывание на Timeweb
+- Хостинг Timeweb с PHP **8.1 или 8.2** и поддержкой Composer/SSH; PHP 8.0 не рекомендуется. Для Laravel 9 обязательно PHP >=8.0.2.
+- Расширения PHP: mbstring, openssl, pdo_mysql, tokenizer, xml, ctype, fileinfo, curl, gd.
+- MySQL / MariaDB; Composer 2; Node.js и npm для сборки (можно собирать локально).
+- HTTPS для PWA и service worker; домен с корректным SSL.
+- Корень веб-сайта **должен указывать на `public/`**, а не на корень Laravel.
 
-Ниже процедура для **Timeweb Cloud VPS / виртуального сервера** с SSH и возможностью настроить nginx или Apache. Для обычного виртуального хостинга Timeweb заранее проверьте возможность выбрать PHP 8.1/8.2, запустить Composer/Artisan и настроить корень сайта на `public`. На хостинге без SSH сборку Vite выполните локально и загрузите каталог `public/build`.
+## 1. Подготовка Timeweb
 
-### 1. Подготовка
+Создайте сайт/домен и базу MySQL в панели Timeweb. Установите подходящую версию PHP, включите HTTPS и SSH. Запишите имя БД, пользователя, пароль, адрес сервера БД и фактический путь к каталогу проекта.
 
-- Домен с A/AAAA-записью на сервер; HTTPS-сертификат (Let's Encrypt).
-- PHP 8.1 или 8.2 с расширениями: `mbstring`, `openssl`, `pdo_mysql`, `xml`, `ctype`, `fileinfo`, `tokenizer`, `bcmath`.
-- MySQL 8 / MariaDB 10.6+, Composer 2, Git; Node.js 20 и npm для сборки на сервере.
-- Document root **обязательно** `/var/www/ДОМЕН/public` (или фактический путь Timeweb до `public`). Не публикуйте корень проекта: там находится `.env`.
+**Важно:** если тариф не позволяет установить document root на `.../public`, используйте VPS/Cloud Server Timeweb или настройку веб-сервера с нужным корнем. **Не переносите `.env`, `vendor` и `app` в публичный каталог.**
 
-### 2. Код и зависимости
+## 2. Загрузка исходников
+
+По SSH перейдите в **непубличную** папку проекта (путь зависит от вашего аккаунта Timeweb):
 
 ```bash
-cd /var/www
-git clone --branch feature/legacy-site-crawler https://github.com/asbcorp24/Chmuzuch.git chmuzuch
-cd chmuzuch
-composer install --no-dev --optimize-autoloader
+cd /home/USER/PROJECT
+git clone --branch main https://github.com/asbcorp24/Chmuzuch.git .
+composer install --no-dev --prefer-dist --optimize-autoloader
 cp .env.example .env
 php artisan key:generate
 ```
 
-Если GitHub недоступен на сервере, загрузите архив **этой ветки**, распакуйте в каталог приложения, затем выполните Composer-команды.
+При закрытом репозитории потребуется GitHub-токен или SSH-ключ с доступом. Если нет SSH или Composer на тарифе, собирайте проект локально и загружайте через SFTP, сохраняя структуру и не публикуя приватные каталоги.
 
-### 3. База и .env
+## 3. Настройка окружения
 
-Создайте **пустую** БД и пользователя с правами на неё. В `.env` установите:
+В `.env`:
 
 ```dotenv
 APP_NAME="Чебоксарское музыкальное училище"
 APP_ENV=production
 APP_DEBUG=false
-APP_URL=https://ВАШ-ДОМЕН
+APP_URL=https://YOUR-DOMAIN.RU
 LOG_CHANNEL=stack
 LOG_LEVEL=warning
+
 DB_CONNECTION=mysql
-DB_HOST=127.0.0.1
+DB_HOST=localhost
 DB_PORT=3306
-DB_DATABASE=chmuzuch
-DB_USERNAME=chmuzuch_user
-DB_PASSWORD=ЗАМЕНИТЕ_НА_СЕКРЕТ
+DB_DATABASE=YOUR_DATABASE
+DB_USERNAME=YOUR_DB_USER
+DB_PASSWORD=YOUR_STRONG_PASSWORD
+
 SESSION_DRIVER=file
 CACHE_DRIVER=file
 FILESYSTEM_DISK=public
 ```
 
-Не публикуйте `.env` и не сохраняйте реальные пароли в Git. Если пароль содержит специальные символы, заключите значение в двойные кавычки.
+Используйте **реальные** реквизиты БД из панели Timeweb. Никогда не коммитьте `.env`. Проверьте права на запись для `storage/` и `bootstrap/cache/`; не назначайте `777`.
 
-### 4. Миграции, медиа и фронтенд
+## 4. База, медиа, сборка
 
 ```bash
 php artisan migrate --force
 php artisan storage:link
 npm install
 npm run build
-php artisan optimize:clear
-php artisan config:cache
-php artisan view:cache
+php artisan optimize
 ```
 
-**Не запускайте `migrate:fresh` на работающем сайте.** Не выполняйте `db:seed` без предварительной проверки сидеров: проект не должен автоматически заполняться контентом старого сайта. Права на запись нужны для `storage` и `bootstrap/cache` пользователю PHP-FPM; не применяйте `chmod 777`.
+**Не запускайте `db:seed` автоматически:** в этом проекте запрещён импорт старого контента до отдельного согласования. Убедитесь, что в `public/build` есть собранные CSS/JS и `manifest.json`. Если Node.js отсутствует на сервере, выполните `npm install && npm run build` локально и загрузите `public/build/`.
 
-Медиа и STL сохраняются в `storage/app/public`; URL `/storage/...` работает после `storage:link`. Для STL увеличьте при необходимости `upload_max_filesize` и `post_max_size` в PHP (текущий лимит формы STL — 20 МБ). Для больших видео настройте лимиты отдельно.
+Для STL, фотографий и прочих медиа используется диск `public`: `storage/app/public` и символьная ссылка `public/storage`. На Timeweb проверьте разрешение на symlink. Если оно запрещено, нужен иной безопасный способ выдачи медиа через веб-сервер.
 
-### 5. Настройка сайта в Timeweb
+## 5. PWA
 
-1. Создайте сайт/виртуальный хост с доменом.
-2. Укажите корневую папку сайта: `/var/www/chmuzuch/public` (замените на ваш фактический путь).
-3. Выберите PHP 8.1 или 8.2, настройте PHP-FPM.
-4. Подключите SSL и перенаправление HTTP → HTTPS.
-5. В nginx настройте `try_files $uri $uri/ /index.php?$query_string;`; в Apache включите `mod_rewrite` и разрешите правила `public/.htaccess`.
-6. Убедитесь, что `/manifest.webmanifest`, `/sw.js`, `/offline.html` и `/pwa-icon.svg` открываются без авторизации.
+PWA-файлы в `public/`: `manifest.webmanifest`, `sw.js`, `offline.html`, `pwa-icon.svg`. HTTPS обязателен (кроме localhost). После публикации проверьте:
 
-### 6. Администратор
+- `https://YOUR-DOMAIN.RU/manifest.webmanifest` — код 200 и JSON.
+- `https://YOUR-DOMAIN.RU/sw.js` — код 200, JavaScript, без редиректа на HTML.
+- `https://YOUR-DOMAIN.RU/offline.html` — код 200.
+- DevTools → Application → Manifest и Service Workers; установка на Android.
+- 3D на главной и динамических страницах, STL, возврат к стандартной модели, работа после обновления.
+- Для максимально широкой поддержки установки **ещё требуются PNG-иконки 192×192 и 512×512**. SVG-иконка уже предусмотрена.
 
-В текущей ветке не подтверждён автоматический сидер первого администратора. **Не используйте инструкции из vdmsh с `ADMIN_EMAIL`/`ADMIN_PASSWORD` как готовую функциональность этого проекта.** Перед запуском проверьте миграцию таблицы `users` и создание пользователя с ролью `super_admin` и `is_active=1`; пароль хранится только как Laravel Hash. Вход: `/admin/login`.
+Service worker намеренно не кэширует административные страницы, API, `/storage/` и STL. Полноценный офлайн-доступ ко всему сайту не обещается.
 
-### 7. PWA и 3D
-
-PWA требует HTTPS (кроме localhost). Установочные метаданные: `public/manifest.webmanifest`, Service Worker: `public/sw.js`. Офлайн-страница доступна по `/offline.html`. Админка, API и STL исключены из офлайн-кэширования: для просмотра 3D-файлов нужен интернет. SVG-иконка присутствует; для максимальной совместимости Android/iOS дополнительно подготовьте PNG 192/512 и Apple Touch Icon.
-
-3D на главной настраивается в конструкторе главной, на динамических страницах — в редакторе страницы: STL, поворот X/Y/Z, масштаб. Если STL отсутствует или не загружается, отображается стандартная 3D-фигура. Перед публикацией проверьте загрузку модели, работу WebGL и мобильную производительность.
-
-### 8. Проверка после запуска
+## 6. Проверка после установки
 
 ```bash
 php artisan about
 php artisan migrate:status
 php artisan route:list
-php artisan storage:link
-curl -I https://ВАШ-ДОМЕН/
-curl -I https://ВАШ-ДОМЕН/manifest.webmanifest
-curl -I https://ВАШ-ДОМЕН/sw.js
+php artisan config:clear
 ```
 
-Проверьте вручную: главную и интерактивное меню, динамические страницы, 3D с STL и без STL, медиа, концерты, `/admin/login`, сохранение материалов, установку PWA в Chrome Android, офлайн-экран. Проверьте консоль браузера и `storage/logs/laravel.log`. Наличие файлов PWA **не означает**, что установка уже протестирована на устройствах.
+Проверьте главную, разделы CMS, формы, афишу, концерты, медиатеку, вход администратора, загрузку медиа и настройки STL. **Администратора создавайте через предусмотренный проектом механизм**, не полагайтесь на сидеры из другого репозитория. Пока наличие штатного production bootstrap администратора отдельно не подтверждено.
 
-### 9. Обновление и откат
+## 7. Обновление без потери данных
 
-Перед обновлением создайте резервную копию **БД**, `.env`, `storage/app/public`, а также запишите текущий SHA коммита.
+Перед обновлением сделайте резервную копию базы данных и `storage/app/public`. Затем:
 
 ```bash
 git fetch origin
-git checkout feature/legacy-site-crawler
-git pull --ff-only origin feature/legacy-site-crawler
-composer install --no-dev --optimize-autoloader
+git checkout main
+git pull --ff-only origin main
+composer install --no-dev --prefer-dist --optimize-autoloader
 php artisan migrate --force
 npm install
 npm run build
+php artisan optimize
+```
+
+При обновлении не перезаписывайте рабочий `.env`. После выпуска обновления PWA убедитесь, что старый Service Worker не удерживает устаревшие ресурсы.
+
+## 8. Диагностика
+
+- **500**: смотрите `storage/logs/laravel.log`, права, APP_KEY, подключение к БД.
+- **404 на страницах Laravel**: неверный document root или rewrite; используйте `public/`.
+- **Vite manifest not found**: отсутствует `public/build/manifest.json`, запустите сборку.
+- **Не видны STL и изображения**: проверьте `public/storage`, права, URL файла и доступность `/storage/models/stl/...`.
+- **PWA не устанавливается**: HTTPS, manifest, service worker, иконки, ошибки консоли.
+- **После деплоя старый интерфейс**: `php artisan optimize:clear`, пересборка Vite и обновление service worker.
+
+## Дополнительно
+
+Для Timeweb VPS/Cloud Server можно настроить cron `* * * * * cd /path/to/project && php artisan schedule:run >/dev/null 2>&1`, если используются запланированные задания. Очереди включайте только при реальном использовании и с отдельным worker-процессом.
+
+Документация по исходной структуре: `docs/OLD_SITE_CONTENT_MAP.md`. Старый сайт — ориентир по содержанию, **не шаблон дизайна**.
+
+
+## Timeweb: сборка фронтенда Vite после развёртывания
+
+Проект использует Laravel 9, Vite 4 и Three.js. На Timeweb выполняйте команды **в корне Laravel**, где расположены `package.json` и `vite.config.js`:
+
+```bash
+node -v
+npm -v
+npm install
+npm run build
+test -f public/build/manifest.json && echo "Vite build OK"
 php artisan optimize:clear
-php artisan config:cache
-php artisan view:cache
 ```
 
-При проблеме откатите код на записанный SHA и восстановите БД из резервной копии, если миграции изменили схему. Простое `git checkout` не отменяет миграции. Для обновления Service Worker меняйте значение `VERSION` в `public/sw.js` и проверяйте отсутствие устаревших ресурсов.
+Рекомендуется Node.js 18 или 20. Если в репозитории есть `package-lock.json`, для воспроизводимой сборки используйте `npm ci` вместо `npm install`.
 
-### 10. Планировщик и очереди (если понадобятся)
+**Веб-корень домена:** каталог `public`, не корень проекта. Vite создаёт `public/build/manifest.json` и `public/build/assets/`. Не путайте `public/manifest.webmanifest` (PWA) с `public/build/manifest.json` (Vite). Файл `public/hot` от локального dev-сервера на production должен отсутствовать.
 
-Cron раз в минуту (путь скорректируйте):
+Если Timeweb не позволяет запускать Node.js, выполните `npm install && npm run build` на компьютере с Node.js 20, затем загрузите **весь** каталог `public/build` в соответствующий каталог сервера. После обновления сборки выполните `php artisan optimize:clear`.
 
-```cron
-* * * * * cd /var/www/chmuzuch && php artisan schedule:run >> /dev/null 2>&1
-```
+Для пользовательских STL и медиа требуется `php artisan storage:link`. Для PWA необходим HTTPS. Проверяйте в браузере главную, 3D-модели, динамические страницы, музыку, меню и установку приложения. Не включайте `APP_DEBUG=true` на production.
 
-Если используются очереди, настройте Supervisor/systemd для `php artisan queue:work`; на обычном виртуальном хостинге это может быть недоступно.
+**Важно:** команды выше являются инструкцией; сборка непосредственно на сервере Timeweb не запускается из GitHub и должна быть выполнена в SSH или через локальную сборку.
 
-## Различия с проектом vdmsh
+## Дополнительные замечания по переносу из рабочей ветки
 
-Схема установки взята за основу из `asbcorp24/vdmsh`: Git → Composer → .env → миграции → storage:link → Vite → кеши → HTTPS. **Но** vdmsh использует Laravel 11, PHP 8.2+ и ветку `develop`, а Chmuzuch сейчас использует Laravel 9 и ветку `feature/legacy-site-crawler`. Не копируйте слепо сидеры и команды создания администратора из vdmsh.
-
-## Документация
-
-См. `docs/OLD_SITE_CONTENT_MAP.md` — карта структуры исходного сайта.
+- Для STL текущий лимит формы — 20 МБ; проверьте `upload_max_filesize` и `post_max_size`.
+- При использовании nginx требуется `try_files $uri $uri/ /index.php?$query_string;`.
+- Вход администратора: `/admin/login`; перед запуском проверьте роль `super_admin` и флаг `is_active`.
+- Для отката сохраняйте SHA коммита и резервные копии базы, `.env`, `storage/app/public`.
+- После смены PWA-ресурсов проверьте `VERSION` в `public/sw.js`.
