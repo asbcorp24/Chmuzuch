@@ -315,3 +315,45 @@ body:has(#hero-3d) .department-strip a:hover{background:#d7b98014}
  body:has(#hero-3d) .portal-grid b{font-size:clamp(19px,1.7vw,26px)!important}
  body:has(#hero-3d) .section-head>a{font-size:13px}
 }
+
+
+/* Shared visual language for every public page, not just the homepage */
+:root{--bg:#091017;--panel:#14232b;--text:#f4f2ec;--muted:#afbdc1;--gold:#d7b980;--accent:#d29b68}
+body{background:#091017;color:#f4f2ec}
+body:not(:has(#hero-3d)) .site-header{background:#09131bf2;border-bottom:1px solid #d7b98024;box-shadow:0 10px 36px #0003}
+body:not(:has(#hero-3d)) main{background:linear-gradient(160deg,#0e2029 0,#091017 400px);min-height:55vh}
+body:not(:has(#hero-3d)) main h1,body:not(:has(#hero-3d)) main h2{font-family:Georgia,'Times New Roman',serif;font-weight:400;letter-spacing:-.025em;line-height:1.16}
+body:not(:has(#hero-3d)) main h1{font-size:clamp(32px,3.4vw,51px)}
+body:not(:has(#hero-3d)) main h2{font-size:clamp(25px,2.3vw,36px)}
+body:not(:has(#hero-3d)) main h3{font-size:clamp(17px,1.6vw,23px);line-height:1.3}
+body:not(:has(#hero-3d)) main .eyebrow{font-size:10px;letter-spacing:.17em;color:#d7b980}
+body:not(:has(#hero-3d)) main .block{padding-top:clamp(32px,4vw,58px);padding-bottom:clamp(32px,4vw,58px);background:transparent}
+body:not(:has(#hero-3d)) main .block:nth-of-type(even){background:#ffffff04}
+body:not(:has(#hero-3d)) main .card{background:linear-gradient(145deg,#1a2b33,#101d25);border:1px solid #d7b98025;border-radius:12px;min-height:0;padding:22px;transition:transform .2s,border-color .2s}
+body:not(:has(#hero-3d)) main .card:hover{border-color:#d7b98075;transform:translateY(-2px)}
+body:not(:has(#hero-3d)) main .card h3{margin-top:14px}
+body:not(:has(#hero-3d)) main .backlink{font-size:13px;color:#d7b980}
+body:not(:has(#hero-3d)) main .event-detail-hero{background:radial-gradient(ellipse at 75% 20%,#24414b,#0c1820 65%);border-bottom:1px solid #d7b9802a}
+body:not(:has(#hero-3d)) main .event-detail-hero h1{font-size:clamp(34px,3.5vw,52px)}
+body:not(:has(#hero-3d)) main .event-ticket{background:#142731;border:1px solid #d7b98035;border-radius:12px}
+body:not(:has(#hero-3d)) main .event-poster{background:linear-gradient(135deg,#1c3640,#0b1820);border-bottom:1px solid #d7b98026}
+body:not(:has(#hero-3d)) main .event-poster>div{font-family:Georgia,serif}
+body:not(:has(#hero-3d)) main .media-panels>div{background:#172a34;border:1px solid #d7b9802b;border-radius:12px}
+body:not(:has(#hero-3d)) main input,body:not(:has(#hero-3d)) main select,body:not(:has(#hero-3d)) main textarea{border-radius:8px;border:1px solid #d7b98038;background:#101e27;color:#f4f2ec}
+body:not(:has(#hero-3d)) main button,body:not(:has(#hero-3d)) main .btn{border-radius:8px}
+body:not(:has(#hero-3d)) .site-footer{background:#0a141b;border-top:1px solid #d7b98024}
+@media(min-width:901px){
+ body:not(:has(#hero-3d)) main .block{padding-left:clamp(32px,5vw,80px);padding-right:clamp(32px,5vw,80px)}
+ body:not(:has(#hero-3d)) main .event-detail-hero{padding-top:145px;padding-bottom:55px;min-height:0}
+ body:not(:has(#hero-3d)) main .event-poster{min-height:220px}
+ body:not(:has(#hero-3d)) main .card{padding:20px}
+}
+@media(max-width:900px){
+ body:not(:has(#hero-3d)) main h1{font-size:clamp(30px,8vw,42px)}
+ body:not(:has(#hero-3d)) main h2{font-size:clamp(24px,6vw,32px)}
+ body:not(:has(#hero-3d)) main .block{padding:32px 17px}
+ body:not(:has(#hero-3d)) main .event-detail-hero{padding:95px 18px 28px;display:flex;flex-direction:column;gap:18px}
+ body:not(:has(#hero-3d)) main .event-poster{min-height:160px}
+ body:not(:has(#hero-3d)) main .card{padding:18px}
+ body:not(:has(#hero-3d)) main .media-panels{gap:10px}
+}
